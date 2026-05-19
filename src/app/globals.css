@@ -1,0 +1,617 @@
+@import "tailwindcss";
+
+/* =============================================================
+   Brand tokens — bound to Tailwind v4 via @theme.
+   Sourced from src/lib/tokens.ts and design-system.md.
+
+   2026-05-12 "Enterprise AI Lab" palette migration:
+   - brand-sky cyan retuned from #18DEFF → #24E5FF (slightly more saturated)
+   - pure black #000 → graphite #05060A (background no longer crushes)
+   - new layered surface tokens (elevated / card / soft) for readable depth
+   - new text tokens (cool-grey scale) for WCAG-AA compliant body copy
+   ============================================================= */
+@theme {
+  /* brand palette */
+  --color-brand-sky:      #24E5FF;
+  --color-brand-cerulean: #52B8FF;
+  --color-brand-lavender: #B07CFF;
+  --color-brand-blue:     #3B82F6;
+  --color-brand-violet:   #8B5CF6;
+  --color-ink:            #05060A;
+  --color-paper:          #FFFFFF;
+
+  /* layered surfaces — depth without glow */
+  --color-surface-base:     #05060A;
+  --color-surface-elevated: #0B0E15;
+  --color-surface-card:     #101521;
+  --color-surface-soft:     #151B2A;
+
+  /* text scale — cool greys, WCAG-AA on near-black */
+  --color-text-primary:   #F6F8FB;
+  --color-text-secondary: #AAB4C5;
+  --color-text-muted:     #737D90;
+  --color-border-soft:    rgba(255, 255, 255, 0.10);
+
+  /* monochrome scale (Arkitek-inspired) */
+  --color-g05: #0c0c0c;
+  --color-g10: #121212;
+  --color-g15: #1b1b1b;
+  --color-g20: #262626;
+  --color-g30: #333333;
+  --color-g40: #454545;
+  --color-g50: #6e6e6e;
+  --color-g60: #9c9c9c;
+  --color-g70: #cecece;
+  --color-g80: #e7e7e7;
+
+  /* font families — wired to next/font loaded variables from layout.tsx
+     so the actual loaded woff2 (not just the literal family name) is used. */
+  --font-brand:   var(--font-brand-loaded), "Montserrat", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Satoshi", var(--font-brand-loaded), "Montserrat", system-ui, sans-serif;
+  --font-body:    var(--font-body-loaded), "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono:    "JetBrains Mono", "Geist Mono", ui-monospace, monospace;
+
+  /* shadows */
+  --shadow-glow-sky: 0 30px 80px -30px rgba(36, 229, 255, 0.45);
+  --shadow-elev-card: 0 8px 24px -8px rgba(0, 0, 0, 0.45);
+  --shadow-elev-panel: 0 20px 60px -20px rgba(0, 0, 0, 0.65);
+
+  /* easings (design-system §6.1) */
+  --ease-standard: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-enter:    cubic-bezier(0.16, 1, 0.30, 1);
+  --ease-exit:     cubic-bezier(0.70, 0, 0.84, 0);
+  --ease-spring:   cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* =============================================================
+   Base
+   ============================================================= */
+html {
+  background: #05060A;
+  color: #F6F8FB;
+}
+body {
+  /* Transparent so the fixed BackgroundScene canvas at z-index 0 actually paints through. */
+  background: transparent;
+  color: #F6F8FB;
+  font-family: "Inter", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* =============================================================
+   Homepage backdrop — TRANSPARENT.
+   We want the 3D key canvas to show through the gutters BETWEEN
+   section cards, so this div paints nothing. The black surface
+   comes only from the `.section-box` / `.glass` panels themselves.
+   The html element provides the very-dark base colour for fallback.
+   ============================================================= */
+.home-premium-backdrop {
+  background: transparent;
+}
+
+/* =============================================================
+   Readability scrims — Enterprise AI Lab §non-negotiable readability
+   Use under text that overlays the 3D backdrop. Forces 4.5:1 contrast.
+   ============================================================= */
+.scrim-section {
+  position: relative;
+  isolation: isolate;
+}
+.scrim-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  /* Hero backdrop — soft navy glow with a brighter centre so the globe pops. */
+  background:
+    radial-gradient(70% 55% at 50% 40%, rgba(30, 56, 100, 0.32), transparent 70%),
+    linear-gradient(
+      180deg,
+      rgba(8, 14, 28, 0.55) 0%,
+      rgba(8, 14, 28, 0.20) 35%,
+      rgba(8, 14, 28, 0.50) 100%
+    );
+}
+.scrim-radial-left::before {
+  background: radial-gradient(70% 90% at 20% 50%, rgba(5, 6, 10, 0.92), rgba(5, 6, 10, 0.55) 60%, transparent 100%);
+}
+.scrim-radial-right::before {
+  background: radial-gradient(70% 90% at 80% 50%, rgba(5, 6, 10, 0.92), rgba(5, 6, 10, 0.55) 60%, transparent 100%);
+}
+
+/* Nav-clearance helper: ensure section content starts below the 64px nav pill. */
+.section-pad-nav {
+  padding-top: max(96px, 8vh);
+}
+
+/* Text role utilities — bind text-* classes to the new colour tokens. */
+.text-prime    { color: var(--color-text-primary); }
+.text-second   { color: var(--color-text-secondary); }
+.text-muted-2  { color: var(--color-text-muted); }
+
+/* Page-level grain — design-system §5.4 */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 60;
+  opacity: 0.025;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/></svg>");
+}
+
+/* =============================================================
+   Reusable surface utilities — design-system §5
+   ============================================================= */
+@utility glass {
+  /* Translucent navy panel — opaque enough for text legibility, sheer
+     enough that the 3D scene behind reads as a live element on every
+     page (not just the homepage hero). A 10px blur keeps body copy
+     crisp against the moving canvas. */
+  background: rgba(14, 18, 28, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+}
+
+@utility section-box {
+  position: relative;
+  border-radius: 24px;
+  background: rgba(14, 18, 28, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+}
+
+@utility glass-edge {
+  position: relative;
+}
+.glass-edge::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background: linear-gradient(180deg,
+    rgba(255,255,255,0.22),
+    rgba(255,255,255,0.02) 60%,
+    rgba(255,255,255,0.08));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  pointer-events: none;
+}
+
+@utility grad-text {
+  background: linear-gradient(135deg, #18DEFF 0%, #B07CFF 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* =============================================================
+   Hero scrim primitives — design-system §5.2
+   ============================================================= */
+.copy-scrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background: linear-gradient(90deg,
+    rgba(0,0,0,0.78) 0%,
+    rgba(0,0,0,0.50) 28%,
+    rgba(0,0,0,0.15) 52%,
+    transparent 70%);
+}
+@media (max-width: 1024px) {
+  .copy-scrim {
+    background: linear-gradient(180deg,
+      rgba(0,0,0,0.20) 0%,
+      rgba(0,0,0,0.55) 25%,
+      rgba(0,0,0,0.80) 60%);
+  }
+}
+
+.hero-edges::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  background: linear-gradient(180deg,
+    rgba(0,0,0,0.55) 0%,
+    transparent 14%,
+    transparent 78%,
+    rgba(0,0,0,0.95) 100%);
+}
+
+/* =============================================================
+   Live-dot indicator — pulse keyframes
+   ============================================================= */
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: 0.55; transform: scale(0.85); }
+}
+
+.animate-pulse-dot {
+  animation: pulseDot 2.4s var(--ease-standard) infinite;
+}
+
+/* Globally available `spin` keyframes — used by inline animation strings
+   on the Partnership orbit and other rotation marks.  Tailwind's built-in
+   animate-spin defines its own scoped copy, but inline `animation: spin …`
+   needs a top-level @keyframes to bind to. */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* =============================================================
+   Variant-G typography (lifted verbatim from
+   mockups/01-hero-G-atelier.html).  Used by the new atelier-style hero.
+   ============================================================= */
+
+.display {
+  font-family: "Satoshi", "Geist", system-ui, sans-serif;
+  font-weight: 700;
+  font-size: clamp(34px, 4.8vw, 76px);
+  line-height: 1.04;
+  letter-spacing: -0.028em;
+  color: #fff;
+}
+.display em {
+  font-style: normal;
+  color: rgba(255, 255, 255, 0.55);
+}
+.display b {
+  font-weight: 500;
+  background: linear-gradient(135deg, #18DEFF 0%, #B07CFF 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.lead-spaced {
+  font-family: "Inter", system-ui, sans-serif;
+  font-weight: 300;
+  font-size: clamp(13px, 1.05vw, 15px);
+  line-height: 1.85;
+  letter-spacing: 0.20em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.50);
+}
+
+.lead {
+  font-family: "Inter", system-ui, sans-serif;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.60);
+}
+
+.eyebrow-g {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: "Geist Mono", "JetBrains Mono", monospace;
+  font-weight: 500;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.80);
+}
+.eyebrow-g::before {
+  content: "";
+  width: 6px; height: 6px; border-radius: 50%;
+  background: #18DEFF;
+  box-shadow: 0 0 10px #18DEFF, 0 0 22px rgba(24, 222, 255, 0.45);
+  animation: eyebrow-pulse 2.2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+@keyframes eyebrow-pulse {
+  0%, 100% { box-shadow: 0 0 8px #18DEFF, 0 0 18px rgba(24, 222, 255, 0.35); transform: scale(1); }
+  50%      { box-shadow: 0 0 14px #18DEFF, 0 0 30px rgba(24, 222, 255, 0.65); transform: scale(1.15); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .eyebrow-g::before { animation: none; }
+}
+.eyebrow-g::after {
+  content: "";
+  height: 1px; width: 24px;
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* =============================================================
+   Atmospheric drift blobs — Arkitek-style background atmosphere.
+   No three.js — pure CSS for performance.  Each blob breathes
+   independently on its own 14–22 s cycle.
+   ============================================================= */
+
+@keyframes drift-cyan {
+  0%, 100% { transform: translate(0, 0) scale(1);     opacity: 0.85; }
+  50%      { transform: translate(-30px, 22px) scale(1.10); opacity: 1; }
+}
+@keyframes drift-lavender {
+  0%, 100% { transform: translate(0, 0) scale(1);     opacity: 0.70; }
+  50%      { transform: translate(40px, -28px) scale(1.06); opacity: 1; }
+}
+@keyframes drift-white {
+  0%, 100% { transform: translate(0, 0) scale(0.95);   opacity: 0.55; }
+  50%      { transform: translate(22px, 30px) scale(1.15); opacity: 0.95; }
+}
+@keyframes drift-bottom {
+  0%, 100% { transform: translate(0, 0) scale(1);   opacity: 0.55; }
+  50%      { transform: translate(-30px, -18px) scale(1.08); opacity: 0.85; }
+}
+
+/* Dot-grid corner ornament (Arkitek detail) */
+.dot-grid-corner {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.10) 0.7px, transparent 0.7px);
+  background-size: 16px 16px;
+}
+
+/* =============================================================
+   Variant-G CTAs — lifted from the atelier mockup.
+   .cta is base, --primary and --ghost are modifiers.
+   ============================================================= */
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 46px;
+  padding: 0 22px;
+  border-radius: 999px;
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  transition:
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    background 0.25s,
+    color 0.25s,
+    border-color 0.25s;
+}
+.cta--primary {
+  background: #fff;
+  color: #000;
+  border: 1px solid transparent;
+}
+.cta--primary:hover {
+  transform: translateY(-1px);
+  background: #18DEFF;
+}
+.cta--ghost {
+  background: transparent;
+  color: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+.cta--ghost:hover {
+  border-color: rgba(255, 255, 255, 0.35);
+  color: #fff;
+}
+
+/* =============================================================
+   Variant-G scroll cue — monospace label + vertical cyan-drip line.
+   ============================================================= */
+
+.scroll-cue-g {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  font-family: "Geist Mono", "JetBrains Mono", monospace;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.72);
+  animation: scroll-cue-bob 3.4s ease-in-out infinite;
+}
+@keyframes scroll-cue-bob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(6px); }
+}
+
+/* 3D scroll indicator — a small wireframe ring that rotates around the
+   X axis (creates a perspective-tumbling disc) and three cascading
+   chevron arrows beneath it that fade in/out in sequence to suggest
+   downward flow. Both have prefers-reduced-motion fallbacks. */
+.scroll-3d-ring {
+  width: 26px;
+  height: 26px;
+  border-radius: 9999px;
+  border: 1.5px solid rgba(36, 229, 255, 0.55);
+  box-shadow:
+    0 0 14px rgba(36, 229, 255, 0.35),
+    inset 0 0 8px rgba(36, 229, 255, 0.15);
+  transform-style: preserve-3d;
+  animation: scroll-3d-tumble 3.6s linear infinite;
+}
+@keyframes scroll-3d-tumble {
+  0%   { transform: perspective(80px) rotateX(0deg); }
+  100% { transform: perspective(80px) rotateX(360deg); }
+}
+.scroll-3d-chev {
+  animation: scroll-3d-chev-fall 1.6s ease-in-out infinite;
+}
+.scroll-3d-chev:nth-child(1) { animation-delay: 0s; }
+.scroll-3d-chev:nth-child(2) { animation-delay: 0.18s; }
+.scroll-3d-chev:nth-child(3) { animation-delay: 0.36s; }
+@keyframes scroll-3d-chev-fall {
+  0%, 60%, 100% { opacity: 0.20; transform: translateY(0); }
+  30%            { opacity: 1;    transform: translateY(2px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-cue-g,
+  .scroll-3d-ring,
+  .scroll-3d-chev { animation: none; }
+}
+
+/* Stats "+" suffix — gentle cyan pulse after counters land. */
+@keyframes stat-suffix-pulse {
+  0%, 100% { transform: scale(1); filter: brightness(1); }
+  50%      { transform: scale(1.18); filter: brightness(1.35); }
+}
+@media (prefers-reduced-motion: reduce) {
+  [class*="stat-suffix-pulse"] { animation: none !important; }
+}
+
+/* Case-study mock image — scale + fade in on case switch. */
+.case-mock-enter {
+  animation: case-mock-enter 0.6s cubic-bezier(0.16, 1, 0.30, 1) both;
+}
+@keyframes case-mock-enter {
+  0%   { opacity: 0; transform: scale(0.92); }
+  100% { opacity: 1; transform: scale(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .case-mock-enter { animation: none; }
+}
+
+/* WhyElchai — top accent line draws left-to-right on each pillar card. */
+@keyframes pillar-line-draw {
+  0%   { width: 0; opacity: 0; }
+  100% { width: 64%; opacity: 1; }
+}
+
+/* Events — card-deck reveal. Each tile starts rotated + offset and settles
+   into place. Uses --deck-rot inline style so each card has a unique start. */
+.event-card-deck {
+  animation: event-card-deck 0.9s cubic-bezier(0.16, 1, 0.30, 1) both;
+}
+@keyframes event-card-deck {
+  0% {
+    opacity: 0;
+    transform: rotate(var(--deck-rot, -3deg)) translateY(40px) scale(0.92);
+  }
+  100% {
+    opacity: 1;
+    transform: rotate(0deg) translateY(0) scale(1);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .event-card-deck { animation: none; }
+}
+
+/* Resources — top accent bar slides in from left on hover. */
+.resource-card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  height: 2px;
+  width: 0;
+  background: linear-gradient(90deg, #24E5FF, transparent);
+  box-shadow: 0 0 12px rgba(36, 229, 255, 0.55);
+  transition: width 420ms cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+  z-index: 1;
+}
+.resource-card:hover::before {
+  width: 72%;
+}
+@media (prefers-reduced-motion: reduce) {
+  .resource-card::before, .resource-card:hover::before { transition: none; width: 0; }
+}
+
+/* Hero key — constant gentle floating + sway. Sits underneath the
+   framer-motion mouse parallax transforms on the inner child. */
+.hero-key-float {
+  animation: hero-key-float 10s ease-in-out infinite;
+}
+@keyframes hero-key-float {
+  0%, 100% { transform: translateY(0)    rotate(0);       }
+  25%      { transform: translateY(-10px) rotate(-0.6deg); }
+  50%      { transform: translateY(0)    rotate(0);       }
+  75%      { transform: translateY(10px)  rotate(0.6deg);  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-key-float { animation: none; }
+}
+
+/* ClosingCTA — slow cyan halo pulse on the primary CTA. */
+.closing-cta-glow {
+  animation: closing-cta-pulse 2.8s ease-in-out infinite;
+}
+@keyframes closing-cta-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(36, 229, 255, 0.0), 0 8px 28px -8px rgba(0, 0, 0, 0.55); }
+  50%      { box-shadow: 0 0 0 8px rgba(36, 229, 255, 0.0), 0 0 36px 4px rgba(36, 229, 255, 0.40), 0 8px 28px -8px rgba(0, 0, 0, 0.55); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .closing-cta-glow { animation: none; }
+}
+.scroll-cue-g .vline {
+  width: 1px;
+  height: 32px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.4), transparent);
+  position: relative;
+  overflow: hidden;
+}
+.scroll-cue-g .vline::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent, #18DEFF, transparent);
+  animation: drip 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+@keyframes drip {
+  0%   { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+
+/* =============================================================
+   Privacy-policy body styling — typographic prose inside .policy-body
+   ============================================================= */
+.policy-body h3 {
+  font-family: "Montserrat", system-ui, sans-serif;
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.6);
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+.policy-body ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.policy-body ul li {
+  position: relative;
+  padding-left: 1.25rem;
+  margin: 0.5rem 0;
+}
+.policy-body ul li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.7em;
+  width: 6px;
+  height: 1px;
+  background: rgba(24, 222, 255, 0.6);
+}
+.policy-body a {
+  color: var(--color-brand-sky);
+  text-decoration: underline;
+  text-decoration-color: rgba(24, 222, 255, 0.35);
+  text-underline-offset: 3px;
+  transition: text-decoration-color 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.policy-body a:hover {
+  text-decoration-color: var(--color-brand-sky);
+}
+.policy-body strong { color: rgba(255, 255, 255, 0.95); font-weight: 600; }
+
+/* =============================================================
+   Reduced-motion fallback — design-system §6.5
+   ============================================================= */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Elchai — hero variant comparison</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://api.fontshare.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap" rel="stylesheet">
+
+<style>
+  :root { --brand-sky: #18DEFF; --brand-cerulean: #52B8FF; --brand-lavender: #B07CFF; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background:
+      radial-gradient(60% 50% at 20% 0%, rgba(24,222,255,0.10) 0%, transparent 60%),
+      radial-gradient(60% 50% at 100% 100%, rgba(176,124,255,0.10) 0%, transparent 60%),
+      #000;
+    color: #fff;
+    font-family: 'Inter', system-ui, sans-serif;
+    min-height: 100vh;
+  }
+  body::before {
+    content:""; position: fixed; inset: 0; pointer-events: none;
+    opacity: 0.035; mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.6'/></svg>");
+  }
+  .wrap { max-width: 1280px; margin: 0 auto; padding: 96px 32px 64px; }
+  header { margin-bottom: 56px; }
+  .brand {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700; font-size: 14px; letter-spacing: 0.18em;
+    margin-bottom: 32px;
+  }
+  .brand-mark {
+    width: 28px; height: 28px; border-radius: 8px;
+    background: linear-gradient(135deg,#18DEFF,#B07CFF);
+    display: grid; place-items: center;
+    color: #000; font-family: 'Satoshi', sans-serif; font-weight: 900; font-size: 16px;
+  }
+  h1 {
+    font-family: 'Satoshi', 'Montserrat', sans-serif;
+    font-weight: 700; font-size: clamp(40px, 5vw, 64px);
+    line-height: 1.04; letter-spacing: -0.02em;
+    margin: 0 0 16px;
+  }
+  h1 em {
+    font-style: normal;
+    background: linear-gradient(135deg,#18DEFF,#B07CFF);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .lede {
+    color: rgba(255,255,255,0.65);
+    font-size: 17px; line-height: 1.55;
+    max-width: 720px;
+    margin: 0;
+  }
+  .meta {
+    display: flex; gap: 16px; flex-wrap: wrap;
+    margin-top: 28px;
+    font-family: 'Inter', monospace; font-size: 12px;
+    color: rgba(255,255,255,0.45);
+  }
+  .meta span {
+    padding: 6px 12px; border-radius: 999px;
+    border: 1px solid rgba(255,255,255,0.10);
+    background: rgba(255,255,255,0.02);
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+  }
+  .card {
+    position: relative;
+    display: block;
+    padding: 28px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.025);
+    border: 1px solid rgba(255,255,255,0.08);
+    text-decoration: none; color: inherit;
+    transition: transform .35s cubic-bezier(0.22, 1, 0.36, 1),
+                border-color .25s cubic-bezier(0.22, 1, 0.36, 1),
+                background .25s cubic-bezier(0.22, 1, 0.36, 1);
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .card::before {
+    content:""; position: absolute; inset: 0; border-radius: inherit; padding: 1px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.16), rgba(255,255,255,0.02) 60%, rgba(255,255,255,0.08));
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude;
+    pointer-events: none; z-index: 0;
+  }
+  .card::after {
+    content:""; position: absolute; inset: 0;
+    background: radial-gradient(50% 80% at 50% 0%, rgba(24,222,255,0.18), transparent 65%);
+    opacity: 0; transition: opacity .35s cubic-bezier(0.22, 1, 0.36, 1);
+    pointer-events: none; z-index: -1;
+  }
+  .card:hover { transform: translateY(-3px); border-color: rgba(24,222,255,0.4); background: rgba(255,255,255,0.04); }
+  .card:hover::after { opacity: 1; }
+  .card .num {
+    font-family: 'Inter', monospace;
+    font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--brand-sky); margin-bottom: 12px;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .card .num::before { content:""; width: 8px; height: 8px; border-radius: 50%; background: var(--brand-sky); box-shadow: 0 0 12px var(--brand-sky); }
+  .card .name {
+    font-family: 'Satoshi', 'Montserrat', sans-serif;
+    font-weight: 700; font-size: 22px;
+    margin: 8px 0 10px;
+    letter-spacing: -0.01em;
+  }
+  .card .desc {
+    color: rgba(255,255,255,0.65);
+    font-size: 13px; line-height: 1.55;
+  }
+  .card .open {
+    margin-top: 24px;
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 500;
+    color: var(--brand-sky);
+    letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .card .open svg { transition: transform .25s cubic-bezier(0.22, 1, 0.36, 1); }
+  .card:hover .open svg { transform: translateX(4px); }
+
+  footer { margin-top: 64px; padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.08); font-size: 12px; color: rgba(255,255,255,0.42); }
+  footer code { font-family: 'Inter', monospace; padding: 2px 6px; border-radius: 4px; background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.7); }
+</style>
+</head>
+
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="brand"><span class="brand-mark">E</span> ELCHAI · HERO MOCKUPS</div>
+    <h1>Eight hero variants.<br/><em>Compare side-by-side.</em></h1>
+    <p class="lede">Each option keeps the same headline, scrim, nav, lighting concept, post chain (UnrealBloom 0.60 + finish vignette + grain) and 50&nbsp;s camera drift. They differ only in the central 3D form.</p>
+    <div class="meta">
+      <span>Brand · #18DEFF · #52B8FF · #B07CFF</span>
+      <span>Headline · Satoshi · Inter · Montserrat</span>
+      <span>FPS pill · append <code style="background:rgba(255,255,255,0.06); padding: 1px 5px; border-radius: 4px;">?debug=1</code></span>
+    </div>
+  </header>
+
+  <div class="grid">
+
+    <a class="card" href="01-hero-H-chromeribbon.html" target="_blank" rel="noopener" style="border-color: rgba(24,222,255,0.70); background: rgba(24,222,255,0.06); grid-column: 1 / -1;">
+      <div class="num">Option H · LOCKED · Chosen Hero</div>
+      <div class="name">Liquid Chrome Ribbon</div>
+      <div class="desc">Iridescent chrome ribbon drifting across the canvas — TubeGeometry along an animated CatmullRomCurve3, MeshPhysicalMaterial with iridescence + clearcoat, PMREM-prefiltered RoomEnvironment for clean reflections, three drifting brand-coloured point lights painting the highlights. The chosen direction; sections 02–20 will be built in this DNA.</div>
+      <span class="open">Open <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 11L11 3M5 3h6v6" stroke="currentColor" stroke-width="1.4"/></svg></span>
+    </a>
+
+    <a class="card" href="01-hero-F-sidewave.html" target="_blank" rel="noopener">
+      <div class="num">Option F · Sidewave-style</div>
+      <div class="name">Cinematic Manifesto</div>
+      <div class="desc">Full-bleed displaced sphere as persistent backdrop, huge ALL-CAPS declarative headline, mono data-corners, scene navigator on the right edge, bottom HUD rail. Cinematic editorial — the 3D is the room, the copy is the moment.</div>
+      <span class="open">Open <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 11L11 3M5 3h6v6" stroke="currentColor" stroke-width="1.4"/></svg></span>
+    </a>
+
+    <a class="card" href="01-hero-E-console.html" target="_blank" rel="noopener">
+      <div class="num">Option E · Enterprise</div>
+      <div class="name">Console Layout</div>
+      <div class="desc">Refined editorial hero left, real-product dashboard right. The displaced sphere lives inside the console card with telemetry overlay. Reads like Linear/Stripe/Anthropic, not a 3D demo.</div>
+      <span class="open">Open <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 11L11 3M5 3h6v6" stroke="currentColor" stroke-width="1.4"/></svg></span>
+    </a>
+
+    <a class="card" href="01-hero.html" target="_blank" rel="noopener">
+      <div class="num">Option 0 · Baseline</div>
+      <div class="name">Displaced Sphere</div>
+      <div class="desc">One large organic mass; two-octave simplex-noise displacement; brand cyan-to-lavender gradient shader; faint counter-rotating wireframe ghost.</div>
+      <span class="open">Open <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 11L11 3M5 3h6v6" stroke="currentColor" stroke-width="1.4"/></svg></span>
+    </a>
+
+    <a class="card" href="01-hero-A-emark.html" target="_blank" rel="noopener">
+      <div class="num">Option A · Brand identity</div>
+      <div class="name">Deconstructed E-mark</div>
+      <div class="desc">Same sphere — but a light "E" pattern ignites across the front-facing surface for ~3 seconds every 20 seconds, then dissolves. SDF-masked emission, never literal.</div>
+      <span class="open">Open <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 11L11 3M5 3h6v6" stroke="currentColor" stroke-width="1.4"/></svg></span>
+    </a>
+
+    <a class="card" href="01-hero-B-blocks.html" target="_blank" rel="noopener">
+      <div class="num">Option B · Web3</div>
+      <div class="name">Refractive Cluster</div>
+      <div class="desc">28 brand-tinted refractive glass cubes packed into one organic blob; per-cube IOR-1.5 refraction against a procedural HDRI; breathing scale and 4 drifting fragments.</div>
+      <span class="open">Open <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 11L11 3M5 3h6v6" stroke="currentColor" stroke-width="1.4"/></svg></span>
+    </a>
+
+    <a class="card" href="01-hero-C-datasphere.html" target="_blank" rel="noopener">
+      <div class="num">Option C · AI / intelligence</div>
+      <div class="name">Data Sphere</div>
+      <div class="desc">Sphere as substrate; 80 Fibonacci-distributed neuron points pulse on staggered cycles; 30 arcing quadratic-bezier connections form and dissolve every 3-5 seconds.</div>
+      <span class="open">Open <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 11L11 3M5 3h6v6" stroke="currentColor" stroke-width="1.4"/></svg></span>
+    </a>
+
+    <a class="card" href="01-hero-D-layered.html" target="_blank" rel="noopener">
+      <div class="num">Option D · Holding-co</div>
+      <div class="name">Layered Ventures</div>
+      <div class="desc">White-cored sphere + three nested displaced rings (cyan / cerulean / lavender) + four brand-tinted nodes on independent tilted orbits — the venture structure as a system.</div>
+      <span class="open">Open <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 11L11 3M5 3h6v6" stroke="currentColor" stroke-width="1.4"/></svg></span>
+    </a>
+
+  </div>
+
+  <footer>
+    <strong style="color: rgba(255,255,255,0.65)">Files:</strong>
+    <code>mockups/01-hero.html</code> ·
+    <code>01-hero-A-emark.html</code> ·
+    <code>01-hero-B-blocks.html</code> ·
+    <code>01-hero-C-datasphere.html</code> ·
+    <code>01-hero-D-layered.html</code> ·
+    <code>01-hero-E-console.html</code> ·
+    <code>01-hero-F-sidewave.html</code> ·
+    <code>01-hero-G-atelier.html</code>
+  </footer>
+</div>
+</body>
+</html>

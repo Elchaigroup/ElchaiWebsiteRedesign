@@ -1,0 +1,535 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Elchai — hero · F Cinematic Manifesto</title>
+<meta name="description" content="Variant F — Sidewave-style cinematic manifesto. Huge declarative headline over a persistent 3D scene, mono data-corner meta." />
+
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+<script>
+  tailwind.config = {
+    darkMode: 'class',
+    theme: {
+      extend: {
+        colors: { "brand-sky": "#18DEFF", "brand-cerulean": "#52B8FF", "brand-lavender": "#B07CFF", ink: "#000000" },
+        fontFamily: { brand: ['Montserrat', 'system-ui', 'sans-serif'], display: ['Satoshi', 'Montserrat', 'system-ui', 'sans-serif'], body: ['Inter', 'system-ui', 'sans-serif'], mono: ['JetBrains Mono', 'ui-monospace', 'monospace'] },
+      },
+    },
+  };
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://api.fontshare.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap" rel="stylesheet">
+
+<script type="importmap">
+{ "imports": {
+  "three":         "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+}}
+</script>
+
+<style>
+  html, body { background: #000; color: #fff; }
+  body { font-family: 'Inter', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+
+  /* fine grain — pulled from sidewave's overlay vibe */
+  body::before {
+    content:""; position: fixed; inset: 0; pointer-events: none; z-index: 60;
+    opacity: 0.035; mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/></svg>");
+  }
+
+  /* very subtle scan-line texture for the cinematic feel */
+  .scanlines {
+    position: fixed; inset: 0; pointer-events: none; z-index: 59;
+    background: repeating-linear-gradient(0deg, rgba(255,255,255,0.012) 0 1px, transparent 1px 3px);
+    opacity: 0.6;
+  }
+
+  /* mono label primitive */
+  .mono { font-family: 'JetBrains Mono', 'Montserrat', monospace; font-weight: 500; }
+
+  /* coordinate chip — pure mono caps with hair-thin border */
+  .coord-chip {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 10px;
+    border: 1px solid rgba(255,255,255,0.10);
+    background: rgba(255,255,255,0.015);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase;
+    color: rgba(255,255,255,0.55);
+    backdrop-filter: blur(8px);
+  }
+  .coord-chip::before {
+    content:""; width: 4px; height: 4px; border-radius: 50%;
+    background: #18DEFF; box-shadow: 0 0 6px #18DEFF;
+  }
+
+  /* huge headline */
+  .manifesto {
+    font-family: 'Satoshi', 'Montserrat', sans-serif;
+    font-weight: 900;
+    font-size: clamp(48px, 9.2vw, 152px);
+    line-height: 0.86;
+    letter-spacing: -0.045em;
+    text-transform: uppercase;
+    color: #fff;
+  }
+  .manifesto em {
+    font-style: normal;
+    background: linear-gradient(135deg, #18DEFF 0%, #B07CFF 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+
+  /* faint outline-only variant — used for the "TRANSFORMATION" line for typographic depth */
+  .manifesto-outline {
+    color: transparent;
+    -webkit-text-stroke: 1.5px rgba(255,255,255,0.42);
+    text-stroke: 1.5px rgba(255,255,255,0.42);
+  }
+
+  /* glass primitives */
+  .hairline-x { height: 1px; background: rgba(255,255,255,0.08); }
+  .hairline-y { width: 1px; background: rgba(255,255,255,0.08); }
+
+  /* darken halo behind headline to help legibility against the bloomed sphere */
+  .headline-scrim {
+    position: absolute; inset: 0; pointer-events: none; z-index: 1;
+    background:
+      radial-gradient(80% 50% at 50% 38%, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.10) 55%, transparent 80%),
+      linear-gradient(180deg, rgba(0,0,0,0.45) 0%, transparent 18%, transparent 72%, rgba(0,0,0,0.92) 100%);
+  }
+
+  /* hero bottom rail — anchors the composition like Sidewave's bottom HUD */
+  .hud-rail {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 30;
+    pointer-events: none;
+  }
+  .hud-rail .inner { pointer-events: auto; }
+
+  /* CTA pill — large outlined chevron CTA */
+  .cta-link {
+    display: inline-flex; align-items: center; gap: 14px;
+    font-family: 'JetBrains Mono', monospace; font-weight: 500;
+    font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase;
+    color: #fff;
+    position: relative;
+    padding-bottom: 10px;
+  }
+  .cta-link::after {
+    content:""; position: absolute; left: 0; bottom: 0; height: 1px; width: 100%;
+    background: linear-gradient(90deg, #18DEFF 0%, #B07CFF 100%);
+    transform-origin: left;
+    transition: transform .4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .cta-link:hover::after { transform: scaleX(1.05); }
+  .cta-link .arrow { width: 22px; height: 22px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.32); display: grid; place-items: center; transition: background .25s, border-color .25s; }
+  .cta-link:hover .arrow { background: #18DEFF; border-color: #18DEFF; color: #000; }
+  .cta-link:hover .arrow svg path { stroke: #000; }
+
+  /* tiny live dot */
+  .live-dot { position: relative; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #18DEFF; box-shadow: 0 0 8px #18DEFF; }
+  .live-dot::after { content:""; position: absolute; inset: -4px; border-radius: 50%; background: #18DEFF; opacity: 0.30; animation: ping 2.5s cubic-bezier(0.22, 1, 0.36, 1) infinite; }
+  @keyframes ping { 0% { transform: scale(1); opacity: 0.30; } 80% { transform: scale(2.0); opacity: 0; } 100% { opacity: 0; } }
+
+  /* scene navigator (right rail) */
+  .scenes {
+    position: fixed; right: 24px; top: 50%; transform: translateY(-50%); z-index: 30;
+    display: flex; flex-direction: column; gap: 18px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase;
+  }
+  .scenes a {
+    display: flex; align-items: center; gap: 14px;
+    color: rgba(255,255,255,0.30); text-decoration: none;
+    transition: color .25s;
+  }
+  .scenes a .marker { width: 22px; height: 1px; background: rgba(255,255,255,0.20); transition: width .35s cubic-bezier(0.22, 1, 0.36, 1), background .25s; }
+  .scenes a:hover { color: rgba(255,255,255,0.85); }
+  .scenes a:hover .marker { width: 36px; background: rgba(24,222,255,0.85); }
+  .scenes a.active { color: #fff; }
+  .scenes a.active .marker { width: 44px; background: #18DEFF; box-shadow: 0 0 8px rgba(24,222,255,0.7); }
+  @media (max-width: 1024px) { .scenes { display: none; } }
+
+  /* scroll affordance */
+  .scroll-cue {
+    display: inline-flex; align-items: center; gap: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; font-weight: 500; letter-spacing: 0.28em; text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+  }
+  .scroll-cue .bar {
+    position: relative; width: 32px; height: 1px; background: rgba(255,255,255,0.18); overflow: hidden;
+  }
+  .scroll-cue .bar::after {
+    content:""; position: absolute; inset: 0;
+    background: linear-gradient(90deg, transparent, #18DEFF, transparent);
+    animation: scroll-pulse 2.6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+  @keyframes scroll-pulse { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+
+  /* fade-in primitives */
+  [data-fm="fade-up"] { opacity: 0; transform: translateY(28px); animation: fadeUp 1.0s cubic-bezier(0.22, 1, 0.36, 1) forwards; animation-delay: var(--fm-delay, 0ms); }
+  [data-fm="fade"] { opacity: 0; animation: fadeIn 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards; animation-delay: var(--fm-delay, 0ms); }
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeIn { to { opacity: 1; } }
+
+  /* per-letter manifesto reveal — staggers each word/line */
+  .line { display: block; overflow: hidden; }
+  .line > span { display: inline-block; transform: translateY(110%); opacity: 0; animation: lineUp 1.1s cubic-bezier(0.22, 1, 0.36, 1) forwards; animation-delay: var(--line-delay, 0ms); }
+  @keyframes lineUp { to { transform: translateY(0); opacity: 1; } }
+
+  #fps { display: none; position: fixed; bottom: 16px; right: 24px; z-index: 70; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; padding: 5px 9px; border-radius: 4px; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.12); backdrop-filter: blur(8px); color: rgba(255,255,255,0.7); }
+  #fps.show { display: inline-flex; align-items: center; gap: 6px; }
+  #fps::before { content:""; width: 5px; height: 5px; border-radius: 50%; background: #18DEFF; box-shadow: 0 0 6px #18DEFF; }
+  .variant-tag { position: fixed; top: 24px; left: 24px; z-index: 70; font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; padding: 5px 10px; border-radius: 4px; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.12); backdrop-filter: blur(8px); color: rgba(255,255,255,0.45); display: none; }
+  /* the variant tag covers the corner data — show only behind a query param to keep mockup clean */
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    #three-canvas { display: none; }
+  }
+</style>
+</head>
+
+<body class="bg-ink text-white overflow-x-hidden">
+
+<div class="scanlines"></div>
+
+<!-- ============================== 3D BACKGROUND ============================== -->
+<canvas id="three-canvas" aria-hidden="true" class="fixed inset-0 w-full h-full z-0"></canvas>
+<div class="headline-scrim"></div>
+
+<!-- ============================== TOP HUD ============================== -->
+<header class="fixed top-0 left-0 right-0 z-40 px-8 lg:px-12 pt-8 flex items-start justify-between pointer-events-none">
+
+  <!-- Logo -->
+  <a href="#" class="pointer-events-auto flex items-center gap-3 group" aria-label="Elchai home">
+    <span aria-hidden="true" class="h-8 w-8 rounded-md grid place-items-center text-ink font-display font-black text-[18px] transition-transform group-hover:rotate-3"
+          style="background: linear-gradient(135deg,#18DEFF,#B07CFF);">E</span>
+    <span class="font-display font-bold text-[15px] tracking-[0.16em]">ELCHAI</span>
+  </a>
+
+  <!-- Center: status crumb -->
+  <div data-fm="fade" style="--fm-delay:200ms" class="hidden lg:flex items-center gap-4 pointer-events-auto">
+    <span class="mono text-[10px] tracking-[0.22em] uppercase text-white/35">N 25°10′ · E 55°15′</span>
+    <span class="hairline-y h-3"></span>
+    <span class="mono text-[10px] tracking-[0.22em] uppercase text-white/55 flex items-center gap-2">
+      <span class="live-dot"></span>
+      Dubai · <span id="hud-clock" class="tabular-nums">--:--</span>
+    </span>
+  </div>
+
+  <!-- Right: menu + lang -->
+  <div class="pointer-events-auto flex items-center gap-5">
+    <div class="hidden sm:flex items-center gap-1 mono text-[10px] tracking-[0.22em] uppercase text-white/55">
+      <button class="text-white/90">EN</button>
+      <span class="text-white/20">/</span>
+      <button class="hover:text-white/80 transition-colors">AR</button>
+      <span class="text-white/20">/</span>
+      <button class="hover:text-white/80 transition-colors">IT</button>
+    </div>
+    <span class="hairline-y h-3 hidden sm:block"></span>
+    <button class="mono text-[11px] tracking-[0.24em] uppercase text-white inline-flex items-center gap-2 hover:text-brand-sky transition-colors">
+      <span class="flex flex-col gap-[3px]">
+        <span class="block w-5 h-px bg-current"></span>
+        <span class="block w-5 h-px bg-current"></span>
+      </span>
+      Menu
+    </button>
+  </div>
+</header>
+
+<!-- ============================== SCENE NAVIGATOR ============================== -->
+<nav class="scenes z-30" aria-label="Sections">
+  <a href="#01" class="active"><span class="marker"></span><span>01 — Origin</span></a>
+  <a href="#02"><span class="marker"></span><span>02 — Solutions</span></a>
+  <a href="#03"><span class="marker"></span><span>03 — Services</span></a>
+  <a href="#04"><span class="marker"></span><span>04 — Cases</span></a>
+  <a href="#05"><span class="marker"></span><span>05 — Industries</span></a>
+  <a href="#06"><span class="marker"></span><span>06 — Contact</span></a>
+</nav>
+
+<!-- ============================== HERO ============================== -->
+<section class="relative min-h-screen flex flex-col z-10">
+
+  <!-- top spacer -->
+  <div class="flex-1 min-h-[12vh]"></div>
+
+  <!-- manifesto block — left-aligned, big, declarative -->
+  <div class="relative px-8 lg:px-16 max-w-[1640px] mx-auto w-full">
+
+    <!-- pre-line — eyebrow chip + scene label -->
+    <div data-fm="fade-up" style="--fm-delay:120ms" class="flex flex-wrap items-center gap-3 mb-8">
+      <span class="coord-chip">SCENE 01 · ORIGIN · v.04</span>
+      <span class="mono text-[10px] tracking-[0.22em] uppercase text-white/35 hidden sm:inline">Est. 2014 · Dubai → Brussels → Milan</span>
+    </div>
+
+    <h1 class="manifesto">
+      <span class="line"><span style="--line-delay:200ms">Driving Digital</span></span>
+      <span class="line"><span class="manifesto-outline" style="--line-delay:380ms">Transformation</span></span>
+      <span class="line"><span style="--line-delay:560ms">With <em>AI &amp; Blockchain</em></span></span>
+      <span class="line"><span style="--line-delay:740ms">Products.</span></span>
+    </h1>
+
+    <!-- Description below manifesto — small, restrained -->
+    <div class="mt-12 lg:mt-16 grid lg:grid-cols-12 gap-10 lg:gap-14 items-start">
+
+      <!-- Left rail: description + CTA -->
+      <div data-fm="fade-up" style="--fm-delay:900ms" class="lg:col-span-6">
+        <div class="flex items-start gap-3 mb-5">
+          <span class="mono text-[10px] tracking-[0.22em] uppercase text-brand-sky mt-1">→</span>
+          <p class="text-[16px] leading-[1.55] text-white/75 max-w-[440px]">
+            Our product suite enables businesses to innovate, optimise and scale using secure AI and blockchain technologies.
+          </p>
+        </div>
+        <a href="#" class="cta-link mt-8">
+          <span>Explore Our Product Suite</span>
+          <span class="arrow"><svg width="10" height="10" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" stroke-width="1.6"/></svg></span>
+        </a>
+      </div>
+
+      <!-- Right rail: numbered tenets — content.ts bullets preserved verbatim -->
+      <div data-fm="fade-up" style="--fm-delay:1050ms" class="lg:col-span-6 lg:max-w-[420px]">
+        <div class="flex items-center gap-3 mb-5">
+          <span class="hairline-x flex-1"></span>
+          <span class="mono text-[10px] tracking-[0.22em] uppercase text-white/40">Tenets</span>
+          <span class="hairline-x flex-1"></span>
+        </div>
+        <ol class="grid gap-3 list-none p-0">
+          <li class="grid grid-cols-[28px_1fr] gap-3 items-start">
+            <span class="mono text-[10px] tracking-[0.18em] uppercase text-brand-sky pt-1">01</span>
+            <span class="text-[13.5px] leading-[1.55] text-white/72">Custom‑built AI applications tailored to your business needs.</span>
+          </li>
+          <li class="grid grid-cols-[28px_1fr] gap-3 items-start">
+            <span class="mono text-[10px] tracking-[0.18em] uppercase text-brand-sky pt-1">02</span>
+            <span class="text-[13.5px] leading-[1.55] text-white/72">Intelligent products that learn, adapt and automate workflows.</span>
+          </li>
+          <li class="grid grid-cols-[28px_1fr] gap-3 items-start">
+            <span class="mono text-[10px] tracking-[0.18em] uppercase text-brand-sky pt-1">03</span>
+            <span class="text-[13.5px] leading-[1.55] text-white/72">Secure blockchain products that protect data and transactions.</span>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <!-- bottom spacer pushes HUD rail to floor -->
+  <div class="flex-1 min-h-[22vh]"></div>
+</section>
+
+<!-- ============================== BOTTOM HUD ============================== -->
+<div class="hud-rail">
+  <div class="inner mx-auto max-w-[1640px] px-8 lg:px-16 pb-8">
+    <div class="hairline-x mb-5"></div>
+    <div class="flex items-end justify-between flex-wrap gap-y-4 gap-x-8">
+
+      <!-- left: org meta -->
+      <div data-fm="fade-up" style="--fm-delay:1200ms" class="flex items-end gap-8 flex-wrap">
+        <div class="flex flex-col gap-1">
+          <span class="mono text-[9px] tracking-[0.22em] uppercase text-white/35">Operating</span>
+          <span class="mono text-[11px] tracking-[0.10em] uppercase text-white/70">7 Jurisdictions · 4 Languages</span>
+        </div>
+        <div class="hidden md:flex flex-col gap-1">
+          <span class="mono text-[9px] tracking-[0.22em] uppercase text-white/35">Trusted</span>
+          <span class="mono text-[11px] tracking-[0.10em] uppercase text-white/70">2,600+ Ventures · 50+ Fortune 100</span>
+        </div>
+        <div class="hidden lg:flex flex-col gap-1">
+          <span class="mono text-[9px] tracking-[0.22em] uppercase text-white/35">Stack</span>
+          <span class="mono text-[11px] tracking-[0.10em] uppercase text-white/70">AI · Blockchain · Web3 · Metaverse</span>
+        </div>
+      </div>
+
+      <!-- center: scroll cue -->
+      <div data-fm="fade-up" style="--fm-delay:1300ms" class="scroll-cue">
+        <span class="bar"></span>
+        Scroll to discover
+        <span class="bar"></span>
+      </div>
+
+      <!-- right: secondary CTA + ticker -->
+      <div data-fm="fade-up" style="--fm-delay:1400ms" class="flex items-end gap-6">
+        <div class="hidden lg:flex flex-col gap-1 items-end">
+          <span class="mono text-[9px] tracking-[0.22em] uppercase text-white/35">Now</span>
+          <span class="mono text-[11px] tracking-[0.10em] uppercase text-white/70 flex items-center gap-2">
+            <span class="live-dot"></span>
+            Partnering · Rob Rockefeller SC
+          </span>
+        </div>
+        <a href="#" class="cta-link" style="font-size: 11px;">
+          <span>Book a call</span>
+          <span class="arrow"><svg width="10" height="10" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" stroke-width="1.6"/></svg></span>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div id="fps"><span data-fps>—</span> fps</div>
+
+<!-- variant tag (debug only) -->
+<div class="variant-tag" id="variant-tag">Variant · F · Cinematic Manifesto</div>
+
+<!-- ====================================================================
+     three.js — same displaced sphere shader as the baseline.
+     Full-bleed canvas, sphere pushed down so the manifesto sits above
+     in clean dark space.  Mesh radius slightly larger so the form fills
+     the lower half cinematically; bloom thresholds tuned a bit looser.
+     ==================================================================== -->
+<script>
+  // live HUD clock — Dubai (GMT+4)
+  function updateClock(){
+    const n = new Date();
+    const utc = n.getTime() + n.getTimezoneOffset() * 60000;
+    const d = new Date(utc + 4 * 3600000);
+    const hh = String(d.getHours()).padStart(2, '0');
+    const mm = String(d.getMinutes()).padStart(2, '0');
+    const el = document.getElementById('hud-clock');
+    if (el) el.textContent = `${hh}:${mm}`;
+  }
+  updateClock(); setInterval(updateClock, 1000);
+
+  // show variant tag only if ?debug=1 — keeps composition clean by default
+  if (new URLSearchParams(location.search).has('debug')) {
+    const t = document.getElementById('variant-tag');
+    if (t) t.style.display = 'block';
+  }
+</script>
+
+<script type="module">
+  const MESH_RADIUS              = 2.05;
+  const MESH_SUBDIVISIONS        = 96;
+  const MESH_POSITION_X          = 0.0;
+  const MESH_POSITION_Y          = -0.7;        // pushed down so headline sits in clean space above
+  const WIRE_RADIUS              = 2.22;
+  const WIRE_SUBDIVISIONS        = 16;
+  const WIRE_OPACITY             = 0.06;
+  const DISPLACEMENT_AMOUNT      = 0.24;
+  const DISPLACEMENT_FREQ_LOW    = 1.55;
+  const DISPLACEMENT_FREQ_HIGH   = 3.40;
+  const TIME_SCALE_LOW           = 0.16;
+  const TIME_SCALE_HIGH          = 0.07;
+  const CAMERA_FOV               = 44;
+  const CAMERA_DISTANCE          = 6.4;
+  const CAMERA_DRIFT_PERIOD      = 60;
+  const CAMERA_DRIFT_X           = 0.42;
+  const CAMERA_DRIFT_Y           = 0.18;
+  const MESH_ROTATION_Y_SPEED    = 0.04;
+  const LIGHT_DRIFT_PERIOD       = 35;
+  const BLOOM_STRENGTH           = 0.75;
+  const BLOOM_RADIUS             = 0.52;
+  const BLOOM_THRESHOLD          = 0.68;
+  const VIGNETTE_AMOUNT          = 0.58;
+  const GRAIN_AMOUNT             = 0.045;
+  const MAX_PIXEL_RATIO          = 1.5;
+
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce) {
+    document.getElementById('three-canvas').style.background =
+      'radial-gradient(60% 50% at 50% 75%, rgba(24,222,255,0.32), transparent 60%),' +
+      'radial-gradient(60% 50% at 25% 95%, rgba(176,124,255,0.22), transparent 65%), #000';
+  } else {
+    const THREE               = await import('three');
+    const { EffectComposer }  = await import('three/addons/postprocessing/EffectComposer.js');
+    const { RenderPass }      = await import('three/addons/postprocessing/RenderPass.js');
+    const { UnrealBloomPass } = await import('three/addons/postprocessing/UnrealBloomPass.js');
+    const { ShaderPass }      = await import('three/addons/postprocessing/ShaderPass.js');
+    const { OutputPass }      = await import('three/addons/postprocessing/OutputPass.js');
+
+    const canvas = document.getElementById('three-canvas');
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, MAX_PIXEL_RATIO));
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.10;
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(CAMERA_FOV, 1, 0.1, 100);
+    camera.position.set(0, 0.2, CAMERA_DISTANCE);
+
+    const uniforms = {
+      uTime:      { value: 0 },
+      uKey:       { value: new THREE.Vector3(3.2, 1.8, 3.0) },
+      uColorDeep: { value: new THREE.Color('#020512') },
+      uColorMid:  { value: new THREE.Color('#1B6FA8') },
+      uColorPeak: { value: new THREE.Color('#18DEFF') },
+      uColorRim:  { value: new THREE.Color('#B07CFF') },
+      uColorBg:   { value: new THREE.Color('#000000') },
+      uFreqLow:   { value: DISPLACEMENT_FREQ_LOW  },
+      uFreqHigh:  { value: DISPLACEMENT_FREQ_HIGH },
+      uTimeLow:   { value: TIME_SCALE_LOW  },
+      uTimeHigh:  { value: TIME_SCALE_HIGH },
+      uAmount:    { value: DISPLACEMENT_AMOUNT },
+    };
+    const SNOISE = `vec3 mod289(vec3 x){return x-floor(x*(1.0/289.0))*289.0;} vec4 mod289(vec4 x){return x-floor(x*(1.0/289.0))*289.0;} vec4 permute(vec4 x){return mod289(((x*34.0)+1.0)*x);} vec4 taylorInvSqrt(vec4 r){return 1.79284291400159-0.85373472095314*r;} float snoise(vec3 v){const vec2 C=vec2(1.0/6.0,1.0/3.0);const vec4 D=vec4(0.0,0.5,1.0,2.0); vec3 i=floor(v+dot(v,C.yyy)); vec3 x0=v-i+dot(i,C.xxx); vec3 g=step(x0.yzx,x0.xyz); vec3 l=1.0-g; vec3 i1=min(g.xyz,l.zxy); vec3 i2=max(g.xyz,l.zxy); vec3 x1=x0-i1+C.xxx; vec3 x2=x0-i2+C.yyy; vec3 x3=x0-D.yyy; i=mod289(i); vec4 p=permute(permute(permute(i.z+vec4(0.0,i1.z,i2.z,1.0))+i.y+vec4(0.0,i1.y,i2.y,1.0))+i.x+vec4(0.0,i1.x,i2.x,1.0)); float n_=0.142857142857; vec3 ns=n_*D.wyz-D.xzx; vec4 j=p-49.0*floor(p*ns.z*ns.z); vec4 x_=floor(j*ns.z); vec4 y_=floor(j-7.0*x_); vec4 x=x_*ns.x+ns.yyyy; vec4 y=y_*ns.x+ns.yyyy; vec4 h=1.0-abs(x)-abs(y); vec4 b0=vec4(x.xy,y.xy); vec4 b1=vec4(x.zw,y.zw); vec4 s0=floor(b0)*2.0+1.0; vec4 s1=floor(b1)*2.0+1.0; vec4 sh=-step(h,vec4(0.0)); vec4 a0=b0.xzyw+s0.xzyw*sh.xxyy; vec4 a1=b1.xzyw+s1.xzyw*sh.zzww; vec3 p0=vec3(a0.xy,h.x); vec3 p1=vec3(a0.zw,h.y); vec3 p2=vec3(a1.xy,h.z); vec3 p3=vec3(a1.zw,h.w); vec4 norm=taylorInvSqrt(vec4(dot(p0,p0),dot(p1,p1),dot(p2,p2),dot(p3,p3))); p0*=norm.x;p1*=norm.y;p2*=norm.z;p3*=norm.w; vec4 m=max(0.6-vec4(dot(x0,x0),dot(x1,x1),dot(x2,x2),dot(x3,x3)),0.0); m=m*m; return 42.0*dot(m*m,vec4(dot(p0,x0),dot(p1,x1),dot(p2,x2),dot(p3,x3)));}`;
+    const vertexShader = `uniform float uTime; uniform float uFreqLow; uniform float uFreqHigh; uniform float uTimeLow; uniform float uTimeHigh; uniform float uAmount; varying vec3 vNormal; varying vec3 vWorld; varying float vDisp; ${SNOISE} void main(){ vNormal = normalize(normalMatrix * normal); float n = snoise(position * uFreqLow + uTime * uTimeLow); float n2 = snoise(position * uFreqHigh + uTime * uTimeHigh) * 0.45; float disp = (n + n2) * uAmount; vDisp = disp; vec3 newPos = position + normal * disp; vec4 mv = modelViewMatrix * vec4(newPos, 1.0); vWorld = mv.xyz; gl_Position = projectionMatrix * mv; }`;
+    const fragmentShader = `precision highp float; uniform vec3 uKey; uniform vec3 uColorDeep; uniform vec3 uColorMid; uniform vec3 uColorPeak; uniform vec3 uColorRim; uniform vec3 uColorBg; varying vec3 vNormal; varying vec3 vWorld; varying float vDisp; void main(){ vec3 N = normalize(vNormal); vec3 L = normalize(uKey - vWorld); float diff = max(dot(N, L), 0.0); vec3 fillDir = normalize(vec3(-0.45, -0.55, 0.7)); float fill = max(dot(N, fillDir), 0.0); vec3 V = normalize(-vWorld); float fres = pow(1.0 - max(dot(N, V), 0.0), 2.6); vec3 base; if (vDisp < 0.0) { base = mix(uColorDeep, uColorMid, smoothstep(-0.18, 0.0, vDisp)); } else { base = mix(uColorMid, uColorPeak, smoothstep(0.0, 0.18, vDisp)); } vec3 col = base * (0.12 + 0.72 * diff) + uColorPeak * fill * 0.18 + uColorRim * fres * 0.95; float edge = smoothstep(0.0, 1.4, length(vWorld) * 0.15); col = mix(col, uColorBg, edge * 0.55); gl_FragColor = vec4(col, 1.0); }`;
+
+    const geom = new THREE.IcosahedronGeometry(MESH_RADIUS, MESH_SUBDIVISIONS);
+    const mat  = new THREE.ShaderMaterial({ uniforms, vertexShader, fragmentShader });
+    const mesh = new THREE.Mesh(geom, mat);
+    mesh.position.set(MESH_POSITION_X, MESH_POSITION_Y, 0);
+    scene.add(mesh);
+
+    const wire = new THREE.Mesh(
+      new THREE.IcosahedronGeometry(WIRE_RADIUS, WIRE_SUBDIVISIONS),
+      new THREE.MeshBasicMaterial({ color: 0x18DEFF, wireframe: true, transparent: true, opacity: WIRE_OPACITY, blending: THREE.AdditiveBlending, depthWrite: false }),
+    );
+    wire.position.set(MESH_POSITION_X, MESH_POSITION_Y, 0);
+    scene.add(wire);
+
+    const composer = new EffectComposer(renderer);
+    composer.addPass(new RenderPass(scene, camera));
+    composer.addPass(new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), BLOOM_STRENGTH, BLOOM_RADIUS, BLOOM_THRESHOLD));
+    const finishShader = {
+      uniforms: { tDiffuse: { value: null }, uTime: { value: 0 }, uVignetteAmount: { value: VIGNETTE_AMOUNT }, uGrainAmount: { value: GRAIN_AMOUNT } },
+      vertexShader: `varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);}`,
+      fragmentShader: `uniform sampler2D tDiffuse; uniform float uTime; uniform float uVignetteAmount; uniform float uGrainAmount; varying vec2 vUv; float hash(vec2 p){ return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453); } void main(){ vec3 col = texture2D(tDiffuse, vUv).rgb; float d = length(vUv - 0.5); float v = smoothstep(0.95, 0.18, d); col *= mix(1.0, v, uVignetteAmount); col += (hash(vUv * vec2(2048.0,2048.0) + uTime*17.0) - 0.5) * uGrainAmount; gl_FragColor = vec4(col,1.0); }`,
+    };
+    const finishPass = new ShaderPass(finishShader);
+    composer.addPass(finishPass);
+    composer.addPass(new OutputPass());
+
+    function resize(){ const w = window.innerWidth, h = window.innerHeight; renderer.setSize(w,h,false); composer.setSize(w,h); camera.aspect = w/h; camera.updateProjectionMatrix(); }
+    resize(); window.addEventListener('resize', resize);
+
+    let rafId = 0, running = true;
+    const start = performance.now();
+    const lookTarget = new THREE.Vector3(MESH_POSITION_X * 0.5, MESH_POSITION_Y * 0.5, 0);
+    const fpsEl = document.getElementById('fps');
+    const fpsVal = fpsEl.querySelector('[data-fps]');
+    if (new URLSearchParams(location.search).has('debug')) fpsEl.classList.add('show');
+    let lastFpsT = start, frames = 0;
+
+    function tick(now){
+      if (!running) return;
+      const t = (now - start) * 0.001;
+      mesh.rotation.y = t * MESH_ROTATION_Y_SPEED;
+      mesh.rotation.x = Math.sin(t * 0.10) * 0.08;
+      wire.rotation.y = -t * 0.02;
+      wire.rotation.x = Math.cos(t * 0.07) * 0.05;
+      uniforms.uTime.value = t;
+      const lw = (Math.PI * 2) / LIGHT_DRIFT_PERIOD;
+      uniforms.uKey.value.set(3.2 + Math.cos(t * lw) * 1.8, 1.8 + Math.sin(t * lw * 0.8) * 0.9, 3.0 + Math.sin(t * lw * 0.6) * 0.7);
+      const cw = (Math.PI * 2) / CAMERA_DRIFT_PERIOD;
+      camera.position.x = Math.sin(t * cw) * CAMERA_DRIFT_X;
+      camera.position.y = 0.2 + Math.cos(t * cw * 0.78) * CAMERA_DRIFT_Y;
+      camera.position.z = CAMERA_DISTANCE + Math.sin(t * cw * 0.5) * 0.20;
+      camera.lookAt(lookTarget);
+      finishPass.uniforms.uTime.value = t;
+      composer.render();
+      frames++;
+      if (now - lastFpsT > 500) { fpsVal.textContent = Math.round((frames * 1000) / (now - lastFpsT)); frames = 0; lastFpsT = now; }
+      rafId = requestAnimationFrame(tick);
+    }
+    rafId = requestAnimationFrame(tick);
+    document.addEventListener('visibilitychange', () => { if (document.hidden) { running = false; cancelAnimationFrame(rafId); } else if (!running) { running = true; lastFpsT = performance.now(); rafId = requestAnimationFrame(tick); } });
+  }
+</script>
+</body>
+</html>

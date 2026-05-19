@@ -1,0 +1,573 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Elchai — hero · E Enterprise Console</title>
+<meta name="description" content="Variant E — enterprise console layout. Refined editorial hero with a real-looking product card carrying the brand visualization." />
+
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+<script>
+  tailwind.config = {
+    darkMode: 'class',
+    theme: {
+      extend: {
+        colors: { "brand-sky": "#18DEFF", "brand-cerulean": "#52B8FF", "brand-lavender": "#B07CFF", ink: "#000000", paper: "#FFFFFF" },
+        fontFamily: { brand: ['Montserrat', 'system-ui', 'sans-serif'], display: ['Satoshi', 'Montserrat', 'system-ui', 'sans-serif'], body: ['Inter', 'system-ui', 'sans-serif'], mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'] },
+      },
+    },
+  };
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://api.fontshare.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap" rel="stylesheet">
+
+<script type="importmap">
+{ "imports": {
+  "three":         "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+}}
+</script>
+
+<style>
+  body { font-family: 'Inter', system-ui, sans-serif; background: #000; color: #fff; -webkit-font-smoothing: antialiased; }
+  body::before {
+    content:""; position: fixed; inset: 0; pointer-events: none; z-index: 60;
+    opacity: 0.025; mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.6'/></svg>");
+  }
+
+  /* Ambient page-level glow — refined, restrained */
+  .page-ambient {
+    position: fixed; inset: 0; pointer-events: none; z-index: -1;
+    background:
+      radial-gradient(50% 40% at 80% 12%, rgba(24,222,255,0.10) 0%, transparent 60%),
+      radial-gradient(50% 40% at 10% 92%, rgba(176,124,255,0.08) 0%, transparent 60%);
+  }
+
+  .grad-text { background: linear-gradient(135deg, #18DEFF 0%, #B07CFF 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+  /* Glass primitives */
+  .glass { background: rgba(255,255,255,0.025); border: 1px solid rgba(255,255,255,0.08); backdrop-filter: blur(20px) saturate(140%); -webkit-backdrop-filter: blur(20px) saturate(140%); }
+  .glass-edge { position: relative; }
+  .glass-edge::before { content:""; position: absolute; inset: 0; padding: 1px; border-radius: inherit; background: linear-gradient(180deg, rgba(255,255,255,0.20), rgba(255,255,255,0.02) 60%, rgba(255,255,255,0.08)); -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; }
+
+  /* Hairline divider used inside the console */
+  .hr-thin { height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.10), transparent); }
+  .hr-strong { height: 1px; background: rgba(255,255,255,0.08); }
+
+  /* Live-dot indicator */
+  .live-dot { position: relative; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #18DEFF; box-shadow: 0 0 8px #18DEFF; }
+  .live-dot::after { content:""; position: absolute; inset: -4px; border-radius: 50%; background: #18DEFF; opacity: 0.35; animation: ping 2.5s cubic-bezier(0.22, 1, 0.36, 1) infinite; }
+  @keyframes ping { 0% { transform: scale(1); opacity: 0.35; } 80% { transform: scale(2.0); opacity: 0; } 100% { opacity: 0; } }
+
+  /* Console card */
+  .console {
+    position: relative;
+    border-radius: 18px;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,0.025), rgba(255,255,255,0.005)),
+      rgba(8,8,12,0.66);
+    border: 1px solid rgba(255,255,255,0.08);
+    backdrop-filter: blur(28px) saturate(150%);
+    -webkit-backdrop-filter: blur(28px) saturate(150%);
+    box-shadow:
+      0 60px 120px -40px rgba(0,0,0,0.85),
+      0 30px 60px -20px rgba(24,222,255,0.20),
+      0 0 0 1px rgba(24,222,255,0.04) inset;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .console::before {
+    content:""; position: absolute; inset: 0; border-radius: inherit; padding: 1px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.22), rgba(255,255,255,0.02) 50%, rgba(255,255,255,0.08));
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude;
+    pointer-events: none; z-index: 1;
+  }
+
+  /* Faint corner glow on the console */
+  .console::after {
+    content:""; position: absolute; inset: 0;
+    background: radial-gradient(40% 30% at 100% 0%, rgba(24,222,255,0.16), transparent 60%);
+    pointer-events: none; z-index: 0;
+  }
+
+  .console__viz {
+    position: relative;
+    aspect-ratio: 16 / 11;
+    background:
+      radial-gradient(80% 60% at 50% 0%, rgba(24,222,255,0.06), transparent 60%),
+      #04060c;
+    overflow: hidden;
+  }
+  .console__viz canvas {
+    position: absolute; inset: 0; width: 100% !important; height: 100% !important;
+    z-index: 1;
+  }
+  .viz__corner {
+    position: absolute; left: 14px; top: 14px; z-index: 2;
+    font-family: 'Inter', monospace; font-size: 10px; letter-spacing: 0.12em; color: rgba(255,255,255,0.42);
+  }
+  .viz__corner b { color: rgba(255,255,255,0.85); font-weight: 600; letter-spacing: 0; font-family: 'Inter', sans-serif; font-size: 11px; }
+  .viz__metrics {
+    position: absolute; right: 14px; top: 14px; z-index: 2;
+    display: flex; gap: 16px;
+    font-family: 'Inter', monospace; font-size: 10px; color: rgba(255,255,255,0.42); letter-spacing: 0.04em;
+  }
+  .viz__metrics b { color: rgba(24,222,255,0.95); font-weight: 600; letter-spacing: 0; font-family: 'Inter', sans-serif; }
+  .viz__crosshair { position: absolute; inset: 0; pointer-events: none; z-index: 2; }
+  .viz__crosshair::before, .viz__crosshair::after {
+    content:""; position: absolute; background: rgba(255,255,255,0.08);
+  }
+  .viz__crosshair::before { left: 50%; top: 32px; bottom: 32px; width: 1px; }
+  .viz__crosshair::after { top: 50%; left: 32px; right: 32px; height: 1px; }
+  .viz__corner-marks { position: absolute; inset: 14px; pointer-events: none; z-index: 2; }
+  .viz__corner-marks::before, .viz__corner-marks::after,
+  .viz__corner-marks > span:first-child::before, .viz__corner-marks > span:first-child::after {
+    content:""; position: absolute; width: 10px; height: 10px;
+    border: 1px solid rgba(255,255,255,0.20);
+  }
+  .viz__corner-marks::before { top: 0; left: 0; border-right: 0; border-bottom: 0; }
+  .viz__corner-marks::after { top: 0; right: 0; border-left: 0; border-bottom: 0; }
+  .viz__corner-marks > span:first-child::before { bottom: 0; left: 0; border-right: 0; border-top: 0; }
+  .viz__corner-marks > span:first-child::after { bottom: 0; right: 0; border-left: 0; border-top: 0; }
+
+  /* Tag chip */
+  .chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    height: 22px; padding: 0 8px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 5px;
+    font-family: 'Inter', monospace;
+    font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: rgba(255,255,255,0.55);
+  }
+  .chip--accent { color: var(--brand-sky, #18DEFF); border-color: rgba(24,222,255,0.32); background: rgba(24,222,255,0.05); }
+
+  #fps { display: none; position: fixed; bottom: 16px; right: 16px; z-index: 70; font-family: 'Inter', monospace; font-size: 11px; letter-spacing: 0.05em; padding: 6px 10px; border-radius: 999px; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.12); backdrop-filter: blur(8px); color: rgba(255,255,255,0.7); }
+  #fps.show { display: inline-flex; align-items: center; gap: 8px; }
+  #fps::before { content:""; width: 6px; height: 6px; border-radius: 50%; background: #18DEFF; box-shadow: 0 0 8px #18DEFF; }
+  .variant-tag { position: fixed; top: 16px; left: 16px; z-index: 70; font-family: 'Inter', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; padding: 6px 12px; border-radius: 999px; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.12); backdrop-filter: blur(8px); color: rgba(255,255,255,0.55); }
+
+  [data-fm="fade-up"] { opacity: 0; transform: translateY(20px); animation: fadeUp .8s cubic-bezier(0.22, 1, 0.36, 1) forwards; animation-delay: var(--fm-delay, 0ms); }
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+  /* Trust strip */
+  .marquee-mask { -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+  .marquee { display: flex; gap: 56px; animation: scroll-x 60s linear infinite; width: max-content; align-items: center; }
+  @keyframes scroll-x { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  .marquee__logo { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 14px; letter-spacing: 0.08em; color: rgba(255,255,255,0.32); white-space: nowrap; transition: color .25s; }
+  .marquee__logo:hover { color: rgba(24,222,255,0.85); }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    #three-canvas { display: none; }
+  }
+</style>
+</head>
+
+<body class="bg-ink text-white overflow-x-hidden">
+
+<div class="page-ambient"></div>
+
+<div class="variant-tag">Variant · E · Enterprise Console</div>
+
+<!-- ============================== NAV ============================== -->
+<nav class="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-[1320px] glass glass-edge rounded-full pl-6 pr-2 py-2 flex items-center justify-between gap-6" aria-label="Primary">
+  <a href="#" class="flex items-center gap-2.5 font-brand font-bold text-[14px] tracking-wider">
+    <span aria-hidden="true" class="h-7 w-7 rounded-[8px] grid place-items-center text-ink font-display font-black text-[16px]" style="background: linear-gradient(135deg,#18DEFF,#B07CFF);">E</span>
+    <span>ELCHAI</span>
+  </a>
+  <ul class="hidden lg:flex items-center gap-1 list-none m-0 p-0">
+    <li><button class="h-9 px-4 rounded-full text-[13px] text-white/60 hover:text-white hover:bg-white/5 font-brand inline-flex items-center gap-1.5 transition">Blockchain</button></li>
+    <li><button class="h-9 px-4 rounded-full text-[13px] text-white/60 hover:text-white hover:bg-white/5 font-brand inline-flex items-center gap-1.5 transition">Cryptocurrency</button></li>
+    <li><button class="h-9 px-4 rounded-full text-[13px] text-white/60 hover:text-white hover:bg-white/5 font-brand inline-flex items-center gap-1.5 transition">Artificial Intelligence</button></li>
+    <li><a href="#" class="h-9 px-4 rounded-full text-[13px] text-white/60 hover:text-white hover:bg-white/5 font-brand inline-flex items-center transition">App Development</a></li>
+    <li><a href="#" class="h-9 px-4 rounded-full text-[13px] text-white/60 hover:text-white hover:bg-white/5 font-brand inline-flex items-center transition">About Us</a></li>
+    <li><a href="#" class="h-9 px-4 rounded-full text-[13px] text-white/60 hover:text-white hover:bg-white/5 font-brand inline-flex items-center gap-1.5 transition">Resources</a></li>
+  </ul>
+  <div class="flex items-center gap-2">
+    <div class="hidden md:inline-flex items-center gap-2 h-9 px-3 rounded-full font-brand text-[11px] text-white/55 border border-white/10 bg-white/[0.02]" aria-label="Time in Dubai headquarters">
+      <span class="live-dot"></span>
+      <span>Dubai · <span id="hq-clock">--:--</span> GMT+4</span>
+    </div>
+    <a href="#" class="inline-flex items-center gap-2.5 h-9 px-4 rounded-full bg-white text-ink font-brand font-medium text-[12px] hover:-translate-y-0.5 transition-transform">Book a call <svg viewBox="0 0 16 16" width="14" height="14" fill="none"><path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" stroke-width="1.6"/></svg></a>
+  </div>
+</nav>
+
+<!-- ============================== HERO ============================== -->
+<section class="relative min-h-[100vh] pt-32 lg:pt-36 pb-24 overflow-hidden">
+
+  <div class="relative mx-auto max-w-[1320px] px-6 sm:px-10 lg:px-16">
+
+    <!-- Hero crumb / context bar -->
+    <div data-fm="fade-up" style="--fm-delay:40ms" class="flex items-center gap-3 mb-8 text-[11px] font-mono tracking-[0.12em] uppercase text-white/40">
+      <span class="chip chip--accent"><span class="live-dot"></span> Live</span>
+      <span>v.04 · 2026 release</span>
+      <span class="hidden sm:inline">·</span>
+      <span class="hidden sm:inline">Operating across 7 jurisdictions</span>
+    </div>
+
+    <div class="grid lg:grid-cols-12 gap-10 lg:gap-14 items-start">
+
+      <!-- ========== LEFT — editorial copy ========== -->
+      <div class="lg:col-span-7 max-w-[640px]">
+
+        <h1 data-fm="fade-up" style="--fm-delay:140ms"
+            class="font-display font-bold leading-[1.02] tracking-[-0.022em] text-[clamp(34px,4.6vw,60px)]">
+          Driving Digital Transformation with
+          <span class="grad-text">AI &amp; Blockchain</span> Products
+        </h1>
+
+        <p data-fm="fade-up" style="--fm-delay:240ms"
+           class="mt-6 text-[16px] leading-[1.6] text-white/65 max-w-[520px]">
+          Our product suite enables businesses to innovate, optimise and scale using secure AI and blockchain technologies.
+        </p>
+
+        <!-- Tight three-row capability list — left rail dot, no card padding -->
+        <ul data-fm="fade-up" style="--fm-delay:320ms" class="mt-8 grid gap-2.5 list-none p-0 border-l border-white/10 pl-5">
+          <li class="text-[14px] leading-[1.5] text-white/82">
+            <span class="text-brand-sky font-mono text-[10px] tracking-[0.16em] mr-2 align-middle">01</span>
+            Custom‑built AI applications tailored to your business needs.
+          </li>
+          <li class="text-[14px] leading-[1.5] text-white/82">
+            <span class="text-brand-sky font-mono text-[10px] tracking-[0.16em] mr-2 align-middle">02</span>
+            Intelligent products that learn, adapt and automate workflows.
+          </li>
+          <li class="text-[14px] leading-[1.5] text-white/82">
+            <span class="text-brand-sky font-mono text-[10px] tracking-[0.16em] mr-2 align-middle">03</span>
+            Secure blockchain products that protect data and transactions.
+          </li>
+        </ul>
+
+        <!-- CTAs -->
+        <div data-fm="fade-up" style="--fm-delay:400ms" class="mt-10 flex flex-wrap items-center gap-3">
+          <a href="#" class="group inline-flex items-center gap-2.5 h-[48px] px-6 rounded-full bg-white text-ink font-brand font-medium text-[13px] tracking-[0.02em] hover:-translate-y-0.5 transition-transform"
+             style="box-shadow: 0 20px 50px -20px rgba(24,222,255,0.45);">
+            Explore Our Product Suite
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" class="transition-transform group-hover:translate-x-1"><path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" stroke-width="1.6"/></svg>
+          </a>
+          <a href="#" class="inline-flex items-center gap-2.5 h-[48px] px-6 rounded-full glass glass-edge text-white/85 font-brand font-medium text-[13px] hover:text-brand-sky transition-colors">
+            Book Free Consultation
+          </a>
+        </div>
+
+        <!-- Inline meta — restrained, like a press strap -->
+        <div data-fm="fade-up" style="--fm-delay:480ms" class="mt-8 flex items-center gap-x-5 gap-y-2 flex-wrap text-[11px] font-mono uppercase tracking-[0.14em] text-white/40">
+          <span>Trusted by</span>
+          <span class="text-white/75">2,600+ ventures</span>
+          <span class="text-white/20">·</span>
+          <span class="text-white/75">50+ Fortune 100</span>
+          <span class="text-white/20">·</span>
+          <span class="text-white/75">11+ years</span>
+          <span class="text-white/20">·</span>
+          <span class="text-white/75">8 govt programs</span>
+        </div>
+      </div>
+
+      <!-- ========== RIGHT — console card with embedded viz ========== -->
+      <aside data-fm="fade-up" style="--fm-delay:300ms" class="lg:col-span-5">
+
+        <div class="console rounded-[18px]">
+
+          <!-- Console header bar -->
+          <div class="flex items-center justify-between px-4 py-3 relative z-[2]">
+            <div class="flex items-center gap-2.5">
+              <div class="flex gap-1.5">
+                <span class="w-[10px] h-[10px] rounded-full bg-white/10"></span>
+                <span class="w-[10px] h-[10px] rounded-full bg-white/10"></span>
+                <span class="w-[10px] h-[10px] rounded-full bg-white/10"></span>
+              </div>
+              <span class="font-mono text-[10px] tracking-[0.14em] text-white/45 uppercase">elchai · production</span>
+            </div>
+            <div class="flex items-center gap-2 font-mono text-[10px] text-white/50">
+              <span class="live-dot"></span>
+              <span class="tabular-nums"><span id="console-clock">--:--:--</span></span>
+            </div>
+          </div>
+
+          <div class="hr-strong"></div>
+
+          <!-- The 3D viz panel — keeps the displaced sphere with all post-processing,
+               just contained inside this card with telemetry overlay frames. -->
+          <div class="console__viz">
+            <canvas id="three-canvas" aria-hidden="true"></canvas>
+            <div class="viz__crosshair"></div>
+            <div class="viz__corner-marks"><span></span></div>
+            <div class="viz__corner">
+              <div><b>Neural Substrate</b></div>
+              <div style="margin-top: 2px;">refractive index 1.45 · 96 vert/u²</div>
+            </div>
+            <div class="viz__metrics">
+              <div>FIELD <b id="viz-field">+0.22</b></div>
+              <div>FREQ <b>1.55</b></div>
+              <div>ENV <b>HDR-4096</b></div>
+            </div>
+          </div>
+
+          <div class="hr-strong"></div>
+
+          <!-- KPI tiles — REAL numbers from content.ts -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-px bg-white/[0.06]">
+            <div class="px-5 py-4 bg-[#080a10]">
+              <div class="font-mono text-[9px] tracking-[0.18em] uppercase text-white/40 mb-1.5">Ventures</div>
+              <div class="font-display font-bold text-[22px] leading-none">2,600<span class="text-brand-sky">+</span></div>
+            </div>
+            <div class="px-5 py-4 bg-[#080a10]">
+              <div class="font-mono text-[9px] tracking-[0.18em] uppercase text-white/40 mb-1.5">Fortune 100</div>
+              <div class="font-display font-bold text-[22px] leading-none">50<span class="text-brand-sky">+</span></div>
+            </div>
+            <div class="px-5 py-4 bg-[#080a10]">
+              <div class="font-mono text-[9px] tracking-[0.18em] uppercase text-white/40 mb-1.5">Years</div>
+              <div class="font-display font-bold text-[22px] leading-none">11<span class="text-brand-sky">+</span></div>
+            </div>
+            <div class="px-5 py-4 bg-[#080a10]">
+              <div class="font-mono text-[9px] tracking-[0.18em] uppercase text-white/40 mb-1.5">AI Solutions</div>
+              <div class="font-display font-bold text-[22px] leading-none">25<span class="text-brand-sky">+</span></div>
+            </div>
+          </div>
+
+          <div class="hr-strong"></div>
+
+          <!-- Console footer -->
+          <div class="flex items-center justify-between px-4 py-3 font-mono text-[11px] text-white/45">
+            <span class="flex items-center gap-2">
+              <span class="w-[6px] h-[6px] rounded-full bg-[#52B8FF] shadow-[0_0_6px_#52B8FF]"></span>
+              Last sync · 2m ago
+            </span>
+            <a href="#" class="inline-flex items-center gap-1.5 text-brand-sky/85 hover:text-brand-sky transition-colors">
+              View activity
+              <svg width="10" height="10" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" stroke-width="1.6"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Below-console support strip — keeps the card from floating alone -->
+        <div class="mt-4 flex items-center justify-between text-[11px] font-mono text-white/35">
+          <span>HQ · Dubai · UAE</span>
+          <span class="flex items-center gap-1.5">
+            <span class="w-[5px] h-[5px] rounded-full bg-emerald-400 shadow-[0_0_6px_rgb(52,211,153,0.6)]"></span>
+            All systems operational
+          </span>
+        </div>
+      </aside>
+    </div>
+
+    <!-- Trust marquee — thin, restrained -->
+    <div data-fm="fade-up" style="--fm-delay:600ms" class="mt-16 pt-10 border-t border-white/[0.06]">
+      <div class="flex items-center gap-6 mb-5">
+        <span class="font-mono text-[10px] tracking-[0.22em] uppercase text-white/35 shrink-0">Trusted partners</span>
+        <span class="h-px flex-1 bg-white/[0.06]"></span>
+      </div>
+      <div class="marquee-mask overflow-hidden">
+        <div class="marquee">
+          <span class="marquee__logo">SOBHA Realty</span>
+          <span class="marquee__logo">NAFFCO</span>
+          <span class="marquee__logo">ISUZU</span>
+          <span class="marquee__logo">FedEx</span>
+          <span class="marquee__logo">REDTAG</span>
+          <span class="marquee__logo">AW Rostamani</span>
+          <span class="marquee__logo">du Pay</span>
+          <span class="marquee__logo">Zajel</span>
+          <span class="marquee__logo">Emirates Facilities</span>
+          <span class="marquee__logo">Family Care Authority</span>
+          <span class="marquee__logo">INGENI Health</span>
+          <span class="marquee__logo">Grintafy</span>
+          <!-- duplicate for seamless loop -->
+          <span class="marquee__logo">SOBHA Realty</span>
+          <span class="marquee__logo">NAFFCO</span>
+          <span class="marquee__logo">ISUZU</span>
+          <span class="marquee__logo">FedEx</span>
+          <span class="marquee__logo">REDTAG</span>
+          <span class="marquee__logo">AW Rostamani</span>
+          <span class="marquee__logo">du Pay</span>
+          <span class="marquee__logo">Zajel</span>
+          <span class="marquee__logo">Emirates Facilities</span>
+          <span class="marquee__logo">Family Care Authority</span>
+          <span class="marquee__logo">INGENI Health</span>
+          <span class="marquee__logo">Grintafy</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="fps"><span data-fps>—</span> fps</div>
+
+<!-- ====================================================================
+     three.js — same displaced-sphere craft, rendered into a contained
+     canvas inside the console card.  All post-processing preserved
+     (bloom, vignette, grain).  Camera, lights, shader: identical to
+     the baseline.  Only the render target dimensions change.
+     ==================================================================== -->
+<script>
+  // Live clocks (HQ + console).  Both show Dubai (GMT+4) time.
+  function updateClocks() {
+    const now = new Date();
+    const utc = now.getTime() + now.getTimezoneOffset() * 60000;
+    const dubai = new Date(utc + 4 * 3600000);
+    const hh = String(dubai.getHours()).padStart(2, '0');
+    const mm = String(dubai.getMinutes()).padStart(2, '0');
+    const ss = String(dubai.getSeconds()).padStart(2, '0');
+    const navEl = document.getElementById('hq-clock');
+    const conEl = document.getElementById('console-clock');
+    if (navEl) navEl.textContent = `${hh}:${mm}`;
+    if (conEl) conEl.textContent = `${hh}:${mm}:${ss}`;
+  }
+  updateClocks();
+  setInterval(updateClocks, 1000);
+</script>
+
+<script type="module">
+  const MESH_RADIUS              = 1.55;     // smaller — fits the contained canvas
+  const MESH_SUBDIVISIONS        = 96;
+  const WIRE_RADIUS              = 1.68;
+  const WIRE_SUBDIVISIONS        = 16;
+  const WIRE_OPACITY             = 0.08;
+  const DISPLACEMENT_AMOUNT      = 0.20;
+  const DISPLACEMENT_FREQ_LOW    = 1.55;
+  const DISPLACEMENT_FREQ_HIGH   = 3.40;
+  const TIME_SCALE_LOW           = 0.16;
+  const TIME_SCALE_HIGH          = 0.07;
+  const CAMERA_FOV               = 42;
+  const CAMERA_DISTANCE          = 4.4;
+  const CAMERA_DRIFT_PERIOD      = 50;
+  const CAMERA_DRIFT_X           = 0.30;
+  const CAMERA_DRIFT_Y           = 0.14;
+  const MESH_ROTATION_Y_SPEED    = 0.045;
+  const LIGHT_DRIFT_PERIOD       = 30;
+  const BLOOM_STRENGTH           = 0.55;
+  const BLOOM_RADIUS             = 0.50;
+  const BLOOM_THRESHOLD          = 0.72;
+  const VIGNETTE_AMOUNT          = 0.45;
+  const GRAIN_AMOUNT             = 0.035;
+  const MAX_PIXEL_RATIO          = 1.5;
+
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce) {
+    document.getElementById('three-canvas').style.background = 'radial-gradient(60% 60% at 50% 40%, rgba(24,222,255,0.18), transparent 65%), radial-gradient(60% 60% at 80% 80%, rgba(176,124,255,0.12), transparent 65%), #06080e';
+  } else {
+    const THREE               = await import('three');
+    const { EffectComposer }  = await import('three/addons/postprocessing/EffectComposer.js');
+    const { RenderPass }      = await import('three/addons/postprocessing/RenderPass.js');
+    const { UnrealBloomPass } = await import('three/addons/postprocessing/UnrealBloomPass.js');
+    const { ShaderPass }      = await import('three/addons/postprocessing/ShaderPass.js');
+    const { OutputPass }      = await import('three/addons/postprocessing/OutputPass.js');
+
+    const canvas = document.getElementById('three-canvas');
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, MAX_PIXEL_RATIO));
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.05;
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(CAMERA_FOV, 1, 0.1, 100);
+    camera.position.set(0, 0, CAMERA_DISTANCE);
+
+    const uniforms = {
+      uTime:      { value: 0 },
+      uKey:       { value: new THREE.Vector3(3.2, 1.8, 3.0) },
+      uColorDeep: { value: new THREE.Color('#020512') },
+      uColorMid:  { value: new THREE.Color('#1B6FA8') },
+      uColorPeak: { value: new THREE.Color('#18DEFF') },
+      uColorRim:  { value: new THREE.Color('#B07CFF') },
+      uColorBg:   { value: new THREE.Color('#04060c') },   // match panel bg for clean edge fade
+      uFreqLow:   { value: DISPLACEMENT_FREQ_LOW  },
+      uFreqHigh:  { value: DISPLACEMENT_FREQ_HIGH },
+      uTimeLow:   { value: TIME_SCALE_LOW  },
+      uTimeHigh:  { value: TIME_SCALE_HIGH },
+      uAmount:    { value: DISPLACEMENT_AMOUNT },
+    };
+
+    const SNOISE = `vec3 mod289(vec3 x){return x-floor(x*(1.0/289.0))*289.0;} vec4 mod289(vec4 x){return x-floor(x*(1.0/289.0))*289.0;} vec4 permute(vec4 x){return mod289(((x*34.0)+1.0)*x);} vec4 taylorInvSqrt(vec4 r){return 1.79284291400159-0.85373472095314*r;} float snoise(vec3 v){const vec2 C=vec2(1.0/6.0,1.0/3.0);const vec4 D=vec4(0.0,0.5,1.0,2.0); vec3 i=floor(v+dot(v,C.yyy)); vec3 x0=v-i+dot(i,C.xxx); vec3 g=step(x0.yzx,x0.xyz); vec3 l=1.0-g; vec3 i1=min(g.xyz,l.zxy); vec3 i2=max(g.xyz,l.zxy); vec3 x1=x0-i1+C.xxx; vec3 x2=x0-i2+C.yyy; vec3 x3=x0-D.yyy; i=mod289(i); vec4 p=permute(permute(permute(i.z+vec4(0.0,i1.z,i2.z,1.0))+i.y+vec4(0.0,i1.y,i2.y,1.0))+i.x+vec4(0.0,i1.x,i2.x,1.0)); float n_=0.142857142857; vec3 ns=n_*D.wyz-D.xzx; vec4 j=p-49.0*floor(p*ns.z*ns.z); vec4 x_=floor(j*ns.z); vec4 y_=floor(j-7.0*x_); vec4 x=x_*ns.x+ns.yyyy; vec4 y=y_*ns.x+ns.yyyy; vec4 h=1.0-abs(x)-abs(y); vec4 b0=vec4(x.xy,y.xy); vec4 b1=vec4(x.zw,y.zw); vec4 s0=floor(b0)*2.0+1.0; vec4 s1=floor(b1)*2.0+1.0; vec4 sh=-step(h,vec4(0.0)); vec4 a0=b0.xzyw+s0.xzyw*sh.xxyy; vec4 a1=b1.xzyw+s1.xzyw*sh.zzww; vec3 p0=vec3(a0.xy,h.x); vec3 p1=vec3(a0.zw,h.y); vec3 p2=vec3(a1.xy,h.z); vec3 p3=vec3(a1.zw,h.w); vec4 norm=taylorInvSqrt(vec4(dot(p0,p0),dot(p1,p1),dot(p2,p2),dot(p3,p3))); p0*=norm.x;p1*=norm.y;p2*=norm.z;p3*=norm.w; vec4 m=max(0.6-vec4(dot(x0,x0),dot(x1,x1),dot(x2,x2),dot(x3,x3)),0.0); m=m*m; return 42.0*dot(m*m,vec4(dot(p0,x0),dot(p1,x1),dot(p2,x2),dot(p3,x3)));}`;
+
+    const vertexShader = `uniform float uTime; uniform float uFreqLow; uniform float uFreqHigh; uniform float uTimeLow; uniform float uTimeHigh; uniform float uAmount; varying vec3 vNormal; varying vec3 vWorld; varying float vDisp; ${SNOISE} void main(){ vNormal = normalize(normalMatrix * normal); float n = snoise(position * uFreqLow + uTime * uTimeLow); float n2 = snoise(position * uFreqHigh + uTime * uTimeHigh) * 0.45; float disp = (n + n2) * uAmount; vDisp = disp; vec3 newPos = position + normal * disp; vec4 mv = modelViewMatrix * vec4(newPos, 1.0); vWorld = mv.xyz; gl_Position = projectionMatrix * mv; }`;
+    const fragmentShader = `precision highp float; uniform vec3 uKey; uniform vec3 uColorDeep; uniform vec3 uColorMid; uniform vec3 uColorPeak; uniform vec3 uColorRim; uniform vec3 uColorBg; varying vec3 vNormal; varying vec3 vWorld; varying float vDisp; void main(){ vec3 N = normalize(vNormal); vec3 L = normalize(uKey - vWorld); float diff = max(dot(N, L), 0.0); vec3 fillDir = normalize(vec3(-0.45, -0.55, 0.7)); float fill = max(dot(N, fillDir), 0.0); vec3 V = normalize(-vWorld); float fres = pow(1.0 - max(dot(N, V), 0.0), 2.6); vec3 base; if (vDisp < 0.0) { base = mix(uColorDeep, uColorMid, smoothstep(-0.18, 0.0, vDisp)); } else { base = mix(uColorMid, uColorPeak, smoothstep(0.0, 0.18, vDisp)); } vec3 col = base * (0.12 + 0.72 * diff) + uColorPeak * fill * 0.18 + uColorRim * fres * 0.95; float edge = smoothstep(0.0, 1.4, length(vWorld) * 0.17); col = mix(col, uColorBg, edge * 0.55); gl_FragColor = vec4(col, 1.0); }`;
+
+    const geom = new THREE.IcosahedronGeometry(MESH_RADIUS, MESH_SUBDIVISIONS);
+    const mat  = new THREE.ShaderMaterial({ uniforms, vertexShader, fragmentShader });
+    const mesh = new THREE.Mesh(geom, mat);
+    scene.add(mesh);
+
+    const wire = new THREE.Mesh(
+      new THREE.IcosahedronGeometry(WIRE_RADIUS, WIRE_SUBDIVISIONS),
+      new THREE.MeshBasicMaterial({ color: 0x18DEFF, wireframe: true, transparent: true, opacity: WIRE_OPACITY, blending: THREE.AdditiveBlending, depthWrite: false }),
+    );
+    scene.add(wire);
+
+    const composer = new EffectComposer(renderer);
+    composer.addPass(new RenderPass(scene, camera));
+    composer.addPass(new UnrealBloomPass(new THREE.Vector2(800, 600), BLOOM_STRENGTH, BLOOM_RADIUS, BLOOM_THRESHOLD));
+    const finishShader = {
+      uniforms: { tDiffuse: { value: null }, uTime: { value: 0 }, uVignetteAmount: { value: VIGNETTE_AMOUNT }, uGrainAmount: { value: GRAIN_AMOUNT } },
+      vertexShader: `varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);}`,
+      fragmentShader: `uniform sampler2D tDiffuse; uniform float uTime; uniform float uVignetteAmount; uniform float uGrainAmount; varying vec2 vUv; float hash(vec2 p){ return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453); } void main(){ vec3 col = texture2D(tDiffuse, vUv).rgb; float d = length(vUv - 0.5); float v = smoothstep(0.95, 0.20, d); col *= mix(1.0, v, uVignetteAmount); col += (hash(vUv * vec2(2048.0,2048.0) + uTime*17.0) - 0.5) * uGrainAmount; gl_FragColor = vec4(col,1.0); }`,
+    };
+    const finishPass = new ShaderPass(finishShader);
+    composer.addPass(finishPass);
+    composer.addPass(new OutputPass());
+
+    // Resize to the canvas's PARENT box, not the window.
+    // The canvas is contained inside the console card.
+    const parent = canvas.parentElement;
+    function resize(){
+      const r = parent.getBoundingClientRect();
+      const w = Math.max(1, Math.round(r.width));
+      const h = Math.max(1, Math.round(r.height));
+      renderer.setSize(w, h, false);
+      composer.setSize(w, h);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+    }
+    resize();
+    const ro = new ResizeObserver(resize); ro.observe(parent);
+    window.addEventListener('resize', resize);
+
+    // Animate
+    let rafId = 0, running = true;
+    const start = performance.now();
+    const fpsEl = document.getElementById('fps');
+    const fpsVal = fpsEl.querySelector('[data-fps]');
+    if (new URLSearchParams(location.search).has('debug')) fpsEl.classList.add('show');
+    let lastFpsT = start, frames = 0;
+    const fieldEl = document.getElementById('viz-field');
+
+    function tick(now){
+      if (!running) return;
+      const t = (now - start) * 0.001;
+      mesh.rotation.y = t * MESH_ROTATION_Y_SPEED;
+      mesh.rotation.x = Math.sin(t * 0.10) * 0.10;
+      wire.rotation.y = -t * 0.02;
+      wire.rotation.x = Math.cos(t * 0.07) * 0.06;
+      uniforms.uTime.value = t;
+      const lw = (Math.PI * 2) / LIGHT_DRIFT_PERIOD;
+      uniforms.uKey.value.set(3.2 + Math.cos(t * lw) * 1.8, 1.8 + Math.sin(t * lw * 0.8) * 0.9, 3.0 + Math.sin(t * lw * 0.6) * 0.7);
+      const cw = (Math.PI * 2) / CAMERA_DRIFT_PERIOD;
+      camera.position.x = Math.sin(t * cw) * CAMERA_DRIFT_X;
+      camera.position.y = Math.cos(t * cw * 0.78) * CAMERA_DRIFT_Y;
+      camera.position.z = CAMERA_DISTANCE + Math.sin(t * cw * 0.5) * 0.15;
+      camera.lookAt(0, 0, 0);
+      finishPass.uniforms.uTime.value = t;
+      composer.render();
+
+      // Update on-screen telemetry — synced to the same noise scale,
+      // not random ticking, so it reads as honest readout rather than noise.
+      if (fieldEl) fieldEl.textContent = '+' + (DISPLACEMENT_AMOUNT + Math.sin(t * 0.3) * 0.04).toFixed(3);
+
+      frames++;
+      if (now - lastFpsT > 500) { fpsVal.textContent = Math.round((frames * 1000) / (now - lastFpsT)); frames = 0; lastFpsT = now; }
+      rafId = requestAnimationFrame(tick);
+    }
+    rafId = requestAnimationFrame(tick);
+    document.addEventListener('visibilitychange', () => { if (document.hidden) { running = false; cancelAnimationFrame(rafId); } else if (!running) { running = true; lastFpsT = performance.now(); rafId = requestAnimationFrame(tick); } });
+  }
+</script>
+</body>
+</html>

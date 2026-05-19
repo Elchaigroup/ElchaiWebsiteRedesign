@@ -1,0 +1,19 @@
+<svg width="41" height="41" viewBox="0 0 41 41" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x=".5" y=".5" width="40" height="40" rx="5" fill="url(#eetgjlovga)" stroke="url(#et4fmjfpub)"/>
+    <g clip-path="url(#n4p5422smc)">
+        <path d="M21.052 14h7.155c1.212 0 2.195.986 2.195 2.197V23.9h-7.7v2.2h5.505c1.212 0 2.195.977 2.195 2.2v2.2h-19.8v-2.2c0-1.215.982-2.2 2.194-2.2h5.506v-2.2h-7.7v-7.703c0-1.213.982-2.197 2.194-2.197h7.156v-2.293a1.65 1.65 0 1 1 1.1 0V14zm-4.4 6.6a1.65 1.65 0 1 0 0-3.3 1.65 1.65 0 0 0 0 3.3zm7.7 0a1.65 1.65 0 1 0 0-3.3 1.65 1.65 0 0 0 0 3.3z" fill="#fff"/>
+    </g>
+    <defs>
+        <linearGradient id="eetgjlovga" x1=".5" y1="20.5" x2="40.5" y2="20.5" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#52B8FF"/>
+            <stop offset="1" stop-color="#B07CFF"/>
+        </linearGradient>
+        <linearGradient id="et4fmjfpub" x1=".5" y1="20.5" x2="40.5" y2="20.5" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#52B8FF"/>
+            <stop offset="1" stop-color="#B07CFF"/>
+        </linearGradient>
+        <clipPath id="n4p5422smc">
+            <path fill="#fff" transform="translate(9.5 8.5)" d="M0 0h22v22H0z"/>
+        </clipPath>
+    </defs>
+</svg>

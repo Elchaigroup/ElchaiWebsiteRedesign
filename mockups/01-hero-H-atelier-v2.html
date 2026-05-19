@@ -1,0 +1,524 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Elchai — hero · H Atelier v2</title>
+<meta name="description" content="Variant H — proper Arkitek-style hero. Two-column editorial composition, Geist typography, monochrome with brand-cyan accent." />
+
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+<script>
+  tailwind.config = {
+    darkMode: 'class',
+    theme: {
+      extend: {
+        colors: {
+          "brand-sky": "#18DEFF", "brand-cerulean": "#52B8FF", "brand-lavender": "#B07CFF",
+          ink: "#000000",
+          g05: "#0c0c0c", g10: "#121212", g15: "#1b1b1b", g20: "#262626",
+          g30: "#333333", g40: "#454545", g50: "#6e6e6e", g60: "#9c9c9c",
+          g70: "#cecece", g80: "#e7e7e7",
+        },
+        fontFamily: {
+          // Geist is Arkitek's primary; we load it directly from Google Fonts.
+          display: ['Geist', 'Satoshi', 'system-ui', 'sans-serif'],
+          body:    ['Geist', 'Inter', 'system-ui', 'sans-serif'],
+          brand:   ['Montserrat', 'system-ui', 'sans-serif'],
+          mono:    ['Geist Mono', 'JetBrains Mono', 'ui-monospace', 'monospace'],
+        },
+      },
+    },
+  };
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://api.fontshare.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@200;300;400;500;600;700;900&family=Geist+Mono:wght@300;400;500&family=Inter:wght@300;400;500&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap" rel="stylesheet">
+
+<script type="importmap">
+{ "imports": {
+  "three":         "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+}}
+</script>
+
+<style>
+  html, body { background: #000; color: #fff; }
+  body { font-family: 'Geist', 'Inter', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+
+  /* fine grain */
+  body::before {
+    content:""; position: fixed; inset: 0; pointer-events: none; z-index: 60;
+    opacity: 0.022; mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/></svg>");
+  }
+
+  /* ============================== TYPOGRAPHY ============================== */
+
+  /* Headline — Geist 500, large, left-aligned, title case.  This is the
+     ACTUAL Arkitek weight & style (semi-bold, not feather-light).
+     Sized to fit ~2 lines on desktop so the lower row (Services + card)
+     stays inside the viewport. */
+  .display {
+    font-family: 'Geist', 'Satoshi', sans-serif;
+    font-weight: 500;
+    font-size: clamp(40px, 5.6vw, 88px);
+    line-height: 1.04;
+    letter-spacing: -0.025em;
+    color: #fff;
+  }
+
+  /* Body paragraph with the "fade tail" treatment — first part bright,
+     second part dims to gray to create hierarchy in a single paragraph
+     (Arkitek's "Solutions that drive conversion" treatment). */
+  .lead {
+    font-family: 'Geist', 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: clamp(17px, 1.4vw, 22px);
+    line-height: 1.35;
+    letter-spacing: -0.015em;
+    color: #fff;
+  }
+  .lead .dim {
+    color: rgba(255,255,255,0.32);
+  }
+
+  /* Mono label */
+  .mono-label {
+    font-family: 'Geist Mono', monospace;
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.50);
+  }
+
+  /* ============================== PRIMITIVES ============================== */
+
+  /* CTA pill — black with small brand-cyan dot indicator (the Arkitek
+     red-dot pattern, scaled).  Dot sits INSIDE the pill as a notification
+     marker, not as a half-cap. */
+  .cta-pill {
+    display: inline-flex; align-items: center; gap: 12px;
+    padding: 0 24px 0 18px;
+    height: 52px;
+    border-radius: 999px;
+    background: #0c0c0c;
+    border: 1px solid rgba(255,255,255,0.10);
+    font-family: 'Geist', sans-serif; font-weight: 500; font-size: 14px;
+    letter-spacing: -0.01em; color: #fff;
+    transition: border-color .25s, background .25s;
+  }
+  .cta-pill:hover { border-color: rgba(255,255,255,0.32); background: #141414; }
+  .cta-pill .indicator {
+    position: relative;
+    width: 14px; height: 14px; border-radius: 50%;
+    background: #18DEFF;
+    box-shadow: 0 0 12px rgba(24,222,255,0.55);
+    flex-shrink: 0;
+  }
+  .cta-pill .indicator::after {
+    content:""; position: absolute; inset: -3px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(24,222,255,0.45), transparent 60%);
+    animation: cap-pulse 2.6s cubic-bezier(0.4,0,0.6,1) infinite;
+  }
+  @keyframes cap-pulse { 0%,100% { opacity: 0.85; } 50% { opacity: 0.4; } }
+
+  /* Round button (small) — used for icon group + social rounds */
+  .round-btn {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: #fff; color: #000;
+    display: grid; place-items: center;
+    border: 1px solid rgba(255,255,255,0.08);
+    transition: transform .35s cubic-bezier(0.22, 1, 0.36, 1), background .25s;
+  }
+  .round-btn:hover { transform: translateY(-1px); }
+  .round-btn--dark {
+    background: #1b1b1b; color: rgba(255,255,255,0.65);
+    border: 1px solid rgba(255,255,255,0.10);
+  }
+  .round-btn--dark:hover { background: #262626; color: #fff; border-color: rgba(255,255,255,0.22); }
+
+  /* Hair-line divider */
+  .hr-thin { height: 1px; background: rgba(255,255,255,0.10); }
+
+  /* Side-rail vertical badge */
+  .side-rail {
+    position: fixed; right: 0; top: 50%; transform: translateY(-50%);
+    z-index: 30;
+    width: 40px; height: 240px;
+    background: #0c0c0c;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-right: 0;
+    border-radius: 8px 0 0 8px;
+    display: grid; place-items: center;
+  }
+  .side-rail__text {
+    transform: rotate(180deg);
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px; letter-spacing: 0.20em; text-transform: uppercase;
+    color: rgba(255,255,255,0.55);
+    line-height: 1;
+  }
+  .side-rail__text b { color: #fff; font-weight: 500; }
+
+  /* Featured project card */
+  .featured-card {
+    position: relative;
+    display: grid; grid-template-columns: 92px 1fr 56px; gap: 0;
+    align-items: center;
+    height: 92px;
+    background: #0c0c0c;
+    border: 1px solid rgba(255,255,255,0.10);
+    border-radius: 16px;
+    padding: 6px 6px 6px 6px;
+    overflow: hidden;
+    transition: border-color .25s, transform .35s cubic-bezier(0.22,1,0.36,1);
+  }
+  .featured-card:hover { border-color: rgba(255,255,255,0.22); transform: translateY(-1px); }
+  .featured-card__thumb {
+    width: 80px; height: 80px; border-radius: 10px;
+    overflow: hidden; position: relative;
+    background: #050608;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+  .featured-card__thumb canvas {
+    position: absolute; inset: 0; width: 100% !important; height: 100% !important;
+  }
+  .featured-card__meta {
+    padding: 0 16px;
+    display: flex; flex-direction: column; gap: 3px;
+  }
+  .featured-card__meta b {
+    font-family: 'Geist', sans-serif; font-weight: 500; font-size: 16px;
+    color: #fff; letter-spacing: -0.01em;
+  }
+  .featured-card__meta span {
+    font-family: 'Geist', sans-serif; font-weight: 400; font-size: 12px;
+    color: rgba(255,255,255,0.45);
+  }
+  .featured-card__arrow {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: #fff; color: #000;
+    display: grid; place-items: center;
+    margin-right: 8px;
+    transition: transform .25s, background .25s;
+  }
+  .featured-card:hover .featured-card__arrow { transform: rotate(-45deg); background: #18DEFF; }
+
+  /* Services dash list */
+  .services-list {
+    display: flex; flex-direction: column; gap: 14px;
+    margin-top: 18px;
+  }
+  .services-list li {
+    display: grid; grid-template-columns: 32px 1fr;
+    align-items: center;
+    font-family: 'Geist', sans-serif; font-weight: 400;
+    font-size: 16px; letter-spacing: -0.01em;
+    color: rgba(255,255,255,0.80);
+    transition: color .25s;
+    cursor: pointer;
+  }
+  .services-list li::before {
+    content: "—"; color: rgba(255,255,255,0.30);
+    transition: color .25s, width .25s;
+  }
+  .services-list li:hover { color: #fff; }
+  .services-list li:hover::before { color: #18DEFF; }
+
+  [data-fm="fade-up"] { opacity: 0; transform: translateY(20px); animation: fadeUp 1.0s cubic-bezier(0.22, 1, 0.36, 1) forwards; animation-delay: var(--fm-delay, 0ms); }
+  [data-fm="fade"] { opacity: 0; animation: fadeIn 1.0s cubic-bezier(0.22, 1, 0.36, 1) forwards; animation-delay: var(--fm-delay, 0ms); }
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeIn { to { opacity: 1; } }
+
+  #fps { display: none; position: fixed; bottom: 16px; right: 64px; z-index: 70; font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.1em; padding: 5px 9px; border-radius: 4px; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.12); backdrop-filter: blur(8px); color: rgba(255,255,255,0.7); }
+  #fps.show { display: inline-flex; align-items: center; gap: 6px; }
+  #fps::before { content:""; width: 5px; height: 5px; border-radius: 50%; background: #18DEFF; box-shadow: 0 0 6px #18DEFF; }
+  .variant-tag { position: fixed; bottom: 16px; left: 24px; z-index: 70; font-family: 'Geist Mono', monospace; font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; padding: 5px 10px; border-radius: 4px; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.12); backdrop-filter: blur(8px); color: rgba(255,255,255,0.55); display: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .featured-card__thumb canvas { display: none; }
+  }
+</style>
+</head>
+
+<body class="bg-ink text-white overflow-x-hidden">
+
+<!-- ============================== TOP HUD ============================== -->
+<header class="relative z-40 mx-auto max-w-[1640px] px-8 lg:px-16 pt-8 lg:pt-10 grid grid-cols-3 items-center gap-6">
+
+  <!-- Logo (left column) -->
+  <a href="#" class="flex items-center gap-3 group" aria-label="Elchai home">
+    <span aria-hidden="true" class="h-8 w-8 rounded-md grid place-items-center text-ink font-display font-bold text-[16px] transition-transform group-hover:rotate-3"
+          style="background: linear-gradient(135deg,#18DEFF,#B07CFF);">E</span>
+    <span class="font-display font-medium text-[18px] tracking-[-0.01em]">Elchai</span>
+  </a>
+
+  <!-- Center icon group (3 round white buttons — Arkitek pattern) -->
+  <div class="flex items-center justify-center gap-3">
+    <button class="round-btn" title="Solutions" aria-label="Solutions">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.4"/><path d="M2 8h12M8 2c2 3 2 9 0 12M8 2c-2 3-2 9 0 12" stroke="currentColor" stroke-width="1.2"/></svg>
+    </button>
+    <button class="round-btn" title="Services" aria-label="Services">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2 4h12M2 8h12M2 12h12" stroke="currentColor" stroke-width="1.4"/></svg>
+    </button>
+    <button class="round-btn" title="About" aria-label="About">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5" r="2.4" stroke="currentColor" stroke-width="1.4"/><path d="M3 14c0.6-2.4 2.6-4 5-4s4.4 1.6 5 4" stroke="currentColor" stroke-width="1.4"/></svg>
+    </button>
+  </div>
+
+  <!-- Right: Contact Us pill with cyan dot (Arkitek's red-dot pattern, brand-cyan) -->
+  <div class="flex items-center justify-end">
+    <a href="#" class="cta-pill">
+      <span class="indicator" aria-hidden="true"></span>
+      <span>Contact Us</span>
+    </a>
+  </div>
+</header>
+
+<!-- ============================== HERO ============================== -->
+<section class="relative z-10 mx-auto max-w-[1640px] px-8 lg:px-16 pt-12 lg:pt-16 pb-12">
+
+  <!-- Two-column grid: LEFT = headline, RIGHT = body paragraph + See Us At -->
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
+
+    <!-- LEFT — big headline -->
+    <div class="lg:col-span-7 lg:col-start-1">
+      <h1 data-fm="fade-up" style="--fm-delay:120ms" class="display">
+        Driving Digital<br/>
+        Transformation<br/>
+        With AI &amp; Blockchain Products
+      </h1>
+    </div>
+
+    <!-- RIGHT — body paragraph at headline's vertical midpoint -->
+    <div class="lg:col-span-5 lg:col-start-8 flex flex-col justify-center">
+
+      <p data-fm="fade-up" style="--fm-delay:240ms" class="lead">
+        Our product suite enables businesses to <span>innovate, optimise and scale</span>
+        <span class="dim">using secure AI and blockchain technologies.</span>
+      </p>
+
+      <div data-fm="fade-up" style="--fm-delay:340ms" class="hr-thin mt-8"></div>
+
+      <!-- See Us At + award/social rounds -->
+      <div data-fm="fade-up" style="--fm-delay:440ms" class="mt-8 flex items-center justify-between">
+        <span class="mono-label" style="font-size: 14px; letter-spacing: 0.04em; text-transform: none; color: #fff; font-family: 'Geist', sans-serif; font-weight: 500;">See Us At</span>
+        <div class="flex items-center gap-2.5">
+          <a href="#" class="round-btn round-btn--dark" aria-label="LinkedIn">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 4h2v8H2zM3 1.5a1.5 1.5 0 100 3 1.5 1.5 0 000-3M6 12V4h2v1.1A2.7 2.7 0 0110 4c2 0 2.5 1.4 2.5 3V12h-2V7.5c0-.9-.3-1.6-1.2-1.6S8 6.7 8 7.6V12z" fill="currentColor"/></svg>
+          </a>
+          <a href="#" class="round-btn round-btn--dark" aria-label="Instagram">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1.5" y="1.5" width="11" height="11" rx="3" stroke="currentColor" stroke-width="1.2"/><circle cx="7" cy="7" r="2.5" stroke="currentColor" stroke-width="1.2"/><circle cx="10.2" cy="3.8" r="0.7" fill="currentColor"/></svg>
+          </a>
+          <a href="#" class="round-btn round-btn--dark" aria-label="Clutch / Award">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1.5L8.5 5l3.5 0.5-2.5 2.5 0.7 3.5L7 9.8 3.8 11.5l0.7-3.5L2 5.5 5.5 5z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- LOWER GRID — Services left, Featured Projects right -->
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 mt-16 lg:mt-20">
+
+    <!-- LEFT — Services dash list -->
+    <div data-fm="fade-up" style="--fm-delay:600ms" class="lg:col-span-7">
+      <div class="hr-thin mb-6"></div>
+      <h2 class="mono-label" style="letter-spacing: 0.04em; text-transform: none; font-size: 14px; color: #fff; font-family: 'Geist', sans-serif; font-weight: 500;">Services</h2>
+      <ul class="services-list">
+        <li>Brand &amp; Tech Studio</li>
+        <li>AI-Powered Apps</li>
+        <li>Intelligent Workflows</li>
+        <li>Web3 &amp; Blockchain Engineering</li>
+      </ul>
+    </div>
+
+    <!-- RIGHT — Featured Projects card with displaced-sphere thumbnail -->
+    <div data-fm="fade-up" style="--fm-delay:700ms" class="lg:col-span-5 lg:col-start-8">
+      <div class="hr-thin mb-6"></div>
+      <span class="mono-label" style="letter-spacing: 0.04em; text-transform: none; font-size: 14px; color: rgba(255,255,255,0.45); font-family: 'Geist', sans-serif; font-weight: 500;">
+        Showreel
+      </span>
+      <a href="#" class="featured-card mt-3 block">
+        <span class="featured-card__thumb">
+          <canvas id="three-canvas" aria-hidden="true"></canvas>
+        </span>
+        <span class="featured-card__meta">
+          <b>Featured Projects</b>
+          <span>See More</span>
+        </span>
+        <span class="featured-card__arrow">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" stroke-width="1.6"/></svg>
+        </span>
+      </a>
+    </div>
+  </div>
+
+</section>
+
+<!-- ============================== SIDE RAIL ============================== -->
+<aside class="side-rail">
+  <span class="side-rail__text"><b>Elchai</b>&nbsp;·&nbsp;Est&nbsp;2014&nbsp;·&nbsp;Dubai</span>
+</aside>
+
+<div id="fps"><span data-fps>—</span> fps</div>
+<div class="variant-tag" id="variant-tag">Variant · H · Atelier v2</div>
+
+<script>
+  if (new URLSearchParams(location.search).has('debug')) {
+    document.getElementById('variant-tag').style.display = 'block';
+  }
+</script>
+
+<!-- ====================================================================
+     three.js — same displaced-sphere craft, but rendered into the
+     small Featured Projects card thumbnail (80×80px box).  Same shader,
+     same lighting drift.  Bloom strength tuned UP since the canvas is
+     small and we want it to feel rich, not muted.
+     ==================================================================== -->
+<script type="module">
+  const MESH_RADIUS              = 1.55;
+  const MESH_SUBDIVISIONS        = 64;          // smaller canvas → can reduce
+  const WIRE_RADIUS              = 1.68;
+  const WIRE_SUBDIVISIONS        = 12;
+  const WIRE_OPACITY             = 0.08;
+  const DISPLACEMENT_AMOUNT      = 0.22;
+  const DISPLACEMENT_FREQ_LOW    = 1.55;
+  const DISPLACEMENT_FREQ_HIGH   = 3.40;
+  const TIME_SCALE_LOW           = 0.16;
+  const TIME_SCALE_HIGH          = 0.07;
+  const CAMERA_FOV               = 42;
+  const CAMERA_DISTANCE          = 4.2;
+  const CAMERA_DRIFT_PERIOD      = 50;
+  const CAMERA_DRIFT_X           = 0.20;
+  const CAMERA_DRIFT_Y           = 0.10;
+  const MESH_ROTATION_Y_SPEED    = 0.06;       // a touch faster — visible in small frame
+  const LIGHT_DRIFT_PERIOD       = 22;
+  const BLOOM_STRENGTH           = 0.78;
+  const BLOOM_RADIUS             = 0.50;
+  const BLOOM_THRESHOLD          = 0.65;
+  const VIGNETTE_AMOUNT          = 0.40;
+  const GRAIN_AMOUNT             = 0.030;
+  const MAX_PIXEL_RATIO          = 1.5;
+
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce) {
+    document.getElementById('three-canvas').style.background =
+      'radial-gradient(60% 50% at 50% 40%, rgba(24,222,255,0.30), transparent 65%), radial-gradient(60% 50% at 80% 80%, rgba(176,124,255,0.20), transparent 65%), #050608';
+  } else {
+    const THREE               = await import('three');
+    const { EffectComposer }  = await import('three/addons/postprocessing/EffectComposer.js');
+    const { RenderPass }      = await import('three/addons/postprocessing/RenderPass.js');
+    const { UnrealBloomPass } = await import('three/addons/postprocessing/UnrealBloomPass.js');
+    const { ShaderPass }      = await import('three/addons/postprocessing/ShaderPass.js');
+    const { OutputPass }      = await import('three/addons/postprocessing/OutputPass.js');
+
+    const canvas = document.getElementById('three-canvas');
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, MAX_PIXEL_RATIO));
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.08;
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(CAMERA_FOV, 1, 0.1, 100);
+    camera.position.set(0, 0, CAMERA_DISTANCE);
+
+    const uniforms = {
+      uTime:      { value: 0 },
+      uKey:       { value: new THREE.Vector3(3.2, 1.8, 3.0) },
+      uColorDeep: { value: new THREE.Color('#020512') },
+      uColorMid:  { value: new THREE.Color('#1B6FA8') },
+      uColorPeak: { value: new THREE.Color('#18DEFF') },
+      uColorRim:  { value: new THREE.Color('#B07CFF') },
+      uColorBg:   { value: new THREE.Color('#050608') },
+      uFreqLow:   { value: DISPLACEMENT_FREQ_LOW  },
+      uFreqHigh:  { value: DISPLACEMENT_FREQ_HIGH },
+      uTimeLow:   { value: TIME_SCALE_LOW  },
+      uTimeHigh:  { value: TIME_SCALE_HIGH },
+      uAmount:    { value: DISPLACEMENT_AMOUNT },
+    };
+    const SNOISE = `vec3 mod289(vec3 x){return x-floor(x*(1.0/289.0))*289.0;} vec4 mod289(vec4 x){return x-floor(x*(1.0/289.0))*289.0;} vec4 permute(vec4 x){return mod289(((x*34.0)+1.0)*x);} vec4 taylorInvSqrt(vec4 r){return 1.79284291400159-0.85373472095314*r;} float snoise(vec3 v){const vec2 C=vec2(1.0/6.0,1.0/3.0);const vec4 D=vec4(0.0,0.5,1.0,2.0); vec3 i=floor(v+dot(v,C.yyy)); vec3 x0=v-i+dot(i,C.xxx); vec3 g=step(x0.yzx,x0.xyz); vec3 l=1.0-g; vec3 i1=min(g.xyz,l.zxy); vec3 i2=max(g.xyz,l.zxy); vec3 x1=x0-i1+C.xxx; vec3 x2=x0-i2+C.yyy; vec3 x3=x0-D.yyy; i=mod289(i); vec4 p=permute(permute(permute(i.z+vec4(0.0,i1.z,i2.z,1.0))+i.y+vec4(0.0,i1.y,i2.y,1.0))+i.x+vec4(0.0,i1.x,i2.x,1.0)); float n_=0.142857142857; vec3 ns=n_*D.wyz-D.xzx; vec4 j=p-49.0*floor(p*ns.z*ns.z); vec4 x_=floor(j*ns.z); vec4 y_=floor(j-7.0*x_); vec4 x=x_*ns.x+ns.yyyy; vec4 y=y_*ns.x+ns.yyyy; vec4 h=1.0-abs(x)-abs(y); vec4 b0=vec4(x.xy,y.xy); vec4 b1=vec4(x.zw,y.zw); vec4 s0=floor(b0)*2.0+1.0; vec4 s1=floor(b1)*2.0+1.0; vec4 sh=-step(h,vec4(0.0)); vec4 a0=b0.xzyw+s0.xzyw*sh.xxyy; vec4 a1=b1.xzyw+s1.xzyw*sh.zzww; vec3 p0=vec3(a0.xy,h.x); vec3 p1=vec3(a0.zw,h.y); vec3 p2=vec3(a1.xy,h.z); vec3 p3=vec3(a1.zw,h.w); vec4 norm=taylorInvSqrt(vec4(dot(p0,p0),dot(p1,p1),dot(p2,p2),dot(p3,p3))); p0*=norm.x;p1*=norm.y;p2*=norm.z;p3*=norm.w; vec4 m=max(0.6-vec4(dot(x0,x0),dot(x1,x1),dot(x2,x2),dot(x3,x3)),0.0); m=m*m; return 42.0*dot(m*m,vec4(dot(p0,x0),dot(p1,x1),dot(p2,x2),dot(p3,x3)));}`;
+    const vertexShader = `uniform float uTime; uniform float uFreqLow; uniform float uFreqHigh; uniform float uTimeLow; uniform float uTimeHigh; uniform float uAmount; varying vec3 vNormal; varying vec3 vWorld; varying float vDisp; ${SNOISE} void main(){ vNormal = normalize(normalMatrix * normal); float n = snoise(position * uFreqLow + uTime * uTimeLow); float n2 = snoise(position * uFreqHigh + uTime * uTimeHigh) * 0.45; float disp = (n + n2) * uAmount; vDisp = disp; vec3 newPos = position + normal * disp; vec4 mv = modelViewMatrix * vec4(newPos, 1.0); vWorld = mv.xyz; gl_Position = projectionMatrix * mv; }`;
+    const fragmentShader = `precision highp float; uniform vec3 uKey; uniform vec3 uColorDeep; uniform vec3 uColorMid; uniform vec3 uColorPeak; uniform vec3 uColorRim; uniform vec3 uColorBg; varying vec3 vNormal; varying vec3 vWorld; varying float vDisp; void main(){ vec3 N = normalize(vNormal); vec3 L = normalize(uKey - vWorld); float diff = max(dot(N, L), 0.0); vec3 fillDir = normalize(vec3(-0.45, -0.55, 0.7)); float fill = max(dot(N, fillDir), 0.0); vec3 V = normalize(-vWorld); float fres = pow(1.0 - max(dot(N, V), 0.0), 2.6); vec3 base; if (vDisp < 0.0) { base = mix(uColorDeep, uColorMid, smoothstep(-0.18, 0.0, vDisp)); } else { base = mix(uColorMid, uColorPeak, smoothstep(0.0, 0.18, vDisp)); } vec3 col = base * (0.12 + 0.72 * diff) + uColorPeak * fill * 0.18 + uColorRim * fres * 0.95; float edge = smoothstep(0.0, 1.4, length(vWorld) * 0.17); col = mix(col, uColorBg, edge * 0.55); gl_FragColor = vec4(col, 1.0); }`;
+
+    const geom = new THREE.IcosahedronGeometry(MESH_RADIUS, MESH_SUBDIVISIONS);
+    const mat  = new THREE.ShaderMaterial({ uniforms, vertexShader, fragmentShader });
+    const mesh = new THREE.Mesh(geom, mat);
+    scene.add(mesh);
+
+    const wire = new THREE.Mesh(
+      new THREE.IcosahedronGeometry(WIRE_RADIUS, WIRE_SUBDIVISIONS),
+      new THREE.MeshBasicMaterial({ color: 0x18DEFF, wireframe: true, transparent: true, opacity: WIRE_OPACITY, blending: THREE.AdditiveBlending, depthWrite: false }),
+    );
+    scene.add(wire);
+
+    const composer = new EffectComposer(renderer);
+    composer.addPass(new RenderPass(scene, camera));
+    composer.addPass(new UnrealBloomPass(new THREE.Vector2(160, 160), BLOOM_STRENGTH, BLOOM_RADIUS, BLOOM_THRESHOLD));
+    const finishShader = {
+      uniforms: { tDiffuse: { value: null }, uTime: { value: 0 }, uVignetteAmount: { value: VIGNETTE_AMOUNT }, uGrainAmount: { value: GRAIN_AMOUNT } },
+      vertexShader: `varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);}`,
+      fragmentShader: `uniform sampler2D tDiffuse; uniform float uTime; uniform float uVignetteAmount; uniform float uGrainAmount; varying vec2 vUv; float hash(vec2 p){ return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453); } void main(){ vec3 col = texture2D(tDiffuse, vUv).rgb; float d = length(vUv - 0.5); float v = smoothstep(0.95, 0.10, d); col *= mix(1.0, v, uVignetteAmount); col += (hash(vUv * vec2(2048.0,2048.0) + uTime*17.0) - 0.5) * uGrainAmount; gl_FragColor = vec4(col,1.0); }`,
+    };
+    const finishPass = new ShaderPass(finishShader);
+    composer.addPass(finishPass);
+    composer.addPass(new OutputPass());
+
+    // Size renderer to the canvas's parent (the thumb container)
+    const parent = canvas.parentElement;
+    function resize(){
+      const r = parent.getBoundingClientRect();
+      const w = Math.max(1, Math.round(r.width));
+      const h = Math.max(1, Math.round(r.height));
+      renderer.setSize(w, h, false);
+      composer.setSize(w, h);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+    }
+    resize();
+    const ro = new ResizeObserver(resize); ro.observe(parent);
+    window.addEventListener('resize', resize);
+
+    let rafId = 0, running = true;
+    const start = performance.now();
+    const fpsEl = document.getElementById('fps');
+    const fpsVal = fpsEl.querySelector('[data-fps]');
+    if (new URLSearchParams(location.search).has('debug')) fpsEl.classList.add('show');
+    let lastFpsT = start, frames = 0;
+
+    function tick(now){
+      if (!running) return;
+      const t = (now - start) * 0.001;
+      mesh.rotation.y = t * MESH_ROTATION_Y_SPEED;
+      mesh.rotation.x = Math.sin(t * 0.10) * 0.10;
+      wire.rotation.y = -t * 0.03;
+      wire.rotation.x = Math.cos(t * 0.07) * 0.06;
+      uniforms.uTime.value = t;
+      const lw = (Math.PI * 2) / LIGHT_DRIFT_PERIOD;
+      uniforms.uKey.value.set(3.2 + Math.cos(t * lw) * 1.8, 1.8 + Math.sin(t * lw * 0.8) * 0.9, 3.0 + Math.sin(t * lw * 0.6) * 0.7);
+      const cw = (Math.PI * 2) / CAMERA_DRIFT_PERIOD;
+      camera.position.x = Math.sin(t * cw) * CAMERA_DRIFT_X;
+      camera.position.y = Math.cos(t * cw * 0.78) * CAMERA_DRIFT_Y;
+      camera.position.z = CAMERA_DISTANCE + Math.sin(t * cw * 0.5) * 0.12;
+      camera.lookAt(0, 0, 0);
+      finishPass.uniforms.uTime.value = t;
+      composer.render();
+      frames++;
+      if (now - lastFpsT > 500) { fpsVal.textContent = Math.round((frames * 1000) / (now - lastFpsT)); frames = 0; lastFpsT = now; }
+      rafId = requestAnimationFrame(tick);
+    }
+    rafId = requestAnimationFrame(tick);
+    document.addEventListener('visibilitychange', () => { if (document.hidden) { running = false; cancelAnimationFrame(rafId); } else if (!running) { running = true; lastFpsT = performance.now(); rafId = requestAnimationFrame(tick); } });
+  }
+</script>
+</body>
+</html>

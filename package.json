@@ -1,0 +1,41 @@
+{
+  "name": "elchai-redesign",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack -p 3000",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@radix-ui/react-accordion": "^1.2.2",
+    "@radix-ui/react-dialog": "^1.1.4",
+    "@splinetool/react-spline": "^4.1.0",
+    "@splinetool/runtime": "^1.12.94",
+    "clsx": "^2.1.1",
+    "framer-motion": "^11.18.0",
+    "lenis": "^1.1.18",
+    "lucide-react": "^0.470.0",
+    "next": "^15.1.0",
+    "playwright": "^1.59.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-use-measure": "^2.1.1",
+    "tailwind-merge": "^2.5.5",
+    "three": "^0.160.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.0.0",
+    "@types/node": "^22.10.5",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@types/three": "^0.160.0",
+    "eslint": "^9.0.0",
+    "eslint-config-next": "^15.1.0",
+    "postcss": "^8.5.0",
+    "tailwindcss": "^4.0.0",
+    "typescript": "^5.7.2"
+  }
+}

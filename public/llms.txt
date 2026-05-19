@@ -1,0 +1,79 @@
+# Elchai Group
+
+> Dubai-based AI and blockchain consultancy. We design, build and scale
+> custom AI agents, generative AI, Web3 platforms, smart contracts and
+> tokenization for enterprises worldwide.
+
+## About
+
+- Name: Elchai Group
+- Founded location: Dubai, United Arab Emirates
+- Headquarters: 2008, Jumeirah Business Center 1 – Cluster G, Al Thanyah Fifth, Jumeirah Lakes Towers, Dubai, UAE
+- Email: info@elchaigroup.com
+- Phone: +971 4 883 7176
+- Area served: Worldwide
+- Industries: Banking, Fintech, Logistics, Real Estate, Education, Healthcare, Retail
+- Founded category: Technology consulting
+
+## Services
+
+### Artificial Intelligence
+- AI Assistants and Agents — agentic AI, voice assistants, ChatGPT integration
+- Generative AI development
+- LLM development (custom large language models)
+- RAG development (retrieval-augmented generation)
+- AI consulting and integration
+- AI automation and RPA
+- Machine Learning and Computer Vision
+
+### Blockchain
+- Web3 development
+- Smart contract development
+- DeFi development
+- DApp development
+- Layer 1 and Layer 2 protocols
+- Blockchain consulting
+- Metaverse development
+
+### Cryptocurrency
+- Crypto wallet development (custodial and non-custodial)
+- Centralized and decentralized exchanges (CEX, DEX)
+- ICO, IDO, meme coin development
+- Real World Asset (RWA) tokenization
+- NFT marketplace development
+
+### Mobile and App Development
+- Cross-platform mobile apps
+- Enterprise app development
+
+## Industry Solutions
+- AI in Banking
+- AI in Fintech
+- AI in Logistics
+- AI in Real Estate
+- AI/ML for Education
+- AI in Healthcare
+
+## Differentiators
+- Dubai-based with worldwide delivery
+- 5,000+ industry leaders served
+- Full-stack: strategy, architecture, build, run
+- Domain coverage: AI + Blockchain + Mobile under one roof
+- Multi-timezone delivery teams
+
+## Important pages
+- Home: https://www.elchaigroup.com/
+- Live demos: https://www.elchaigroup.com/live-demo
+- Portfolio: https://www.elchaigroup.com/portfolios
+- Case studies: https://www.elchaigroup.com/case-study
+- Blog: https://www.elchaigroup.com/blog-list
+- Privacy policy: https://www.elchaigroup.com/privacy-policy
+
+## Social
+- LinkedIn: https://www.linkedin.com/company/elchai-group/
+- X (Twitter): https://x.com/elchaigroup
+- Instagram: https://www.instagram.com/elchaigroup/
+
+## Contact
+For consultation requests, partnerships, or technical enquiries:
+email info@elchaigroup.com or call +971 4 883 7176.
