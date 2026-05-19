@@ -111,63 +111,111 @@ export const metadata: Metadata = {
 
 // JSON-LD constants — hardcoded, no user input → safe to inline via the
 // documented Next.js plain-script pattern (nextjs.org/docs/app/guides/json-ld).
+// Nodes share `@id` URIs so Google + AI engines can treat the Organization,
+// WebSite and ProfessionalService as one linked graph instead of three
+// disconnected blobs.
+const ORG_ID = `${SITE_URL}/#organization`;
+const SITE_ID = `${SITE_URL}/#website`;
+const LOCAL_ID = `${SITE_URL}/#localbusiness`;
+
 const ORG_JSONLD = {
   "@context": "https://schema.org",
   "@type": "Organization",
+  "@id": ORG_ID,
   name: SITE_NAME,
+  alternateName: ["Elchai", "ElchAI"],
   url: SITE_URL,
-  logo: `${SITE_URL}/elchai/elchai_logo.svg`,
+  logo: {
+    "@type": "ImageObject",
+    url: `${SITE_URL}/elchai/elchai_logo.svg`,
+    width: 512,
+    height: 512,
+  },
+  image: `${SITE_URL}/og`,
   description: SITE_DESC,
   email: "info@elchaigroup.com",
-  telephone: "+97148837176",
+  telephone: "+971-4-883-7176",
+  foundingDate: "2016",
+  foundingLocation: { "@type": "Place", name: "Dubai, United Arab Emirates" },
   address: {
     "@type": "PostalAddress",
     streetAddress:
       "2008, Jumeirah Business Center 1 - Cluster G - Al Thanyah Fifth - Jumeirah Lakes Towers",
     addressLocality: "Dubai",
+    addressRegion: "Dubai",
     addressCountry: "AE",
   },
-  areaServed: "Worldwide",
-  foundingLocation: { "@type": "Place", name: "Dubai, United Arab Emirates" },
+  contactPoint: [
+    {
+      "@type": "ContactPoint",
+      contactType: "sales",
+      telephone: "+971-4-883-7176",
+      email: "info@elchaigroup.com",
+      areaServed: ["AE", "GCC", "Worldwide"],
+      availableLanguage: ["en", "ar", "it"],
+    },
+    {
+      "@type": "ContactPoint",
+      contactType: "customer support",
+      telephone: "+971-4-883-7176",
+      email: "info@elchaigroup.com",
+    },
+  ],
+  areaServed: [
+    { "@type": "Country", name: "United Arab Emirates" },
+    { "@type": "Place", name: "Gulf Cooperation Council" },
+    { "@type": "Place", name: "Worldwide" },
+  ],
   sameAs: [
     "https://www.linkedin.com/company/elchai-group/",
     "https://x.com/elchaigroup",
     "https://www.instagram.com/elchaigroup/",
+    "https://www.crunchbase.com/organization/elchai-group",
+    "https://clutch.co/profile/elchai-group",
+    "https://www.goodfirms.co/company/elchai-group",
   ],
   knowsAbout: [
     "Artificial Intelligence",
-    "Blockchain",
     "Generative AI",
+    "Large Language Models",
     "AI Agents",
+    "Retrieval Augmented Generation",
+    "Computer Vision",
+    "Machine Learning",
+    "Blockchain",
     "Smart Contracts",
-    "Tokenization",
     "DeFi",
     "Web3",
-    "Large Language Models",
+    "Real World Asset Tokenization",
+    "Mobile Application Development",
     "Enterprise Software",
+  ],
+  award: [
+    "Clutch Global 2024",
+    "Clutch Champion",
+    "Top App Development Companies 2025",
+    "Business of Apps Award",
   ],
 };
 
 const SITE_JSONLD = {
   "@context": "https://schema.org",
   "@type": "WebSite",
+  "@id": SITE_ID,
   name: SITE_NAME,
   url: SITE_URL,
-  inLanguage: "en",
-  publisher: { "@type": "Organization", name: SITE_NAME },
-  potentialAction: {
-    "@type": "SearchAction",
-    target: `${SITE_URL}/?q={search_term_string}`,
-    "query-input": "required name=search_term_string",
-  },
+  inLanguage: ["en"],
+  publisher: { "@id": ORG_ID },
 };
 
 const LOCAL_BUSINESS_JSONLD = {
   "@context": "https://schema.org",
-  "@type": "LocalBusiness",
+  "@type": "ProfessionalService",
+  "@id": LOCAL_ID,
+  parentOrganization: { "@id": ORG_ID },
   name: SITE_NAME,
-  image: `${SITE_URL}/og`,
-  telephone: "+97148837176",
+  image: `${SITE_URL}/elchai/elchai_logo.svg`,
+  telephone: "+971-4-883-7176",
   email: "info@elchaigroup.com",
   address: {
     "@type": "PostalAddress",
@@ -183,7 +231,19 @@ const LOCAL_BUSINESS_JSONLD = {
   },
   url: SITE_URL,
   priceRange: "$$$$",
-  openingHours: "Mo-Fr 09:00-18:00",
+  openingHoursSpecification: [
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      opens: "09:00",
+      closes: "18:00",
+    },
+  ],
+  areaServed: [
+    { "@type": "Country", name: "United Arab Emirates" },
+    { "@type": "Place", name: "Worldwide" },
+  ],
+  hasMap: "https://www.google.com/maps?q=25.0657,55.1713",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

@@ -21,7 +21,7 @@ export const site = {
   phone: '+971 4 883 7176',
   phoneHref: 'tel:+97148837176',
   whatsapp: 'https://web.whatsapp.com/send?phone=+971501080066',
-  telegram: 'https://t.me/+97150108%200066',
+  telegram: 'https://t.me/+971501080066',
   copyright: '© Elchai All rights reserved 2026',
   languages: [
     { label: 'العربية', code: 'ar' },
@@ -123,8 +123,8 @@ export const nav = {
         title: 'Machine Learning',
         items: [
           { label: 'ML Development', href: '/machine-learning-development/' },
-          { label: 'Hire Chat GPT Developer', href: '/chat-gpt/' },
-          { label: 'Agentic AI', href: '/ai-agent-2025/' },
+          { label: 'Hire ChatGPT Developer', href: '/generative-ai-development/' },
+          { label: 'Agentic AI', href: '/ai-agent-development/' },
           { label: 'Voice Assistant', href: '/ai-voice-assist/' },
         ],
       },
@@ -200,7 +200,7 @@ export const hero = {
 // ---------------------------------------------------------------------------
 
 export const stats = {
-  heading: 'Architecting Digital Excellence For 5,000+ Industry Leaders',
+  heading: 'Architecting Digital Excellence For 150+ Industry Leaders',
   items: [
     { value: '2,600+', label: 'Business Ventures Transformed' },
     { value: '8+',     label: 'Mission-Critical Government Initiatives' },
@@ -687,7 +687,7 @@ export const footer = {
         { label: 'Generative AI Development',  href: '/generative-ai-development/' },
         { label: 'AI Integration & Automation', href: '/ai-automation/' },
         { label: 'AI Assistant Development',   href: '/ai-assistant-development/' },
-        { label: 'Agentic AI',                 href: '/ai-agent-2025/' },
+        { label: 'Agentic AI',                 href: '/ai-agent-development/' },
       ],
     },
     {

@@ -10,8 +10,7 @@ import { CursorSpotlight } from "@/components/primitives/CursorSpotlight";
 import { Reveal } from "@/components/primitives/Reveal";
 import { listServicePages, getServicePage, categoryToTint, categoryToVariant } from "@/lib/service-pages";
 import { getServiceDetailContent } from "@/lib/service-detail-content";
-import { pageMetadata, breadcrumbJsonLd } from "@/lib/seo";
-import { JsonLd } from "@/lib/JsonLd";
+import { pageMetadata } from "@/lib/seo";
 
 export function generateStaticParams() {
   return listServicePages().map((p) => ({ slug: p.slug }));
@@ -26,13 +25,19 @@ export async function generateMetadata({
   const page = getServicePage(slug);
   if (!page) return { title: "Not found" };
   const detail = getServiceDetailContent(slug);
-  return pageMetadata({
+  const base = pageMetadata({
     title: page.title,
     description: detail
       ? detail.hero.subheading ?? detail.hero.body ?? `${page.title} services from Elchai Group.`
       : `${page.title} services from Elchai Group — coming soon.`,
     path: `/${slug}`,
   });
+  // Stub pages (no detail content yet) are "Coming soon" placeholders
+  // — keep them off the index until the page is real.
+  if (!detail) {
+    return { ...base, robots: { index: false, follow: true } };
+  }
+  return base;
 }
 
 export default async function ServicePage({
@@ -57,26 +62,10 @@ export default async function ServicePage({
         <ServiceDetail content={detail} slug={slug} />
       ) : (
         <main className="relative" style={{ zIndex: 1 }}>
-          {/* Structured data for stub pages — Service + BreadcrumbList */}
-          <JsonLd
-            data={[
-              {
-                "@context": "https://schema.org",
-                "@type": "Service",
-                name: page.title,
-                description: `${page.title} services from Elchai Group.`,
-                serviceType: page.category,
-                url: `https://www.elchaigroup.com/${slug}`,
-                areaServed: "Worldwide",
-                provider: {
-                  "@type": "Organization",
-                  name: "Elchai Group",
-                  url: "https://www.elchaigroup.com",
-                },
-              },
-              breadcrumbJsonLd(`/${slug}`, page.title),
-            ]}
-          />
+          {/* Stub branch is noindex (see generateMetadata above) — no
+              structured data is emitted because the page is intentionally
+              excluded from Google's index until the detail-content entry
+              ships. */}
           <section
             className="relative pt-32 pb-10 lg:pt-36 lg:pb-14"
             aria-label={page.title}

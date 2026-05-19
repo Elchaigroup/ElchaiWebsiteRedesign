@@ -14,7 +14,7 @@ import { caseStudies } from "@/lib/content";
 export const metadata = pageMetadata({
   title: "Case Studies",
   description:
-    "How Elchai helped 5,000+ businesses move from concept to mainnet with AI and blockchain.",
+    "How Elchai has helped 150+ businesses since 2016 move from concept to mainnet with AI and blockchain.",
   path: "/case-study",
 });
 

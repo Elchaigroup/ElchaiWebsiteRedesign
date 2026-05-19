@@ -1,55 +1,16 @@
 import type { MetadataRoute } from "next";
+import { listServicePages } from "@/lib/service-pages";
+import { getServiceDetailContent } from "@/lib/service-detail-content";
 
 const SITE_URL = "https://www.elchaigroup.com";
 
-// Service-detail slugs that route through `[slug]/page.tsx`. Sourced
-// from `src/lib/content.ts` nav. Keep in sync when slugs change.
-const SERVICE_SLUGS = [
-  // Blockchain
-  "web3-development-company",
-  "metaverse-development",
-  "smart-contract",
-  "nft-marketplace-development",
-  "rwa",
-  "blockchain-consulting-services",
-  "blockchain-development",
-  "defi-development",
-  "dapp-development",
-  "layer-1",
-  "layer-2",
-  // Cryptocurrency
-  "crypto-wallet-development-company",
-  "custodial-wallet",
-  "decentralized-exchange",
-  "centralized-exchange",
-  "ico-development",
-  "meme-coin-development",
-  "ido-development",
-  // AI
-  "ai-assistant-development",
-  "ai-integration",
-  "ai-automation",
-  "ai-development",
-  "ai-tool",
-  "ai-consulting-services",
-  "computer-vision-software-development",
-  "llm-development-partner",
-  "rag-development-company",
-  "rpa-development-partner",
-  "machine-learning-development",
-  "chat-gpt",
-  "ai-agent-2025",
-  "ai-voice-assist",
-  "ai-logistics-software",
-  "ai-fintech-solutions",
-  "ai-banking-solutions",
-  "ai-education-software",
-  "ai-real-estate",
-  "generative-ai-development",
-  // App development
-  "mobile-app-development",
-];
-
+/**
+ * Sitemap is derived at build time from the same registries that drive
+ * the [slug] route, so adding a new service page in
+ * service-pages.ts + service-detail-content.ts auto-publishes it.
+ * Pages without a populated detail entry are excluded — that's
+ * intentional: a "Coming soon" stub should not be indexable.
+ */
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
   const staticRoutes: MetadataRoute.Sitemap = [
@@ -62,11 +23,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${SITE_URL}/interns`, lastModified: now, changeFrequency: "monthly", priority: 0.5 },
     { url: `${SITE_URL}/privacy-policy`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
   ];
-  const serviceRoutes: MetadataRoute.Sitemap = SERVICE_SLUGS.map((slug) => ({
-    url: `${SITE_URL}/${slug}`,
-    lastModified: now,
-    changeFrequency: "monthly" as const,
-    priority: 0.7,
-  }));
+  const serviceRoutes: MetadataRoute.Sitemap = listServicePages()
+    .filter((p) => getServiceDetailContent(p.slug) !== null)
+    .map((p) => ({
+      url: `${SITE_URL}/${p.slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    }));
   return [...staticRoutes, ...serviceRoutes];
 }

@@ -217,6 +217,24 @@ const aiConsultingServices: ServiceDetailContent = {
       { title: "Deployment",        items: ["AWS Bedrock", "Azure OpenAI", "GCP Vertex", "NVIDIA Triton", "Kubernetes"] },
     ],
   },
+  faq: {
+    eyebrow: "FAQ",
+    heading: "AI Consulting — Common Questions",
+    items: [
+      { q: "What does an AI consulting engagement actually deliver?",
+        a: "A use-case shortlist, a data-readiness assessment, an architecture brief, an ROI model and a build/buy roadmap — typically packaged with an executive readout and a 90-day implementation plan." },
+      { q: "How long does AI consulting take before we see action?",
+        a: "Strategy sprints run 4–6 weeks. PoCs land in 6–12 weeks. Production deployments typically take 4–6 months depending on data complexity and integration footprint." },
+      { q: "Do you work with our existing AI stack or recommend a new one?",
+        a: "Both. We assess what you have (OpenAI, Anthropic, Vertex, open-weights, in-house) against the use case and recommend the smallest delta to ship — augment rather than rip-and-replace where possible." },
+      { q: "How do you handle data privacy and compliance during consulting?",
+        a: "Engagements run under NDA with role-based data access. For regulated industries we map to GDPR, UAE PDPL, HIPAA or SOC 2 from day one — and recommend deployment topologies (on-prem, private cloud, regional residency) accordingly." },
+      { q: "Can you measure ROI on AI initiatives?",
+        a: "Yes. We instrument every PoC with task-level baselines (time, cost, error rate) and post-deploy KPIs. Most engagements ship with a dashboard so leadership can track value capture month over month." },
+      { q: "Do you train our team or just deliver code?",
+        a: "Both options are available. Enablement engagements pair our engineers with yours through pairing, code review and architecture workshops — knowledge transfer is the explicit deliverable, not a side effect." },
+    ],
+  },
   closing: {
     heading: "Choose a Professional AI Consulting Company",
     body: "Partner with Elchai to turn AI ambition into measurable outcomes — strategy, data, models, and governance, end-to-end.",
@@ -351,6 +369,24 @@ const defiDevelopment: ServiceDetailContent = {
       { title: "Comprehensive Assessment",  desc: "Pre-engagement risk and feasibility reviews so we agree on what \"done\" looks like before we write a line of code." },
     ],
   },
+  faq: {
+    eyebrow: "FAQ",
+    heading: "DeFi Development — Common Questions",
+    items: [
+      { q: "What kinds of DeFi protocols do you build?",
+        a: "Lending and borrowing markets, AMMs and order-book DEXs, yield aggregators, staking and liquid-staking, synthetic-asset platforms, derivatives, and structured products. We design for composability with existing DeFi primitives." },
+      { q: "How long does a DeFi protocol take to ship?",
+        a: "An MVP (single-market lending or a basic AMM) typically ships in 10–14 weeks including audits. A multi-feature protocol with cross-chain support and governance commonly takes 4–8 months." },
+      { q: "Do you handle smart contract audits?",
+        a: "Internal audit, fuzzing, and formal-verification passes are included. For protocols holding > $1M TVL we strongly recommend a third-party audit (Certik, OpenZeppelin, Trail of Bits) and coordinate the engagement on your behalf." },
+      { q: "Which chains do you build on?",
+        a: "Ethereum, Arbitrum, Optimism, Base, Polygon, BNB Chain, Avalanche, Solana, Cosmos and Polkadot. We can also build on rollup stacks (OP Stack, Arbitrum Orbit) and private/permissioned chains." },
+      { q: "How do you secure DeFi protocols against common exploits?",
+        a: "Reentrancy guards, oracle-manipulation hardening, slippage protection, pause/circuit breakers, multi-sig admin keys, time-locked upgrades, formal verification for invariants, and rigorous fuzz testing before mainnet." },
+      { q: "What about regulatory considerations in the UAE?",
+        a: "UAE DeFi work is shaped by VARA and (for fintechs) DFSA frameworks. We design KYC/AML overlays, jurisdictional gating, and regulator-friendly architectures where the project requires them — and brief legal counsel as part of scope." },
+    ],
+  },
   closing: {
     heading: "Transform Your Financial Infrastructure",
     body: "Talk to our DeFi engineers about the protocol you want to ship.",
@@ -391,6 +427,24 @@ const web3DevelopmentCompany: ServiceDetailContent = {
       { title: "Full-Stack dApp Development",        desc: "End-to-end decentralized apps with React/Next.js front-ends and audited smart-contract backends." },
       { title: "Enterprise Blockchain Integration",  desc: "ERP, CRM, and payment-rail integrations that bring on-chain primitives into existing operations." },
       { title: "Wallet & Custody Solutions",         desc: "Self-custody, MPC, and institutional-grade custody platforms with policy and compliance controls." },
+    ],
+  },
+  faq: {
+    eyebrow: "FAQ",
+    heading: "Web3 Development — Common Questions",
+    items: [
+      { q: "What does a Web3 development engagement include?",
+        a: "Smart-contract development, wallet integration, front-end dApp UX, on-chain analytics, multi-chain deployment, and post-launch monitoring. Token design, governance and audits are scoped per project." },
+      { q: "Can you build on multiple chains at once?",
+        a: "Yes. We routinely ship to Ethereum + L2s (Arbitrum, Optimism, Base, Polygon), Solana, Cosmos and Polkadot in the same project — with bridge design, cross-chain messaging and unified front-ends." },
+      { q: "How is a Web3 project different from a Web2 build?",
+        a: "Once deployed, smart contracts are largely immutable. That means hardening, audits, formal verification and an upgrade strategy live in the critical path — not as afterthoughts. We design with that constraint from day one." },
+      { q: "Do you support DAO and on-chain governance?",
+        a: "Yes — token-weighted voting, conviction voting, multi-sig admin paths, time-locks, and integrated off-chain coordination tooling (Snapshot, Discourse) are part of our standard DAO playbook." },
+      { q: "How do you handle wallet UX for non-crypto users?",
+        a: "Account abstraction (ERC-4337), email-based wallets, MPC custody, gasless transactions and progressive disclosure — Web3 UX should not require the user to understand seed phrases on day one." },
+      { q: "Who owns the IP and the deployed contracts?",
+        a: "You do. Source repos, deployment keys, and admin multisigs are handed over at launch. We can retain warm support as a separate engagement, but ownership of the on-chain stack transfers to the client." },
     ],
   },
   closing: {
@@ -561,6 +615,24 @@ const nftMarketplaceDevelopment: ServiceDetailContent = {
       { title: "Fashion & Luxury Goods" },
     ],
   },
+  faq: {
+    eyebrow: "FAQ",
+    heading: "NFT Marketplace Development — Common Questions",
+    items: [
+      { q: "Which blockchains are best for NFT marketplaces today?",
+        a: "Ethereum + Layer 2s (Arbitrum, Optimism, Base) remain dominant for high-value collectibles. Polygon and Solana are common for higher-throughput, lower-fee experiences. We routinely build multi-chain marketplaces with unified custody." },
+      { q: "How long does a custom NFT marketplace take?",
+        a: "A focused marketplace (lazy-mint, fixed-price listings, basic royalties) typically takes 10–14 weeks. Auctions, multi-chain support, fiat on-ramps and advanced curation push to 4–6 months." },
+      { q: "Do you handle royalty enforcement?",
+        a: "Yes. On-chain royalty registries (ERC-2981), allow-list operator filters, and off-chain accounting are options we configure based on your jurisdiction, business model and chain choice." },
+      { q: "What about KYC and regulatory compliance?",
+        a: "For UAE-licensed and regulated traffic we layer KYC/AML, jurisdictional gating and sanctions screening into the buy/sell flows. Most consumer marketplaces also include creator KYC for payouts." },
+      { q: "Can you integrate fiat payments and credit cards?",
+        a: "Yes. We integrate established on-ramps (Stripe Crypto, MoonPay, Transak, Wert) for buyer-side fiat, plus payouts to creator bank accounts where the marketplace is the merchant of record." },
+      { q: "Do you provide post-launch support?",
+        a: "Yes — incident response, smart-contract monitoring, gas-cost optimisation, feature roadmaps and managed analytics. Typically packaged as a retainer post-launch." },
+    ],
+  },
   closing: {
     heading: "The Elchai Difference",
     body: "Strategic partnerships, audited contracts, and a marketplace stack ready for institutional traffic.",
@@ -621,6 +693,24 @@ const dappDevelopment: ServiceDetailContent = {
       { title: "Operational Efficiency", desc: "Automated workflows that eliminate intermediaries and reduce per-transaction cost." },
       { title: "Regulatory Compliance",  desc: "KYC/AML, jurisdictional rule engines, and audit-ready event logging built-in." },
       { title: "Scalable Architecture",  desc: "Layer-2 settlement, modular service boundaries, and horizontal scaling for millions of users." },
+    ],
+  },
+  faq: {
+    eyebrow: "FAQ",
+    heading: "dApp Development — Common Questions",
+    items: [
+      { q: "What is a dApp and how is it different from a regular web app?",
+        a: "A decentralized application (dApp) uses smart contracts on a public blockchain for some or all of its business logic. The state is owned by users (via wallets), not the operator — meaning user data and assets survive even if the front-end goes away." },
+      { q: "Do users need crypto to use a dApp we build?",
+        a: "Not necessarily. We routinely build dApps with account abstraction, gasless transactions, fiat on-ramps and embedded wallets so a first-time user can transact without ever managing seed phrases." },
+      { q: "How do you keep our smart contracts secure?",
+        a: "Internal audits with Slither/Mythril/Echidna, formal-verification passes for critical invariants, third-party audits for high-TVL contracts, and operational guardrails (pause switches, multi-sig admin, time-locked upgrades)." },
+      { q: "Can a dApp be upgraded after deployment?",
+        a: "Yes — using proxy patterns (UUPS, transparent proxies), modular registries, or diamond contracts. We design the upgrade story up front so emergency patches and feature releases don't require complete redeployment." },
+      { q: "How do you handle off-chain data and integrations?",
+        a: "Oracles (Chainlink, RedStone, custom), event-driven indexers (The Graph, Goldsky, in-house subgraphs), and signed-message proofs for off-chain authority. The dApp surfaces both on- and off-chain state coherently." },
+      { q: "Who owns the deployed dApp at handover?",
+        a: "You. Contract addresses, admin keys (split into multisig), front-end repo, infrastructure config and deployment scripts are all transferred at launch. Support contracts post-launch are optional retainers." },
     ],
   },
   closing: {
@@ -696,6 +786,24 @@ const rwa: ServiceDetailContent = {
       "Partner with Elchai to design, build, and operate the tokenization infrastructure your assets demand.",
     cta: { label: "Schedule Your Consultation", href: "#consultation" },
   },
+  faq: {
+    eyebrow: "FAQ",
+    heading: "RWA Tokenization — Common Questions",
+    items: [
+      { q: "What kinds of real-world assets can be tokenized?",
+        a: "Real estate (residential, commercial, REITs), private credit and debt instruments, commodities (gold, energy), invoices and trade receivables, fine art, fund interests, and carbon credits. Suitability depends on the asset's legal wrapper and jurisdiction." },
+      { q: "Is RWA tokenization regulated in the UAE?",
+        a: "Yes. Virtual asset issuance and custody fall under VARA. Securities-style tokens fall under DFSA (DIFC) or SCA. We design every RWA platform around an explicit regulatory framework — not in a grey zone." },
+      { q: "How does ownership work — do investors own the underlying asset?",
+        a: "Tokens represent legal claims via a special-purpose vehicle (SPV) or compliant trust structure. The on-chain token, the off-chain legal title and the custody arrangement are designed to stay in sync — that's the work." },
+      { q: "How long does it take to launch an RWA platform?",
+        a: "An MVP for a single asset class typically takes 4–6 months including legal structuring, KYC integration and primary-market launch. Secondary-market liquidity adds 2–4 months." },
+      { q: "What about KYC, AML and accredited-investor checks?",
+        a: "We integrate KYC providers (Sumsub, Onfido, Persona), accredited-investor verification flows, ongoing AML transaction monitoring, and jurisdiction-based gating. Compliance is wired into the core flows, not bolted on." },
+      { q: "Can investors exit their position?",
+        a: "Yes — through scheduled redemption windows, secondary marketplaces, or institutional-grade order books, depending on the asset wrapper and your liquidity strategy. We design the exit path before launch, not after." },
+    ],
+  },
 };
 
 // ─────────────────────────────────────────────────────────────────────────
@@ -738,6 +846,24 @@ const cryptoWalletDevelopment: ServiceDetailContent = {
       { title: "Regulatory Alignment",       desc: "Travel Rule, KYC, and jurisdictional controls integrated from the protocol up." },
       { title: "Web2-Quality UX",            desc: "We design wallets that non-crypto users can navigate — without leaking complexity into the happy path." },
       { title: "Operational Tooling",        desc: "Monitoring, alerting, and treasury dashboards delivered alongside the user-facing app." },
+    ],
+  },
+  faq: {
+    eyebrow: "FAQ",
+    heading: "Crypto Wallet Development — Common Questions",
+    items: [
+      { q: "What's the difference between custodial, non-custodial and MPC wallets?",
+        a: "Custodial: operator holds keys. Non-custodial: user holds keys (seed phrase or signing device). MPC: keys are split into shares across multiple parties — no single party can sign alone. We build all three and combine them where the product calls for it." },
+      { q: "Which chains do your wallets support?",
+        a: "EVM chains (Ethereum, Arbitrum, Optimism, Base, Polygon, BNB, Avalanche), Solana, Cosmos SDK chains, Polkadot, and Bitcoin. We can extend to private/permissioned chains and emerging L1s as the roadmap requires." },
+      { q: "How long does a custom wallet take to build?",
+        a: "A focused custodial or non-custodial wallet for one chain typically ships in 12–16 weeks including app-store releases. Multi-chain, MPC, hardware-wallet integrations and fiat on-ramps add 1–3 months." },
+      { q: "Do you handle App Store and Play Store submissions?",
+        a: "Yes. We manage the review process end-to-end, including the crypto-app review nuances (KYC requirements, exchange disclosures, regional restrictions). We've shipped wallets through both stores under tight review constraints." },
+      { q: "How secure are the wallets you build?",
+        a: "Secure enclave key storage (iOS Keychain, Android Keystore, StrongBox), HSM custody for institutional flows, biometric gating, anti-phishing UX, transaction-signing UX hardening, runtime tamper detection and pen-test before launch." },
+      { q: "Can you support fiat on/off ramps in our wallet?",
+        a: "Yes — we integrate Stripe Crypto, MoonPay, Transak, Wert, Ramp, and local UAE/MENA providers for fiat buy/sell. KYC flow design is part of the engagement." },
     ],
   },
   closing: {
@@ -1143,6 +1269,24 @@ const aiDevelopment: ServiceDetailContent = {
       { title: "Real Estate" },
     ],
   },
+  faq: {
+    eyebrow: "FAQ",
+    heading: "AI Development — Common Questions",
+    items: [
+      { q: "What kinds of AI projects do you build?",
+        a: "Conversational agents, generative AI applications, RAG and document search, computer-vision pipelines, classical ML models, automation flows and bespoke LLM applications. We work across the stack — from PoC to production." },
+      { q: "Which models and providers do you work with?",
+        a: "OpenAI, Anthropic, Google Vertex AI, AWS Bedrock, Azure OpenAI, and open-weight models (Llama, Mistral, Qwen). We pick per use case based on quality, cost, latency, data-residency and licensing constraints — not on vendor preference." },
+      { q: "How do you scope a custom AI project?",
+        a: "A 1–2 week discovery: map the workflow, audit data, identify success metrics, prototype 1–2 approaches, and write a build/buy recommendation. The output is a costed proposal and PoC plan, not a slide deck." },
+      { q: "How do you measure if an AI feature is working?",
+        a: "We instrument task-level KPIs (accuracy, completion rate, escalation rate, cost-per-task), regression evals against a held-out set, and live telemetry in a model-observability stack (LangSmith, Langfuse, Arize, or in-house). Quality is measured, not asserted." },
+      { q: "Can the AI run on our infrastructure for data privacy?",
+        a: "Yes. Private VPC deployments, on-prem inference, BYOK on hyperscalers and air-gapped configurations are all common. Architecture is chosen up front based on data classification and regulatory regime." },
+      { q: "Will the AI replace our employees?",
+        a: "In our experience, AI agents reliably automate routine sub-tasks within a job — not entire jobs. We design with human-in-the-loop checkpoints so subject-matter experts review, correct and retain control over high-stakes outputs." },
+    ],
+  },
   closing: {
     heading: "Ready to explore AI for your business?",
     body: "Schedule a discovery call with our AI engineering team.",
@@ -1191,6 +1335,24 @@ const generativeAiDevelopment: ServiceDetailContent = {
       { title: "Models",                items: ["GPT-4o", "Claude 4.6", "Gemini 1.5", "Llama 3", "Mistral", "Mixtral"] },
       { title: "Training Frameworks",   items: ["PyTorch", "Hugging Face Transformers", "TRL", "DeepSpeed", "Axolotl"] },
       { title: "Serving Infrastructure",items: ["vLLM", "Triton", "TGI", "AWS Bedrock", "Azure OpenAI"] },
+    ],
+  },
+  faq: {
+    eyebrow: "FAQ",
+    heading: "Generative AI Development — Common Questions",
+    items: [
+      { q: "What does 'generative AI development' actually include?",
+        a: "Building applications around foundation models — chat experiences, content generators, agentic workflows, multimodal pipelines (image, audio, video) and copilots embedded in existing products. Includes prompt design, eval harnesses and observability." },
+      { q: "How do we choose between OpenAI, Anthropic, and open-weight models?",
+        a: "Per use case. We benchmark cost, latency, instruction-following, domain accuracy, license, residency requirements and tooling support. Often the answer is a multi-model stack with routing, not a single vendor lock-in." },
+      { q: "When should we fine-tune vs prompt-engineer vs RAG?",
+        a: "Prompt-engineer first (cheap, fast). RAG when answers must be grounded in your private data. Fine-tune when you need consistent style/tone or a narrow task at lower latency and cost. Often the production answer is RAG + light fine-tuning." },
+      { q: "How do you prevent hallucinations?",
+        a: "Retrieval grounding, citation requirements in the output schema, eval suites that score grounding rate, structured-output constraints, refusal training for out-of-scope queries, and human-in-the-loop review on high-stakes answers." },
+      { q: "Can we deploy generative AI without sending data to OpenAI/Anthropic?",
+        a: "Yes — via Azure OpenAI / Bedrock (data stays in your tenant), or via fully self-hosted open-weight models (Llama, Mistral, Qwen) on your own GPUs. We routinely ship in both modes." },
+      { q: "What's the typical cost of a generative-AI feature in production?",
+        a: "Highly use-case dependent. We budget per request (tokens × $/token + retrieval + eval overhead) and surface unit economics before scale. Most production features stabilise at $0.001–$0.05 per request with caching and routing." },
     ],
   },
   closing: {
@@ -1285,6 +1447,24 @@ const aiFintechSolutions: ServiceDetailContent = {
       { title: "BNPL" },
       { title: "Crypto Finance" },
       { title: "B2B Finance" },
+    ],
+  },
+  faq: {
+    eyebrow: "FAQ",
+    heading: "AI for Fintech — Common Questions",
+    items: [
+      { q: "How is AI used inside fintechs and banks today?",
+        a: "Document automation (statements, IDs, KYC), fraud and AML transaction monitoring, underwriting and credit scoring, customer-support agents, treasury and FP&A copilots, and compliance/legal review assistants. Lots of high-leverage back-office work." },
+      { q: "Is AI in fintech compliant in the UAE?",
+        a: "It can be — but compliance is the work. CBUAE expects model-risk governance, explainability and audit trails. DFSA fintech licenses require documented controls. We map every deployment to the relevant regulatory framework before shipping." },
+      { q: "How do you handle PII and customer data?",
+        a: "Tokenization at ingest, PII redaction before LLM calls, regional data residency (UAE / EU), private VPC deployments, BYOK encryption, and audit logging of every model interaction. Compliance is wired into the architecture, not bolted on." },
+      { q: "Can AI replace our fraud team?",
+        a: "Not entirely — but it triages and escalates. We typically reduce manual-review load 40–70% by surfacing the highest-risk cases with explanations, while routine cases auto-clear. Analysts focus on the ambiguous middle." },
+      { q: "How do you measure ROI on AI in financial operations?",
+        a: "Per-case automation rate, false-positive reduction, time-to-decision, average handle time, recoveries from fraud reduction, and cost per processed document. We instrument these from day one with weekly reporting." },
+      { q: "Do you integrate with our core banking system?",
+        a: "Yes. Common targets include Temenos, Finacle, Mambu, Thought Machine, Fiserv DNA and homegrown cores — via APIs, file drops or middleware. Integration depth is scoped per engagement." },
     ],
   },
   closing: {
@@ -1403,7 +1583,9 @@ const aiEducationSoftware: ServiceDetailContent = {
 // Batch 6 (AI advanced): ChatGPT · Agents · ML · LLM · Computer Vision
 // ─────────────────────────────────────────────────────────────────────────
 
-const chatGpt: ServiceDetailContent = {
+// Kept (but not registered) as a draft for future /generative-ai-development
+// refresh — see the REGISTRY entry below.
+const _chatGptDraft: ServiceDetailContent = {
   slug: "chat-gpt",
   category: "Artificial Intelligence · Machine Learning",
   hero: {
@@ -1444,8 +1626,8 @@ const chatGpt: ServiceDetailContent = {
   },
 };
 
-const aiAgent2025: ServiceDetailContent = {
-  slug: "ai-agent-2025",
+const aiAgentDevelopment: ServiceDetailContent = {
+  slug: "ai-agent-development",
   category: "Artificial Intelligence · Machine Learning",
   hero: {
     eyebrow: "Agentic AI",
@@ -1475,6 +1657,24 @@ const aiAgent2025: ServiceDetailContent = {
       { title: "Voice and Tone Adjustment",           desc: "Brand-aligned voice modeling with channel-appropriate register switching." },
       { title: "Cross-Platform Conversation Continuity",desc: "Sessions that span web chat, mobile, email, and voice without losing thread." },
       { title: "Performance Analytics Automation",    desc: "Automated quality scoring, drift detection, and continuous-improvement reporting." },
+    ],
+  },
+  faq: {
+    eyebrow: "FAQ",
+    heading: "AI Agent Development — Common Questions",
+    items: [
+      { q: "What is an AI agent and how is it different from a chatbot?",
+        a: "An agent plans multi-step actions, calls tools (APIs, databases, search), holds memory across turns and acts on the world — not just answers. A chatbot replies; an agent gets things done within explicit guardrails." },
+      { q: "What kinds of work can agents reliably do today?",
+        a: "Customer support triage, sales-pipeline research, document workflows (KYC, contract review), code refactors with eval gates, ops runbooks, internal-tool orchestration, and structured-data extraction. High-stakes outputs still need human review." },
+      { q: "How do you keep agents from going off the rails?",
+        a: "Tool allow-lists, per-tool permission scopes, human-in-the-loop approvals for risky actions, output schemas with validation, eval suites that gate deployment, runtime guardrails (PII redaction, content filters) and full audit logs of every decision." },
+      { q: "How long does it take to ship a production agent?",
+        a: "A scoped agent (1–3 tools, 1 happy path) ships in 6–10 weeks. A multi-tool agent with memory, guardrails and human escalation runs 12–20 weeks. We deliberately scope tight on the first launch and expand from there." },
+      { q: "Which frameworks and models do you use?",
+        a: "LangGraph, OpenAI Agents SDK, Anthropic's tool use, custom orchestrators where needed. Models are picked per task — Claude/Sonnet/Opus for reasoning-heavy paths, GPT-4o for fast tool calling, open-weight for private-data tasks." },
+      { q: "Can the agent learn from feedback over time?",
+        a: "Yes — through structured feedback loops (thumbs/edits stored as evals), retrieval over a growing knowledge base, periodic re-prompting and (where ROI is clear) fine-tuning. We design the feedback loop alongside the agent itself." },
     ],
   },
   closing: {
@@ -1561,6 +1761,24 @@ const llmDevelopmentPartner: ServiceDetailContent = {
       { title: "Manufacturing & Supply Chain" },
       { title: "Energy & Utilities" },
       { title: "Media & Publishing" },
+    ],
+  },
+  faq: {
+    eyebrow: "FAQ",
+    heading: "LLM Development — Common Questions",
+    items: [
+      { q: "When should we fine-tune a model vs use prompting + RAG?",
+        a: "Fine-tune for: consistent style/tone, lower latency on a narrow task, lower cost at scale, or restricted-environment deployment. Otherwise RAG + good prompting is faster, cheaper to iterate, and easier to maintain." },
+      { q: "Which fine-tuning approaches do you use?",
+        a: "SFT (supervised fine-tuning), preference tuning (DPO, ORPO, RLHF), LoRA/QLoRA for parameter-efficient adaptation, continued pre-training where domain shift is severe. We pick per dataset size, latency budget and target hardware." },
+      { q: "How do you measure if a fine-tuned LLM is better than the baseline?",
+        a: "A held-out eval set with task-specific scorers (exact match, semantic similarity, structured-output validation, LLM-as-judge for subjective dimensions). We compare against the un-tuned model under identical prompts before declaring victory." },
+      { q: "Can you deploy LLMs in our private infrastructure?",
+        a: "Yes — self-hosted on GPUs (vLLM, TGI, Triton), Azure OpenAI / Bedrock for hyperscaler-tenant deployment, or air-gapped where security demands it. Architecture is chosen up front based on data classification." },
+      { q: "What does an LLM project typically cost?",
+        a: "PoC: $25–75K. Production fine-tune + serving: $75–250K depending on data prep, eval rigour and integration footprint. We surface a fixed-price scope after a 1-week discovery sprint." },
+      { q: "How do you handle ongoing model maintenance?",
+        a: "Drift monitoring against eval sets, scheduled re-evals when foundation models update, retraining pipelines triggered by feedback data thresholds, and version-controlled prompt/model artifacts so rollback is a one-click operation." },
     ],
   },
   closing: {
@@ -1655,6 +1873,24 @@ const ragDevelopmentCompany: ServiceDetailContent = {
       { title: "Education & Research" },
       { title: "Energy & Utilities" },
       { title: "Government & Public Sector" },
+    ],
+  },
+  faq: {
+    eyebrow: "FAQ",
+    heading: "RAG Development — Common Questions",
+    items: [
+      { q: "What is RAG and why is it the dominant pattern for enterprise AI?",
+        a: "Retrieval-Augmented Generation grounds an LLM's responses in your private knowledge base at query time, with citations back to the source. It reduces hallucinations, keeps data private, and updates instantly when the underlying documents change — without retraining." },
+      { q: "What types of data sources can you connect?",
+        a: "PDFs, Word, PowerPoint, Confluence, SharePoint, Notion, Google Drive, Slack archives, ticketing systems, databases, code repositories, and web content. We build connectors per source with incremental sync, ACL preservation and PII handling." },
+      { q: "How long does a RAG implementation take?",
+        a: "PoC on a small corpus: 4–6 weeks. Production RAG with a connector portfolio, evals, citations, hybrid search and observability: 8–14 weeks depending on data complexity and ACL requirements." },
+      { q: "Hybrid search vs pure vector — which is better?",
+        a: "Hybrid almost always wins. Lexical (BM25) is unbeatable for exact-match queries (codes, names, SKUs). Vector excels at semantic queries. We combine both with reciprocal rank fusion, then re-rank with a cross-encoder or LLM judge." },
+      { q: "How do you preserve document permissions in the RAG layer?",
+        a: "ACLs are indexed alongside chunks and enforced at retrieval time so users only see what they're entitled to. Group-level inheritance, share-link rules and time-based access are all supported via filterable metadata." },
+      { q: "How do you measure RAG quality in production?",
+        a: "Grounding rate (does the answer cite retrieved context?), retrieval recall and precision against a labelled eval set, answer faithfulness scored by an LLM judge, and user feedback signals (thumbs, edits, follow-up queries). We instrument all four from day one." },
     ],
   },
   closing: {
@@ -1951,6 +2187,24 @@ const blockchainConsultingServices: ServiceDetailContent = {
       { title: "Ongoing Evolution",        desc: "Continuous support, regular updates, and rapid issue resolution keeping your blockchain infrastructure optimized and current." },
     ],
   },
+  faq: {
+    eyebrow: "FAQ",
+    heading: "Blockchain Consulting — Common Questions",
+    items: [
+      { q: "Where does blockchain consulting usually start?",
+        a: "A discovery sprint: business goals, use cases, regulatory constraints, data flows and a candidate-architecture review. The output is a costed, sequenced roadmap — not a 'maybe blockchain' deliberation." },
+      { q: "How do you decide if a use case actually needs blockchain?",
+        a: "We test three criteria: multi-party trust, auditable shared state and decentralised settlement. If two-of-three apply and the cost/benefit clears the bar, blockchain is in scope. Otherwise we recommend a conventional database — honestly." },
+      { q: "Which blockchain platform do you typically recommend?",
+        a: "Public chains (Ethereum, L2s) for open ecosystems and tokenisation. Permissioned chains (Hyperledger Fabric, Quorum) for regulated enterprise consortia. Hybrid for RWA tokenisation. The right answer comes out of discovery, not vendor preference." },
+      { q: "How do you handle UAE-specific regulatory exposure?",
+        a: "We map every project to VARA (virtual assets), DFSA (DIFC fintech), CBUAE (banking), SCA (securities) and ADGM as relevant. Compliance design is integrated with technical architecture from day one, not bolted on at the end." },
+      { q: "How long does a consulting engagement run?",
+        a: "Strategy sprints: 4–6 weeks. Architecture and roadmap with vendor selection: 8–12 weeks. Embedded execution support is scoped separately — typically a 3–6 month retainer alongside the build team." },
+      { q: "Do you implement after the strategy, or just advise?",
+        a: "Both options are available. Many clients run strategy with us and execution with their internal team (we transition). Others retain Elchai for delivery. The handover plan is part of every consulting engagement." },
+    ],
+  },
   closing: {
     heading: "Transform Your Business With Consulting Focused On Measurable Value Creation And Genuine ROI.",
     body: "Work With Certified Experts Who Understand Both Blockchain Technology And Your Industry's Unique Requirements.",
@@ -2236,6 +2490,24 @@ const mobileAppDevelopment: ServiceDetailContent = {
       { title: "Performance Discipline",    desc: "Cold-start, scroll, and animation budgets enforced from the first commit — not optimized at the end." },
     ],
   },
+  faq: {
+    eyebrow: "FAQ",
+    heading: "Mobile App Development — Common Questions",
+    items: [
+      { q: "Native, React Native or Flutter — what do you recommend?",
+        a: "Native (SwiftUI / Kotlin) for performance-critical, OS-feature-heavy or strict-platform apps. React Native or Flutter for cross-platform speed with near-native UX. We recommend per project, not as a default — and explain the trade-offs honestly." },
+      { q: "How long does it take to ship a mobile app?",
+        a: "An MVP: 12–16 weeks. A polished v1 with backend, auth, payments and analytics: 16–24 weeks. Add 2–4 weeks for App Store / Play Store review, marketing assets and onboarding flows." },
+      { q: "Do you handle App Store and Play Store submissions?",
+        a: "Yes — including the metadata, screenshots, App Privacy / Data Safety disclosures, review escalations and post-launch updates. We've shipped through both stores under strict review constraints (crypto, finance, medical)." },
+      { q: "Will my app work offline?",
+        a: "Yes, if the use case calls for it. Local-first data layers (SQLite, Realm, Watermelon), conflict-resolution strategies, and sync engines (e.g. PowerSync, Y.js) are common in our offline-aware builds." },
+      { q: "How do you handle performance on low-end devices?",
+        a: "Budgets set at design (cold-start < 2s, scroll 60fps, animation 60fps) and enforced via CI perf checks on real devices. We test on iPhone SE and a low-tier Android, not just flagship hardware." },
+      { q: "Who owns the app and source code at launch?",
+        a: "You. Source repos, signing keys, store accounts and infrastructure transfer to your team. Post-launch retainers (maintenance, feature work, ASO) are optional and scoped separately." },
+    ],
+  },
   closing: {
     heading: "Seeking a Mobile App Development Partner Aligned With Your Industry Vision?",
     body: "Talk to Elchai's mobile engineering team about your next launch.",
@@ -2272,8 +2544,11 @@ const REGISTRY: Record<string, ServiceDetailContent> = {
   [aiLogisticsSoftware.slug]: aiLogisticsSoftware,
   [aiRealEstate.slug]: aiRealEstate,
   [aiEducationSoftware.slug]: aiEducationSoftware,
-  [chatGpt.slug]: chatGpt,
-  [aiAgent2025.slug]: aiAgent2025,
+  // chatGpt removed — /chat-gpt 301-redirects to /generative-ai-development
+  // (see next.config.ts). The const stays in this file so the existing
+  // capability copy is preserved as a draft if /generative-ai-development
+  // is later refreshed with the ChatGPT-specific content.
+  [aiAgentDevelopment.slug]: aiAgentDevelopment,
   [machineLearningDevelopment.slug]: machineLearningDevelopment,
   [llmDevelopmentPartner.slug]: llmDevelopmentPartner,
   [computerVisionSoftwareDevelopment.slug]: computerVisionSoftwareDevelopment,

@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { cn } from "@/lib/cn";
 import { HQTimePill } from "@/components/primitives/HQTimePill";
-import { LanguageSwitcher } from "@/components/primitives/LanguageSwitcher";
+// LanguageSwitcher import removed — see comment near the render site.
 import { nav as navContent } from "@/lib/content";
 import { useT } from "@/lib/i18n";
 
@@ -276,7 +276,10 @@ export function Nav() {
 
       <div className="flex items-center gap-2">
         <HQTimePill />
-        <LanguageSwitcher />
+        {/* LanguageSwitcher removed per SEO audit (May 2026): AR/IT had
+            no SSR routes/hreflang, so the toggle suggested translated
+            pages we don't actually ship. Re-introduce once /ar/* and
+            /it/* are real, SSR'd subpath locales. */}
         <Link
           href="#consultation"
           className="group/cta inline-flex items-center gap-2.5 h-10 px-6 rounded-full

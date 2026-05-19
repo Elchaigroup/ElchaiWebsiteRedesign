@@ -84,30 +84,59 @@ export function ServiceDetail({
   // hardcoded values in `lib/service-detail-content.ts`, so the
   // existing `dangerouslySetInnerHTML` below is the documented Next.js
   // JSON-LD pattern, not a user-input injection vector.
+  //
+  // Service node uses `@id` + `provider.@id` so it links to the
+  // Organization node in layout.tsx. Breadcrumb is 2-level (Home →
+  // current page) because category-level landing pages (/blockchain,
+  // /ai, …) don't exist yet — a 3-level crumb with no item URL on
+  // position 2 fails Google's Rich Results validator.
   const SITE_URL = "https://www.elchaigroup.com";
+  const ORG_ID = `${SITE_URL}/#organization`;
   const pageUrl = `${SITE_URL}/${slug}`;
+  const offerCatalog = capabilities && capabilities.items.length > 0
+    ? {
+        hasOfferCatalog: {
+          "@type": "OfferCatalog",
+          name: `${hero.heading} — Capabilities`,
+          itemListElement: capabilities.items.map((c) => ({
+            "@type": "Offer",
+            itemOffered: {
+              "@type": "Service",
+              name: c.title,
+              ...(c.desc ? { description: c.desc } : {}),
+            },
+          })),
+        },
+      }
+    : {};
   const schemasJsonLd: object[] = [
     {
       "@context": "https://schema.org",
       "@type": "Service",
+      "@id": `${pageUrl}#service`,
       name: hero.heading,
+      ...(hero.eyebrow ? { alternateName: hero.eyebrow } : {}),
       description: hero.subheading ?? hero.body ?? `${hero.heading} services from Elchai Group.`,
       serviceType: content.category,
       url: pageUrl,
-      areaServed: "Worldwide",
-      provider: {
-        "@type": "Organization",
-        name: "Elchai Group",
-        url: SITE_URL,
+      provider: { "@id": ORG_ID },
+      areaServed: [
+        { "@type": "Country", name: "United Arab Emirates" },
+        { "@type": "Place", name: "Gulf Cooperation Council" },
+        { "@type": "Place", name: "Worldwide" },
+      ],
+      audience: {
+        "@type": "BusinessAudience",
+        audienceType: "Enterprises, SMBs, Government",
       },
+      ...offerCatalog,
     },
     {
       "@context": "https://schema.org",
       "@type": "BreadcrumbList",
       itemListElement: [
         { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
-        { "@type": "ListItem", position: 2, name: content.category },
-        { "@type": "ListItem", position: 3, name: hero.heading, item: pageUrl },
+        { "@type": "ListItem", position: 2, name: hero.heading, item: pageUrl },
       ],
     },
   ];

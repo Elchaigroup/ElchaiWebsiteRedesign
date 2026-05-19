@@ -1,7 +1,8 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const contentType = "image/png";
+// `contentType` is set on the ImageResponse itself (image/png) — exporting
+// it as a Route field is rejected by Next 15's type checker.
 
 // Dark-background variant of the brand mark: white "ELCHAI" wordmark with
 // the gradient orbital ring + dot. Inlined here so the edge route doesn't
@@ -50,7 +51,7 @@ export async function GET() {
     loadGoogleFont("Inter", 500, TEXT_SUBSET),
   ]);
 
-  return new ImageResponse(
+  const imageResponse = new ImageResponse(
     (
       <div
         style={{
@@ -154,4 +155,13 @@ export async function GET() {
       ],
     },
   );
+
+  // Card is fully deterministic — same response for every request — so
+  // social platforms (and Vercel's edge) can hold onto it. One year +
+  // `immutable` matches how OG cards are typically treated downstream.
+  imageResponse.headers.set(
+    "Cache-Control",
+    "public, max-age=31536000, s-maxage=31536000, immutable",
+  );
+  return imageResponse;
 }

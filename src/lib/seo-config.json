@@ -1,473 +1,501 @@
 {
+  "_doc": "SEO source of truth for the live site. `pages` keys MUST equal real routes in src/app — listed paths drive per-route metadata via getSeoEntry() in src/lib/seo.ts. `pending` is a planning area for routes that don't exist yet; build the page first, then move the entry into `pages`. Updated during May 2026 SEO audit remediation.",
+
   "site": {
     "name": "Elchai Group",
+    "alternateName": "ElchAI",
     "url": "https://www.elchaigroup.com",
-    "logo": "https://www.elchaigroup.com/images/elchai-logo.png",
-    "ogImage": "https://www.elchaigroup.com/images/og-default.jpg",
-    "twitterHandle": "@ElchaiGroup",
+    "logo": "https://www.elchaigroup.com/elchai/elchai_logo.svg",
+    "ogImage": "/og",
+    "twitterHandle": "@elchaigroup",
     "locale": "en_US",
-    "foundingDate": "2018",
+    "foundingDate": "2016",
     "founders": ["SHA"],
-    "description": "AI, Blockchain & Web3 development company based in Dubai, building products like Tarality, BB-Estate, and Blyncc."
+    "description": "Elchai Group is a Dubai-based AI and blockchain consultancy. We design, build and scale custom AI agents, generative AI, Web3 platforms, smart contracts and tokenization for enterprises worldwide.",
+    "sameAs": [
+      "https://www.linkedin.com/company/elchai-group/",
+      "https://x.com/elchaigroup",
+      "https://www.instagram.com/elchaigroup/",
+      "https://www.crunchbase.com/organization/elchai-group",
+      "https://clutch.co/profile/elchai-group",
+      "https://www.goodfirms.co/company/elchai-group"
+    ]
   },
 
   "pages": {
-
     "/": {
       "slug": "/",
-      "title": "Elchai Group | AI & Blockchain Development Company Dubai",
-      "description": "Elchai Group builds AI, blockchain, and Web3 solutions from Dubai. We develop products like Tarality crypto exchange, BB-Estate tokenized real estate, and Blyncc smart payments.",
-      "h1": "AI & Blockchain Development Company in Dubai",
-      "keywords": ["AI development company Dubai", "blockchain development Dubai", "Web3 development UAE"],
+      "title": "Elchai Group — AI & Blockchain Consultancy in Dubai",
+      "description": "Custom AI agents, generative AI, smart contracts and RWA tokenization built by Elchai Group in Dubai. 150+ projects since 2016 across enterprise and government.",
+      "h1": "Driving Digital Transformation with AI & Blockchain Products",
+      "keywords": ["AI consultancy Dubai", "blockchain development Dubai", "AI agents", "generative AI", "RWA tokenization"],
       "breadcrumb": ["Home"]
     },
 
-    "/about": {
-      "slug": "/about",
-      "title": "About Elchai Group | Our Story, Team & Mission",
-      "description": "Learn about Elchai Group — founded in Dubai, partnered with Rob Rockefeller SC, building AI and blockchain products that solve real problems across finance, real estate, and digital identity.",
+    "/about-us": {
+      "slug": "/about-us",
+      "title": "About Elchai Group",
+      "description": "Dubai-based AI and blockchain consultancy founded in 2016. Meet the team building Tarality, BB-Estate, Blyncc and 150+ partner projects.",
       "h1": "About Elchai Group",
-      "keywords": ["Elchai Group about", "AI blockchain company Dubai", "Rob Rockefeller partnership"],
+      "keywords": ["Elchai Group about", "AI blockchain company Dubai", "Elchai team", "Elchai founders"],
       "breadcrumb": ["Home", "About"]
     },
 
-    "/services": {
-      "slug": "/services",
-      "title": "AI & Blockchain Development Services | Elchai Group",
-      "description": "Full-stack AI, blockchain, smart contract, DeFi, and Web3 development services. From custom AI agents to tokenization platforms — built by Elchai Group in Dubai.",
-      "h1": "Our Development Services",
-      "keywords": ["AI development services", "blockchain development services", "Web3 services Dubai"],
-      "breadcrumb": ["Home", "Services"]
+    "/portfolios": {
+      "slug": "/portfolios",
+      "title": "Portfolio — Apps, Platforms & Products by Elchai",
+      "description": "Selected AI, blockchain and Web3 products Elchai has shipped with partners across finance, real estate and government.",
+      "h1": "Portfolio",
+      "keywords": ["Elchai Group portfolio", "blockchain projects Dubai", "AI portfolio UAE"],
+      "breadcrumb": ["Home", "Portfolio"]
     },
 
-    "/services/ai-development": {
-      "slug": "/services/ai-development",
-      "title": "AI Development Services Dubai | Custom AI Solutions | Elchai Group",
-      "description": "Custom AI application development — chatbots, AI agents, automation, NLP, and computer vision solutions. Built by Elchai Group for businesses in Dubai and globally.",
-      "h1": "AI Development Services",
-      "keywords": ["AI development Dubai", "custom AI solutions", "AI agent development", "AI automation business"],
-      "breadcrumb": ["Home", "Services", "AI Development"]
-    },
-
-    "/services/blockchain-development": {
-      "slug": "/services/blockchain-development",
-      "title": "Blockchain Development Services Dubai | Smart Contracts & DeFi | Elchai Group",
-      "description": "End-to-end blockchain development — smart contracts, DeFi protocols, token creation, and decentralized apps. Elchai Group delivers production-ready blockchain solutions.",
-      "h1": "Blockchain Development Services",
-      "keywords": ["blockchain development Dubai", "smart contract development", "DeFi development company"],
-      "breadcrumb": ["Home", "Services", "Blockchain Development"]
-    },
-
-    "/services/web3-development": {
-      "slug": "/services/web3-development",
-      "title": "Web3 Development Company UAE | dApps & Decentralized Solutions | Elchai Group",
-      "description": "Web3 development from concept to launch — dApps, DAOs, NFT platforms, and decentralized infrastructure. Elchai Group is a leading Web3 development company in the UAE.",
-      "h1": "Web3 Development Services",
-      "keywords": ["Web3 development company UAE", "dApp development", "decentralized app development Dubai"],
-      "breadcrumb": ["Home", "Services", "Web3 Development"]
-    },
-
-    "/services/smart-contracts": {
-      "slug": "/services/smart-contracts",
-      "title": "Smart Contract Development & Auditing | Elchai Group Dubai",
-      "description": "Secure smart contract development, auditing, and deployment on Ethereum, Solana, and custom chains. Built and battle-tested by Elchai Group.",
-      "h1": "Smart Contract Development",
-      "keywords": ["smart contract development services", "smart contract audit", "Solidity developers Dubai"],
-      "breadcrumb": ["Home", "Services", "Smart Contracts"]
-    },
-
-    "/services/defi-development": {
-      "slug": "/services/defi-development",
-      "title": "DeFi Development Company | DEX, Lending & Yield Platforms | Elchai Group",
-      "description": "Custom DeFi protocol development — decentralized exchanges, lending platforms, yield farming, and liquidity solutions. Elchai Group builds DeFi that works.",
-      "h1": "DeFi Development Services",
-      "keywords": ["DeFi development company", "DEX development", "decentralized finance Dubai"],
-      "breadcrumb": ["Home", "Services", "DeFi Development"]
-    },
-
-    "/services/mobile-app-development": {
-      "slug": "/services/mobile-app-development",
-      "title": "Mobile App Development Dubai | iOS & Android | Elchai Group",
-      "description": "Custom mobile app development for iOS and Android. From fintech apps to AI-powered tools — Elchai Group builds apps that perform.",
-      "h1": "Mobile App Development",
-      "keywords": ["mobile app development Dubai", "iOS app development UAE", "Android development Dubai"],
-      "breadcrumb": ["Home", "Services", "Mobile App Development"]
-    },
-
-    "/services/metaverse-development": {
-      "slug": "/services/metaverse-development",
-      "title": "Metaverse Development Dubai | Virtual Worlds & 3D Experiences | Elchai Group",
-      "description": "Metaverse development services — virtual real estate, 3D environments, avatar systems, and immersive experiences. Built by Elchai Group for the next internet.",
-      "h1": "Metaverse Development Services",
-      "keywords": ["metaverse development Dubai", "virtual world development", "3D metaverse platform"],
-      "breadcrumb": ["Home", "Services", "Metaverse Development"]
-    },
-
-    "/services/tokenization": {
-      "slug": "/services/tokenization",
-      "title": "Asset Tokenization Platform Development | Real Estate & Securities | Elchai Group",
-      "description": "Build tokenization platforms for real estate, securities, and real-world assets. Elchai Group developed BB-Estate — we know tokenization from the inside.",
-      "h1": "Tokenization Services",
-      "keywords": ["real estate tokenization platform", "asset tokenization development", "security token offering"],
-      "breadcrumb": ["Home", "Services", "Tokenization"]
-    },
-
-    "/products": {
-      "slug": "/products",
-      "title": "Our Products | Tarality, BB-Estate, Blyncc & More | Elchai Group",
-      "description": "Explore Elchai Group's product ecosystem — Tarality crypto exchange, BB-Estate tokenized real estate, Blyncc smart payments, and more live platforms.",
-      "h1": "Our Products",
-      "keywords": ["Elchai Group products", "Tarality", "BB-Estate", "Blyncc"],
-      "breadcrumb": ["Home", "Products"]
-    },
-
-    "/products/tarality": {
-      "slug": "/products/tarality",
-      "title": "Tarality | Crypto Exchange Platform by Elchai Group",
-      "description": "Tarality is a next-generation cryptocurrency exchange built by Elchai Group. Fast trades, deep liquidity, and a secure platform for digital asset trading.",
-      "h1": "Tarality Crypto Exchange",
-      "keywords": ["Tarality", "crypto exchange platform", "cryptocurrency trading"],
-      "breadcrumb": ["Home", "Products", "Tarality"]
-    },
-
-    "/products/bb-estate": {
-      "slug": "/products/bb-estate",
-      "title": "BB-Estate | Tokenized Real Estate Investment Platform",
-      "description": "BB-Estate makes real estate investment accessible through blockchain tokenization. Own fractional shares of properties worldwide — built by Elchai Group.",
-      "h1": "BB-Estate — Tokenized Real Estate",
-      "keywords": ["BB-Estate", "tokenized real estate", "fractional property investment", "blockchain real estate"],
-      "breadcrumb": ["Home", "Products", "BB-Estate"]
-    },
-
-    "/products/blyncc": {
-      "slug": "/products/blyncc",
-      "title": "Blyncc | Smart Payment Solutions by Elchai Group",
-      "description": "Blyncc is a smart payment platform bridging traditional finance and crypto. Fast, secure, and built for the real world — by Elchai Group.",
-      "h1": "Blyncc Smart Payments",
-      "keywords": ["Blyncc", "smart payments", "crypto payments platform"],
-      "breadcrumb": ["Home", "Products", "Blyncc"]
-    },
-
-    "/subsidiaries": {
-      "slug": "/subsidiaries",
-      "title": "Subsidiaries & Ventures | Center AI Vision, Dubai AI City & More",
-      "description": "Elchai Group's ecosystem of companies — Center AI Vision for AI infrastructure, Dubai AI City for sovereign AI, Digital Meta Bank for metaverse banking, and more.",
-      "h1": "Our Subsidiaries & Ventures",
-      "keywords": ["Elchai Group subsidiaries", "Center AI Vision", "Dubai AI City"],
-      "breadcrumb": ["Home", "Subsidiaries"]
-    },
-
-    "/subsidiaries/center-ai-vision": {
-      "slug": "/subsidiaries/center-ai-vision",
-      "title": "Center AI Vision (CAV) | AI Infrastructure & GPU Compute | Elchai Group",
-      "description": "Center AI Vision builds sovereign AI infrastructure — GPU compute clusters, data centers, and AI-ready platforms. An Elchai Group company based in Dubai.",
-      "h1": "Center AI Vision",
-      "keywords": ["Center AI Vision", "CAV", "AI infrastructure Dubai", "GPU compute"],
-      "breadcrumb": ["Home", "Subsidiaries", "Center AI Vision"]
-    },
-
-    "/subsidiaries/dubai-ai-city": {
-      "slug": "/subsidiaries/dubai-ai-city",
-      "title": "Dubai AI City | Sovereign AI Infrastructure Hub | Elchai Group",
-      "description": "Dubai AI City is a sovereign AI infrastructure project by Elchai Group — building the physical and digital backbone for the UAE's AI future.",
-      "h1": "Dubai AI City",
-      "keywords": ["Dubai AI City", "sovereign AI infrastructure", "AI hub Dubai"],
-      "breadcrumb": ["Home", "Subsidiaries", "Dubai AI City"]
-    },
-
-    "/subsidiaries/digital-meta-bank": {
-      "slug": "/subsidiaries/digital-meta-bank",
-      "title": "Digital Meta Bank | Metaverse-Enabled Banking Platform | Elchai Group",
-      "description": "Digital Meta Bank combines fiat, crypto, and DeFi in one metaverse-enabled financial platform. The future of banking — by Elchai Group.",
-      "h1": "Digital Meta Bank",
-      "keywords": ["Digital Meta Bank", "metaverse banking", "crypto bank"],
-      "breadcrumb": ["Home", "Subsidiaries", "Digital Meta Bank"]
-    },
-
-    "/case-studies": {
-      "slug": "/case-studies",
-      "title": "Case Studies | Real Results From Real Projects | Elchai Group",
-      "description": "See how Elchai Group delivered results — case studies from Tarality, BB-Estate, Blyncc, and client projects across AI, blockchain, and Web3.",
+    "/case-study": {
+      "slug": "/case-study",
+      "title": "Case Studies — Results From Real Projects",
+      "description": "How Elchai delivered measurable outcomes across AI, blockchain and Web3 engagements — case studies from Tarality, BB-Estate, Blyncc and partner builds.",
       "h1": "Case Studies",
       "keywords": ["Elchai Group case studies", "blockchain project results", "AI development case study"],
       "breadcrumb": ["Home", "Case Studies"]
     },
 
-    "/blog": {
-      "slug": "/blog",
-      "title": "Blog | AI, Blockchain & Web3 Insights | Elchai Group",
-      "description": "Insights, tutorials, and industry analysis on AI, blockchain, Web3, and digital transformation from the Elchai Group team in Dubai.",
+    "/blog-list": {
+      "slug": "/blog-list",
+      "title": "Blog — AI, Blockchain & Web3 Insights",
+      "description": "Insights, tutorials and analysis on AI, blockchain, Web3 and digital transformation from the Elchai Group team in Dubai.",
       "h1": "Blog",
       "keywords": ["AI blog", "blockchain insights", "Web3 blog Dubai"],
       "breadcrumb": ["Home", "Blog"]
     },
 
-    "/contact": {
-      "slug": "/contact",
-      "title": "Contact Elchai Group | Get a Free Consultation",
-      "description": "Ready to build with AI or blockchain? Contact Elchai Group for a free consultation. Based in Dubai, serving clients worldwide.",
-      "h1": "Contact Us",
-      "keywords": ["contact Elchai Group", "AI development consultation", "blockchain development inquiry"],
-      "breadcrumb": ["Home", "Contact"]
+    "/live-demo": {
+      "slug": "/live-demo",
+      "title": "Live Demos — Production Builds in Motion",
+      "description": "Watch production AI, blockchain, Web3 and cryptocurrency platforms Elchai has built — playing live.",
+      "h1": "See our work in motion",
+      "keywords": ["Elchai live demos", "blockchain product demo", "Web3 demo videos"],
+      "breadcrumb": ["Home", "Resources", "Live Demos"]
     },
 
-    "/careers": {
-      "slug": "/careers",
-      "title": "Careers at Elchai Group | Join Our AI & Web3 Team",
-      "description": "Join Elchai Group — we're hiring AI engineers, blockchain developers, and Web3 builders. Work on real products from Dubai.",
-      "h1": "Careers at Elchai Group",
-      "keywords": ["Elchai Group careers", "AI jobs Dubai", "blockchain developer jobs"],
-      "breadcrumb": ["Home", "Careers"]
+    "/interns": {
+      "slug": "/interns",
+      "title": "Interns at Elchai Group",
+      "description": "Launch your career with Elchai World Internships — real projects, mentorship and global exposure in Dubai.",
+      "h1": "Internships",
+      "keywords": ["Elchai internships", "Dubai internships AI", "blockchain internship"],
+      "breadcrumb": ["Home", "About", "Interns"]
     },
 
-    "/partners": {
-      "slug": "/partners",
-      "title": "Partners | Rob Rockefeller SC & Strategic Alliances | Elchai Group",
-      "description": "Elchai Group partners with Rob Rockefeller SC and leading technology firms. Explore our strategic alliances and partnership opportunities.",
-      "h1": "Our Partners",
-      "keywords": ["Elchai Group partners", "Rob Rockefeller partnership", "technology partnerships Dubai"],
-      "breadcrumb": ["Home", "Partners"]
+    "/privacy-policy": {
+      "slug": "/privacy-policy",
+      "title": "Privacy Policy",
+      "description": "How Elchai Group collects, uses and safeguards your personal information.",
+      "h1": "Privacy Policy",
+      "keywords": ["Elchai privacy policy", "data protection"],
+      "breadcrumb": ["Home", "Privacy Policy"]
+    },
+
+    "/blockchain-development": {
+      "slug": "/blockchain-development",
+      "title": "Blockchain Development Company in Dubai",
+      "description": "Build immutable, auditable blockchain infrastructure with Elchai. 200+ smart contracts deployed, 30+ industries, multi-chain delivery from Dubai.",
+      "h1": "Blockchain Development Services",
+      "keywords": ["blockchain development Dubai", "smart contract development", "DeFi development company"],
+      "breadcrumb": ["Home", "Blockchain Development"]
+    },
+
+    "/web3-development-company": {
+      "slug": "/web3-development-company",
+      "title": "Web3 Development Company — Dubai & Global",
+      "description": "Production Web3 platforms: wallets, dApps, NFT marketplaces, DAOs. Multi-chain stack, regulated jurisdictions, Dubai HQ.",
+      "h1": "Web3 Development Services",
+      "keywords": ["Web3 development company UAE", "dApp development", "decentralized app development Dubai"],
+      "breadcrumb": ["Home", "Web3 Development"]
+    },
+
+    "/smart-contract": {
+      "slug": "/smart-contract",
+      "title": "Smart Contract Development & Audit",
+      "description": "Audited Solidity/Rust contracts for DeFi, RWA, NFT, custody. Formal verification, OpenZeppelin patterns, multi-sig governance. 200+ contracts shipped.",
+      "h1": "Smart Contract Development",
+      "keywords": ["smart contract development services", "smart contract audit", "Solidity developers Dubai"],
+      "breadcrumb": ["Home", "Smart Contract"]
+    },
+
+    "/defi-development": {
+      "slug": "/defi-development",
+      "title": "DeFi Development Company",
+      "description": "Lending, AMM, staking and yield protocols engineered for security and composability. Cross-chain, oracle-integrated, institutional-grade. Dubai-based.",
+      "h1": "DeFi Development Services",
+      "keywords": ["DeFi development company", "DEX development", "decentralized finance Dubai"],
+      "breadcrumb": ["Home", "DeFi Development"]
+    },
+
+    "/dapp-development": {
+      "slug": "/dapp-development",
+      "title": "dApp Development Services",
+      "description": "End-to-end decentralized application development — wallets, smart-contract integrations, dashboards. Audited code, multi-chain, production-ready.",
+      "h1": "dApp Development",
+      "keywords": ["dapp development services", "decentralized app builder", "Web3 frontend"],
+      "breadcrumb": ["Home", "dApp Development"]
     },
 
     "/nft-marketplace-development": {
       "slug": "/nft-marketplace-development",
-      "title": "NFT Marketplace Development | Custom NFT Platforms | Elchai Group",
-      "description": "Build your own NFT marketplace with minting, auctions, royalties, and multi-chain support. Elchai Group develops production-grade NFT platforms from Dubai.",
+      "title": "NFT Marketplace Development",
+      "description": "Custom NFT marketplaces with minting, royalties, lazy-mint, multi-chain support and KYC-ready storefronts. Built by Elchai for collectors and brands.",
       "h1": "NFT Marketplace Development",
-      "keywords": ["NFT marketplace development", "NFT platform Dubai", "custom NFT marketplace"],
-      "breadcrumb": ["Home", "Blockchain", "NFT Marketplace"]
+      "keywords": ["nft marketplace development", "nft platform builder", "custom nft marketplace"],
+      "breadcrumb": ["Home", "NFT Marketplace"]
     },
-    "/dapp-development": {
-      "slug": "/dapp-development",
-      "title": "dApp Development Company Dubai | Decentralized Applications | Elchai Group",
-      "description": "Full-stack decentralized application development — from smart contracts to frontend. Elchai Group builds dApps on Ethereum, Solana, Polygon, and custom chains.",
-      "h1": "dApp Development",
-      "keywords": ["dApp development", "decentralized application development", "dApp developer Dubai"],
-      "breadcrumb": ["Home", "Blockchain", "dApp Development"]
+
+    "/metaverse-development": {
+      "slug": "/metaverse-development",
+      "title": "Metaverse Development Dubai",
+      "description": "Virtual real estate, 3D environments, avatar systems and immersive experiences. Built by Elchai for brands stepping into the next internet.",
+      "h1": "Metaverse Development Services",
+      "keywords": ["metaverse development Dubai", "virtual world development", "3D metaverse platform"],
+      "breadcrumb": ["Home", "Metaverse Development"]
     },
+
+    "/rwa": {
+      "slug": "/rwa",
+      "title": "Real-World Asset Tokenization Services",
+      "description": "Tokenize real estate, debt, commodities and funds on regulated rails. KYC/AML, custody and secondary-market design. UAE / VARA aware.",
+      "h1": "Asset Tokenization Services",
+      "keywords": ["real estate tokenization platform", "asset tokenization development", "security token offering", "rwa tokenization"],
+      "breadcrumb": ["Home", "RWA Tokenization"]
+    },
+
+    "/blockchain-consulting-services": {
+      "slug": "/blockchain-consulting-services",
+      "title": "Blockchain Consulting Services",
+      "description": "Strategy, compliance and platform selection from specialized blockchain consultants. Integrate blockchain into your business, with a clear roadmap.",
+      "h1": "Your Trusted Blockchain Consulting Partner",
+      "keywords": ["blockchain consulting services", "blockchain consultant Dubai", "blockchain strategy", "blockchain integration"],
+      "breadcrumb": ["Home", "Blockchain Consulting"]
+    },
+
     "/layer-1": {
       "slug": "/layer-1",
-      "title": "Layer 1 Blockchain Development | Custom L1 Protocols | Elchai Group",
-      "description": "Design and launch your own Layer 1 blockchain — consensus, tokenomics, validator networks, and ecosystem tooling. Built by Elchai Group.",
+      "title": "Layer 1 Blockchain Development",
+      "description": "Build sovereign Layer 1 chains — consensus, virtual machines, validator design and full-node tooling. Production stacks engineered by Elchai.",
       "h1": "Layer 1 Blockchain Development",
-      "keywords": ["Layer 1 blockchain development", "custom blockchain protocol", "L1 development"],
-      "breadcrumb": ["Home", "Blockchain", "Layer 1"]
+      "keywords": ["layer 1 blockchain development", "sovereign blockchain", "L1 chain design"],
+      "breadcrumb": ["Home", "Layer 1"]
     },
+
     "/layer-2": {
       "slug": "/layer-2",
-      "title": "Layer 2 Scaling Solutions | Rollups & Sidechains | Elchai Group",
-      "description": "Build Layer 2 scaling solutions — optimistic rollups, ZK rollups, sidechains, and state channels. Elchai Group delivers L2 infrastructure that scales.",
-      "h1": "Layer 2 Scaling Solutions",
-      "keywords": ["Layer 2 development", "L2 scaling solutions", "rollup development", "ZK rollup"],
-      "breadcrumb": ["Home", "Blockchain", "Layer 2"]
+      "title": "Layer 2 Blockchain Development",
+      "description": "Rollups, sidechains and scaling solutions for high-throughput dApps. ZK and optimistic stacks, bridge design and L1 settlement.",
+      "h1": "Layer 2 Blockchain Development",
+      "keywords": ["layer 2 development", "rollup development", "zk rollup", "optimistic rollup"],
+      "breadcrumb": ["Home", "Layer 2"]
     },
+
     "/crypto-wallet-development-company": {
       "slug": "/crypto-wallet-development-company",
-      "title": "Crypto Wallet Development Company | Secure Digital Wallets | Elchai Group",
-      "description": "Develop secure crypto wallets — custodial, non-custodial, multi-chain, and MPC wallets. Elchai Group builds enterprise-grade wallet solutions.",
+      "title": "Crypto Wallet Development",
+      "description": "Hot, cold and custodial crypto wallets for iOS, Android and Web. Hardware-key, MPC and multi-sig support — secure by design.",
       "h1": "Crypto Wallet Development",
-      "keywords": ["crypto wallet development", "digital wallet company", "blockchain wallet Dubai"],
-      "breadcrumb": ["Home", "Cryptocurrency", "Crypto Wallet"]
+      "keywords": ["crypto wallet development", "wallet app builder", "mpc wallet development"],
+      "breadcrumb": ["Home", "Crypto Wallet"]
     },
+
     "/custodial-wallet": {
       "slug": "/custodial-wallet",
-      "title": "Custodial Wallet Development | Managed Crypto Wallets | Elchai Group",
-      "description": "Build custodial wallets with institutional-grade security, KYC integration, and multi-sig controls. Elchai Group develops compliant custodial wallet platforms.",
+      "title": "Custodial Wallet Development",
+      "description": "Institutional-grade custodial wallets with HSM-backed key management, audit trails and regulator-friendly compliance flows.",
       "h1": "Custodial Wallet Development",
-      "keywords": ["custodial wallet development", "managed crypto wallet", "institutional wallet"],
-      "breadcrumb": ["Home", "Cryptocurrency", "Custodial Wallet"]
+      "keywords": ["custodial wallet development", "institutional crypto custody", "hsm wallet"],
+      "breadcrumb": ["Home", "Custodial Wallet"]
     },
+
     "/decentralized-exchange": {
       "slug": "/decentralized-exchange",
-      "title": "DEX Development | Decentralized Exchange Platform | Elchai Group",
-      "description": "Build a decentralized exchange with AMM, order books, liquidity pools, and cross-chain swaps. Elchai Group delivers DEX platforms that trade.",
+      "title": "Decentralized Exchange (DEX) Development",
+      "description": "AMM, order-book and hybrid DEX development. Multi-chain liquidity, MEV protection and auditable smart contracts. Built by Elchai.",
       "h1": "Decentralized Exchange Development",
-      "keywords": ["DEX development", "decentralized exchange", "AMM development", "swap platform"],
-      "breadcrumb": ["Home", "Cryptocurrency", "DEX"]
+      "keywords": ["dex development", "decentralized exchange builder", "amm development"],
+      "breadcrumb": ["Home", "Decentralized Exchange"]
     },
+
     "/centralized-exchange": {
       "slug": "/centralized-exchange",
-      "title": "Centralized Exchange Development | CEX Platform | Elchai Group",
-      "description": "Launch your own centralized crypto exchange with matching engines, KYC/AML, fiat gateways, and admin dashboards. Built by Elchai Group.",
+      "title": "Centralized Exchange (CEX) Development",
+      "description": "Spot, margin and derivatives CEX development with matching-engine performance, KYC/AML flows and VARA-aware compliance.",
       "h1": "Centralized Exchange Development",
-      "keywords": ["centralized exchange development", "CEX development", "crypto exchange platform"],
-      "breadcrumb": ["Home", "Cryptocurrency", "CEX"]
+      "keywords": ["cex development", "crypto exchange development", "matching engine"],
+      "breadcrumb": ["Home", "Centralized Exchange"]
     },
+
     "/ico-development": {
       "slug": "/ico-development",
-      "title": "ICO Development Services | Token Launch Platform | Elchai Group",
-      "description": "End-to-end ICO development — token creation, smart contracts, launchpad, KYC integration, and investor dashboards. Elchai Group launches tokens that raise.",
-      "h1": "ICO Development",
-      "keywords": ["ICO development", "token launch", "initial coin offering"],
-      "breadcrumb": ["Home", "Cryptocurrency", "ICO Development"]
+      "title": "ICO Development Services",
+      "description": "End-to-end Initial Coin Offering development — tokenomics, smart contracts, KYC/AML, whitepaper review and launch infrastructure.",
+      "h1": "ICO Development Services",
+      "keywords": ["ico development services", "token launch", "ico smart contract"],
+      "breadcrumb": ["Home", "ICO Development"]
     },
-    "/meme-coin-development": {
-      "slug": "/meme-coin-development",
-      "title": "Meme Coin Development | Create Your Own Token | Elchai Group",
-      "description": "Launch meme coins with tokenomics, liquidity lock, anti-rug mechanisms, and community tools. Elchai Group builds tokens that trend.",
-      "h1": "Meme Coin Development",
-      "keywords": ["meme coin development", "create meme token", "meme coin launch"],
-      "breadcrumb": ["Home", "Cryptocurrency", "Meme Coin"]
-    },
+
     "/ido-development": {
       "slug": "/ido-development",
-      "title": "IDO Development & Launchpad | Initial DEX Offering | Elchai Group",
-      "description": "Build IDO launchpads with fair launch mechanics, vesting, and multi-chain support. Elchai Group develops IDO platforms that raise capital.",
-      "h1": "IDO Development",
-      "keywords": ["IDO development", "initial DEX offering", "IDO launchpad"],
-      "breadcrumb": ["Home", "Cryptocurrency", "IDO Development"]
+      "title": "IDO Launchpad Development",
+      "description": "Build Initial DEX Offering launchpads with vesting, whitelisting and multi-chain support. Compliance-aware tokenomics from Elchai.",
+      "h1": "IDO Launchpad Development",
+      "keywords": ["ido development", "launchpad development", "ido smart contract"],
+      "breadcrumb": ["Home", "IDO Development"]
     },
-    "/ai-assistant-development": {
-      "slug": "/ai-assistant-development",
-      "title": "AI Assistant Development | Custom AI Chatbots & Voice Agents | Elchai Group",
-      "description": "Build custom AI assistants — chatbots, voice agents, and conversational AI for customer support, sales, and operations. Built by Elchai Group in Dubai.",
-      "h1": "AI Assistant Development",
-      "keywords": ["AI assistant development", "AI chatbot development", "conversational AI Dubai"],
-      "breadcrumb": ["Home", "AI", "AI Assistant"]
+
+    "/meme-coin-development": {
+      "slug": "/meme-coin-development",
+      "title": "Meme Coin Development",
+      "description": "Build community-first meme coins with secure tokenomics, anti-bot protections and exchange-ready audits. Risk-aware launches by Elchai.",
+      "h1": "Meme Coin Development",
+      "keywords": ["meme coin development", "token creation services", "memecoin smart contract"],
+      "breadcrumb": ["Home", "Meme Coin"]
     },
-    "/ai-integration": {
-      "slug": "/ai-integration",
-      "title": "AI Integration Services | Embed AI Into Your Business | Elchai Group",
-      "description": "Integrate AI into existing systems — CRMs, ERPs, workflows, and apps. Elchai Group connects AI models to your business stack without rebuilding.",
-      "h1": "AI Integration Services",
-      "keywords": ["AI integration services", "AI for business", "enterprise AI integration"],
-      "breadcrumb": ["Home", "AI", "AI Integration"]
+
+    "/token-development": {
+      "slug": "/token-development",
+      "title": "Token Development Services",
+      "description": "ERC-20, ERC-1155, SPL and custom token standards. Tokenomics design, vesting, compliance, audits and exchange listings.",
+      "h1": "Token Development",
+      "keywords": ["token development", "erc-20 development", "custom token standard"],
+      "breadcrumb": ["Home", "Token Development"]
     },
-    "/ai-automation": {
-      "slug": "/ai-automation",
-      "title": "AI Automation Services | Intelligent Process Automation | Elchai Group",
-      "description": "Automate repetitive tasks with AI — document processing, data entry, email triage, and workflow automation. Elchai Group builds AI automation that saves hours.",
-      "h1": "AI Automation Services",
-      "keywords": ["AI automation", "intelligent automation Dubai", "AI process automation"],
-      "breadcrumb": ["Home", "AI", "AI Automation"]
+
+    "/ai-development": {
+      "slug": "/ai-development",
+      "title": "AI Development Company in Dubai",
+      "description": "Custom AI application development — chatbots, AI agents, automation, NLP and computer vision. Built by Elchai for global enterprises.",
+      "h1": "AI Development Services",
+      "keywords": ["AI development Dubai", "custom AI solutions", "AI agent development"],
+      "breadcrumb": ["Home", "AI Development"]
     },
-    "/ai-tool": {
-      "slug": "/ai-tool",
-      "title": "Custom AI Tool Development | Purpose-Built AI Software | Elchai Group",
-      "description": "Build custom AI tools tailored to your industry — from internal dashboards to customer-facing AI products. Elchai Group develops purpose-built AI software.",
-      "h1": "Custom AI Tool Development",
-      "keywords": ["custom AI tools", "AI software development", "build AI tool"],
-      "breadcrumb": ["Home", "AI", "AI Tools"]
-    },
+
     "/ai-consulting-services": {
       "slug": "/ai-consulting-services",
-      "title": "AI Consulting Services Dubai | Strategy to Deployment | Elchai Group",
-      "description": "AI consulting from strategy to deployment — feasibility studies, model selection, data readiness, and implementation roadmaps. Elchai Group advises on AI that works.",
+      "title": "AI Consulting Services — Dubai",
+      "description": "Strategy, roadmap and build for generative AI, agents and RAG. From PoC to production: discovery, architecture, deployment, SLA.",
       "h1": "AI Consulting Services",
-      "keywords": ["AI consulting Dubai", "AI strategy consulting", "AI consulting services"],
-      "breadcrumb": ["Home", "AI", "AI Consulting"]
+      "keywords": ["ai consulting dubai", "generative ai consulting", "ai roadmap"],
+      "breadcrumb": ["Home", "AI Consulting"]
     },
-    "/computer-vision-software-development": {
-      "slug": "/computer-vision-software-development",
-      "title": "Computer Vision Development | Image & Video AI | Elchai Group",
-      "description": "Build computer vision systems — object detection, image classification, OCR, facial recognition, and video analysis. Elchai Group develops vision AI that sees.",
-      "h1": "Computer Vision Development",
-      "keywords": ["computer vision development", "image recognition AI", "object detection"],
-      "breadcrumb": ["Home", "AI", "Computer Vision"]
+
+    "/ai-integration": {
+      "slug": "/ai-integration",
+      "title": "AI Integration Services",
+      "description": "Embed AI into existing products and back-office systems. APIs, eval harnesses, observability and human-in-the-loop guardrails.",
+      "h1": "AI Integration Services",
+      "keywords": ["ai integration", "ai api integration", "ai enterprise rollout"],
+      "breadcrumb": ["Home", "AI Integration"]
     },
-    "/llm-development-partner": {
-      "slug": "/llm-development-partner",
-      "title": "LLM Development Partner | Custom Large Language Models | Elchai Group",
-      "description": "Fine-tune and deploy custom LLMs — GPT, Llama, Mistral, and open-source models tailored to your domain. Elchai Group is your LLM development partner.",
-      "h1": "LLM Development",
-      "keywords": ["LLM development", "custom large language model", "fine-tune LLM"],
-      "breadcrumb": ["Home", "AI", "LLM Development"]
+
+    "/ai-automation": {
+      "slug": "/ai-automation",
+      "title": "AI Automation Services",
+      "description": "Automate operational workflows with AI agents, RPA and intelligent document processing. Measurable cost reduction, audit-ready logs.",
+      "h1": "AI Automation Services",
+      "keywords": ["ai automation", "intelligent automation", "ai workflow"],
+      "breadcrumb": ["Home", "AI Automation"]
     },
-    "/rag-development-company": {
-      "slug": "/rag-development-company",
-      "title": "RAG Development Company | Retrieval-Augmented Generation | Elchai Group",
-      "description": "Build RAG systems that ground AI answers in your data — documents, databases, and knowledge bases. Elchai Group develops RAG pipelines that reduce hallucinations.",
-      "h1": "RAG Development",
-      "keywords": ["RAG development", "retrieval augmented generation", "RAG pipeline"],
-      "breadcrumb": ["Home", "AI", "RAG Development"]
+
+    "/ai-tool": {
+      "slug": "/ai-tool",
+      "title": "Custom AI Tool Development",
+      "description": "Custom internal AI tools for ops, research and operations teams. Built fast, scoped tight, shipped with guardrails.",
+      "h1": "Custom AI Tool Development",
+      "keywords": ["custom ai tool", "internal ai tool", "ai utility development"],
+      "breadcrumb": ["Home", "AI Tool"]
     },
-    "/rpa-development-partner": {
-      "slug": "/rpa-development-partner",
-      "title": "RPA Development Partner | Robotic Process Automation | Elchai Group",
-      "description": "Deploy robotic process automation — bots that handle data entry, form filling, report generation, and system migrations. Elchai Group automates the boring stuff.",
-      "h1": "RPA Development",
-      "keywords": ["RPA development", "robotic process automation", "business automation"],
-      "breadcrumb": ["Home", "AI", "RPA Development"]
+
+    "/ai-assistant-development": {
+      "slug": "/ai-assistant-development",
+      "title": "AI Assistant Development",
+      "description": "Production-grade AI assistants for support, sales and ops. Voice, chat and multimodal — grounded in your data and policies.",
+      "h1": "AI Assistant Development",
+      "keywords": ["ai assistant development", "chatbot development", "voice assistant"],
+      "breadcrumb": ["Home", "AI Assistant"]
     },
-    "/machine-learning-development": {
-      "slug": "/machine-learning-development",
-      "title": "Machine Learning Development Services | Predictive AI | Elchai Group",
-      "description": "Custom machine learning models — prediction, classification, recommendation, and anomaly detection. Elchai Group builds ML that delivers business value.",
-      "h1": "Machine Learning Development",
-      "keywords": ["machine learning development", "ML services Dubai", "predictive AI"],
-      "breadcrumb": ["Home", "AI", "Machine Learning"]
-    },
-    "/chat-gpt": {
-      "slug": "/chat-gpt",
-      "title": "ChatGPT Integration & Custom GPT Development | Elchai Group",
-      "description": "Integrate ChatGPT into your business or build custom GPTs — customer support bots, internal tools, and domain-specific assistants. Your GPT partner in Dubai.",
-      "h1": "ChatGPT Integration",
-      "keywords": ["ChatGPT integration", "custom GPT development", "GPT for business"],
-      "breadcrumb": ["Home", "AI", "ChatGPT"]
-    },
-    "/ai-agent-2025": {
-      "slug": "/ai-agent-2025",
-      "title": "AI Agent Development | Autonomous AI Agents | Elchai Group",
-      "description": "Build autonomous AI agents that plan, act, and learn — for research, customer service, coding, and operations. Elchai Group develops AI agents that get things done.",
+
+    "/ai-agent-development": {
+      "slug": "/ai-agent-development",
+      "title": "AI Agent Development",
+      "description": "Agentic AI systems that plan, use tools and operate within human-in-the-loop guardrails. From PoC to production-grade deployments.",
       "h1": "AI Agent Development",
-      "keywords": ["AI agent development", "autonomous AI agents", "agentic AI"],
-      "breadcrumb": ["Home", "AI", "AI Agents"]
+      "keywords": ["ai agent development", "agentic ai", "autonomous agent"],
+      "breadcrumb": ["Home", "AI Agent"]
     },
-    "/ai-voice-assist": {
-      "slug": "/ai-voice-assist",
-      "title": "AI Voice Assistant Development | Voice AI Solutions | Elchai Group",
-      "description": "Build AI voice assistants for customer service, IVR, smart devices, and hands-free workflows. Elchai Group develops voice AI that listens and responds.",
-      "h1": "AI Voice Assistant",
-      "keywords": ["AI voice assistant", "voice AI development", "conversational voice AI"],
-      "breadcrumb": ["Home", "AI", "Voice Assistant"]
-    },
-    "/ai-logistics-software": {
-      "slug": "/ai-logistics-software",
-      "title": "AI Logistics Software | Supply Chain Intelligence | Elchai Group",
-      "description": "AI-powered logistics — route optimization, demand forecasting, warehouse automation, and real-time tracking. Elchai Group builds logistics AI that delivers.",
-      "h1": "AI Logistics Software",
-      "keywords": ["AI logistics software", "supply chain AI", "logistics automation"],
-      "breadcrumb": ["Home", "AI", "Logistics AI"]
-    },
-    "/ai-fintech-solutions": {
-      "slug": "/ai-fintech-solutions",
-      "title": "AI Fintech Solutions | Financial AI Development | Elchai Group",
-      "description": "AI for fintech — fraud detection, credit scoring, robo-advisory, and regulatory compliance automation. Elchai Group develops financial AI that performs.",
-      "h1": "AI Fintech Solutions",
-      "keywords": ["AI fintech solutions", "financial AI development", "AI fraud detection"],
-      "breadcrumb": ["Home", "AI", "Fintech AI"]
-    },
-    "/ai-banking-solutions": {
-      "slug": "/ai-banking-solutions",
-      "title": "AI Banking Solutions | Intelligent Banking Platforms | Elchai Group",
-      "description": "AI for banking — customer onboarding, loan processing, risk assessment, and personalized banking experiences. Elchai Group builds banking AI that scales.",
-      "h1": "AI Banking Solutions",
-      "keywords": ["AI banking solutions", "AI for banks", "intelligent banking"],
-      "breadcrumb": ["Home", "AI", "Banking AI"]
-    },
-    "/ai-education-software": {
-      "slug": "/ai-education-software",
-      "title": "AI Education Software | EdTech AI Solutions | Elchai Group",
-      "description": "AI for education — adaptive learning, auto-grading, AI tutors, and content personalization. Elchai Group builds EdTech AI that teaches smarter.",
-      "h1": "AI Education Software",
-      "keywords": ["AI education software", "EdTech AI", "AI tutoring platform"],
-      "breadcrumb": ["Home", "AI", "Education AI"]
-    },
-    "/ai-real-estate": {
-      "slug": "/ai-real-estate",
-      "title": "AI Real Estate Solutions | Property Tech AI | Elchai Group",
-      "description": "AI for real estate — property valuation, lead scoring, virtual tours, and market analysis. Elchai Group builds PropTech AI for agents, developers, and investors.",
-      "h1": "AI Real Estate Solutions",
-      "keywords": ["AI real estate", "PropTech AI", "AI property valuation"],
-      "breadcrumb": ["Home", "AI", "Real Estate AI"]
-    },
+
     "/generative-ai-development": {
       "slug": "/generative-ai-development",
-      "title": "Generative AI Development | Custom GenAI Solutions | Elchai Group",
-      "description": "Build generative AI applications — text, image, code, and video generation tailored to your business. Elchai Group develops GenAI that creates.",
+      "title": "Generative AI Development",
+      "description": "Generative AI applications and agents — from chat experiences to multi-modal content production. Built on OpenAI, Anthropic and open-weight models.",
       "h1": "Generative AI Development",
-      "keywords": ["generative AI development", "GenAI solutions", "custom generative AI"],
-      "breadcrumb": ["Home", "AI", "Generative AI"]
+      "keywords": ["generative ai development", "gpt development", "llm application"],
+      "breadcrumb": ["Home", "Generative AI"]
+    },
+
+    "/llm-development-partner": {
+      "slug": "/llm-development-partner",
+      "title": "LLM Development Partner",
+      "description": "Fine-tune, evaluate and host LLMs. RAG pipelines, function calling, eval harnesses and observability. Stack-agnostic.",
+      "h1": "LLM Development Partner",
+      "keywords": ["llm development", "llm fine-tuning", "custom language model"],
+      "breadcrumb": ["Home", "LLM Development"]
+    },
+
+    "/rag-development-company": {
+      "slug": "/rag-development-company",
+      "title": "RAG Development Company",
+      "description": "Production retrieval-augmented generation: vector and hybrid retrieval, re-ranking, citations and evals. Reduce hallucination, increase grounding.",
+      "h1": "RAG Development Services",
+      "keywords": ["rag development", "retrieval augmented generation", "vector search"],
+      "breadcrumb": ["Home", "RAG Development"]
+    },
+
+    "/computer-vision-software-development": {
+      "slug": "/computer-vision-software-development",
+      "title": "Computer Vision Development",
+      "description": "Object detection, OCR, defect inspection, video analytics and real-time tracking. Production CV pipelines from Elchai.",
+      "h1": "Computer Vision Development",
+      "keywords": ["computer vision development", "cv software", "image recognition"],
+      "breadcrumb": ["Home", "Computer Vision"]
+    },
+
+    "/machine-learning-development": {
+      "slug": "/machine-learning-development",
+      "title": "Machine Learning Development",
+      "description": "Custom ML models for forecasting, classification, recommendation and anomaly detection. Production MLOps from data to deployment.",
+      "h1": "Machine Learning Development",
+      "keywords": ["machine learning development services", "ml model development", "mlops"],
+      "breadcrumb": ["Home", "Machine Learning"]
+    },
+
+    "/rpa-development-partner": {
+      "slug": "/rpa-development-partner",
+      "title": "RPA Development Partner",
+      "description": "Robotic Process Automation with AI-assisted bots. Document workflows, ERP integrations and audit-ready logs.",
+      "h1": "RPA Development Services",
+      "keywords": ["rpa development services", "process automation", "uipath developer"],
+      "breadcrumb": ["Home", "RPA Development"]
+    },
+
+    "/ai-voice-assist": {
+      "slug": "/ai-voice-assist",
+      "title": "AI Voice Assistant Development",
+      "description": "Voice-first AI assistants with low-latency speech, multilingual support and brand-aligned persona. Built for support and sales.",
+      "h1": "AI Voice Assistant Development",
+      "keywords": ["ai voice assistant development", "voice ai", "speech ai"],
+      "breadcrumb": ["Home", "AI Voice Assistant"]
+    },
+
+    "/ai-fintech-solutions": {
+      "slug": "/ai-fintech-solutions",
+      "title": "AI for Fintech — Banking, Payments, Compliance",
+      "description": "AI agents for KYC, fraud, underwriting and treasury. UAE-compliant (CBUAE/DFSA), bank-grade security, model-risk governance built-in.",
+      "h1": "AI Fintech Solutions",
+      "keywords": ["ai fintech", "ai for banking", "ai compliance"],
+      "breadcrumb": ["Home", "AI Fintech"]
+    },
+
+    "/ai-banking-solutions": {
+      "slug": "/ai-banking-solutions",
+      "title": "AI Banking Solutions",
+      "description": "AI for retail and commercial banks — KYC, fraud, document automation and personalization. Production-grade with audit-ready logs.",
+      "h1": "AI Banking Solutions",
+      "keywords": ["ai banking solutions", "banking ai", "ai for banks"],
+      "breadcrumb": ["Home", "AI Banking"]
+    },
+
+    "/ai-logistics-software": {
+      "slug": "/ai-logistics-software",
+      "title": "AI Logistics Software",
+      "description": "Routing, demand forecasting, last-mile optimization and warehouse vision systems. AI logistics built by Elchai.",
+      "h1": "AI Logistics Software",
+      "keywords": ["ai logistics software", "logistics ai", "supply chain ai"],
+      "breadcrumb": ["Home", "AI Logistics"]
+    },
+
+    "/ai-education-software": {
+      "slug": "/ai-education-software",
+      "title": "AI Education Software",
+      "description": "Adaptive learning, tutoring agents, grading automation and content generation. AI for K-12, higher-ed and corporate training.",
+      "h1": "AI Education Software",
+      "keywords": ["ai education software", "edtech ai", "ai tutor"],
+      "breadcrumb": ["Home", "AI Education"]
+    },
+
+    "/ai-real-estate": {
+      "slug": "/ai-real-estate",
+      "title": "AI Real Estate Solutions — Dubai",
+      "description": "AI for listings, lead routing, valuations and CRM. UAE-focused AI for brokers, developers and proptech. Built by Elchai in Dubai.",
+      "h1": "AI Real Estate Solutions",
+      "keywords": ["ai real estate dubai", "ai for proptech", "real estate ai"],
+      "breadcrumb": ["Home", "AI Real Estate"]
+    },
+
+    "/mobile-app-development": {
+      "slug": "/mobile-app-development",
+      "title": "Mobile App Development Company in Dubai",
+      "description": "iOS, Android and cross-platform apps. SwiftUI, Kotlin, React Native and Flutter. From product discovery to App Store launch.",
+      "h1": "Mobile App Development",
+      "keywords": ["mobile app development Dubai", "ios development uae", "android development dubai"],
+      "breadcrumb": ["Home", "Mobile App Development"]
+    }
+  },
+
+  "pending": {
+    "_doc": "Routes declared in the original SEO config that DON'T exist in src/app yet. Build the page first, then move the entry up into `pages`.",
+    "/services": {
+      "title": "AI & Blockchain Development Services",
+      "description": "Full-stack AI, blockchain, smart-contract, DeFi and Web3 services."
+    },
+    "/products": {
+      "title": "Our Products — Tarality, BB-Estate, Blyncc",
+      "description": "Explore Elchai Group's product ecosystem."
+    },
+    "/products/tarality": {
+      "title": "Tarality | Crypto Exchange Platform",
+      "description": "Tarality is a cryptocurrency exchange built by Elchai Group."
+    },
+    "/products/bb-estate": {
+      "title": "BB-Estate | Tokenized Real Estate Investment",
+      "description": "Fractional real estate investment via blockchain tokenization."
+    },
+    "/products/blyncc": {
+      "title": "Blyncc | Smart Payment Solutions",
+      "description": "Smart payments bridging traditional finance and crypto."
+    },
+    "/subsidiaries": {
+      "title": "Subsidiaries & Ventures",
+      "description": "Elchai Group's ecosystem of companies."
+    },
+    "/subsidiaries/center-ai-vision": {
+      "title": "Center AI Vision (CAV) — AI Infrastructure",
+      "description": "Sovereign AI infrastructure and GPU compute."
+    },
+    "/subsidiaries/dubai-ai-city": {
+      "title": "Dubai AI City — Sovereign AI Hub",
+      "description": "Sovereign AI infrastructure project by Elchai Group."
+    },
+    "/subsidiaries/digital-meta-bank": {
+      "title": "Digital Meta Bank — Metaverse Banking",
+      "description": "Fiat, crypto and DeFi in one metaverse-enabled platform."
+    },
+    "/contact": {
+      "title": "Contact Elchai Group",
+      "description": "Free consultation for AI and blockchain projects."
+    },
+    "/careers": {
+      "title": "Careers at Elchai Group",
+      "description": "Join Elchai Group — AI engineers, blockchain developers, Web3 builders."
+    },
+    "/partners": {
+      "title": "Partners & Strategic Alliances",
+      "description": "Strategic partners across blockchain, AI and digital transformation."
     }
   }
 }
