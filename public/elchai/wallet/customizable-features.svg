@@ -1,0 +1,19 @@
+<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M28.418 20.288a3.125 3.125 0 0 0 2.206 5.337H37.5v-6.25h-6.875a3.097 3.097 0 0 0-2.206.913zm4.956 2.212a2.125 2.125 0 1 1-4.25 0 2.125 2.125 0 0 1 4.25 0z" fill="url(#stfiszzmga)"/>
+    <path d="M33.75 9.688H6.25a3.764 3.764 0 0 0-3.75 3.75v6.568h6.425l1.106-3.325a.626.626 0 0 1 .594-.425h5.738a1.874 1.874 0 1 1 0 1.25h-5.288l-1.106 3.319a.632.632 0 0 1-.594.431H2.5v1.25h11.988a1.874 1.874 0 1 1 0 1.25H2.5v1.25h6.875a.626.626 0 0 1 .594.425l1.106 3.325h5.288a1.874 1.874 0 1 1 0 1.25h-5.738a.631.631 0 0 1-.594-.431l-1.106-3.319H2.5v5.306a3.753 3.753 0 0 0 3.75 3.75h27.5a3.753 3.753 0 0 0 3.75-3.75v-4.687h-6.875A4.38 4.38 0 0 1 26.25 22.5a4.385 4.385 0 0 1 4.375-4.375H37.5v-4.688a3.753 3.753 0 0 0-3.75-3.75z" fill="url(#ja7oob9blb)"/>
+    <path d="M6.25 8.438h26.875a3.753 3.753 0 0 0-3.75-3.75H6.25a3.753 3.753 0 0 0-3.75 3.75v1.7a4.97 4.97 0 0 1 3.75-1.7z" fill="url(#b0gawydamc)"/>
+    <defs>
+        <linearGradient id="stfiszzmga" x1="27.5" y1="22.5" x2="37.499" y2="22.5" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#52B8FF"/>
+            <stop offset="1" stop-color="#B07CFF"/>
+        </linearGradient>
+        <linearGradient id="ja7oob9blb" x1="2.5" y1="22.5" x2="37.5" y2="22.5" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#52B8FF"/>
+            <stop offset="1" stop-color="#B07CFF"/>
+        </linearGradient>
+        <linearGradient id="b0gawydamc" x1="2.5" y1="7.412" x2="33.125" y2="7.412" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#52B8FF"/>
+            <stop offset="1" stop-color="#B07CFF"/>
+        </linearGradient>
+    </defs>
+</svg>

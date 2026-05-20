@@ -1,5 +1,6 @@
 import { Hero } from "@/components/sections/Hero";
 import { Nav } from "@/components/sections/Nav";
+import { TickerTape } from "@/components/sections/TickerTape";
 import { TrustStrip } from "@/components/sections/TrustStrip";
 import { Awards } from "@/components/sections/Awards";
 import { Stats } from "@/components/sections/Stats";
@@ -49,7 +50,9 @@ export default function HomePage() {
         <Services />
         <CaseStudies />
         <Industries />
+        <TickerTape />
         <MarqueeBand />
+        <TickerTape />
         <WhyElchai />
         <Events />
         <Partners />

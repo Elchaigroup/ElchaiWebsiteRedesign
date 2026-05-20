@@ -14,10 +14,21 @@
  * pattern, not a user-input injection vector.
  */
 
+import Image from "next/image";
 import Link from "next/link";
 import { Reveal } from "@/components/primitives/Reveal";
 import { Parallax } from "@/components/primitives/Parallax";
 import { Accordion } from "@/components/ui/accordion";
+import { CaseStudiesTabbed } from "@/components/sections/CaseStudiesTabbed";
+import { ChallengesSlider } from "@/components/sections/ChallengesSlider";
+import { FeatureSection } from "@/components/sections/FeatureSection";
+import { ProcessGrid } from "@/components/sections/ProcessGrid";
+import { ProcessSlider } from "@/components/sections/ProcessSlider";
+import { ProductDemo } from "@/components/sections/ProductDemo";
+import { TechStackTabbed } from "@/components/sections/TechStackTabbed";
+import { TrustedPartnersGrid } from "@/components/sections/TrustedPartnersGrid";
+import { IndustryLeaderBanner } from "@/components/sections/IndustryLeaderBanner";
+import { WhyChooseSlider } from "@/components/sections/WhyChooseSlider";
 import type { ServiceDetailContent } from "@/lib/service-detail-types";
 
 function Eyebrow({ children }: { children: React.ReactNode }) {
@@ -44,7 +55,23 @@ export function ServiceDetail({
   content: ServiceDetailContent;
   slug: string;
 }) {
-  const { hero, stats, capabilities, midBanner, solutions, industries, challenges, impact, whyChoose, techStack, process, faq, closing, extraBanners } = content;
+  const { hero, stats, capabilities, midBanner, solutions, industries, challenges, impact, whyChoose, techStack, process, caseStudies, productDemo, faq, closing, extraBanners, featureSections } = content;
+
+  // Render any featureSections at a named anchor — covers smart-contract
+  // page bands like "Leading Partner", "Ethereum Services", "Hyperledger
+  // Services", and "Smart Contract Audit".
+  function FeatureBands({ at }: { at: NonNullable<typeof featureSections>[number]["position"] }) {
+    if (!featureSections) return null;
+    const matching = featureSections.filter((b) => b.position === at);
+    if (matching.length === 0) return null;
+    return (
+      <>
+        {matching.map((band, i) => (
+          <FeatureSection key={`${band.heading}-${i}`} data={band} />
+        ))}
+      </>
+    );
+  }
 
   // Tiny helper — renders any extraBanners whose position matches the
   // current anchor. Returns null when nothing matches so it can sit
@@ -162,9 +189,48 @@ export function ServiceDetail({
       )}
       {/* ─────────── Hero ─────────── */}
       <section
-        className="relative pt-40 pb-24 lg:pt-48 lg:pb-32"
+        className="relative pt-40 pb-24 lg:pt-48 lg:pb-32 overflow-hidden"
         aria-label={hero.heading}
       >
+        {hero.image && (
+          <div aria-hidden="true" className="absolute inset-0 -z-10">
+            <Image
+              src={hero.image}
+              alt=""
+              fill
+              sizes="100vw"
+              priority
+              unoptimized
+              className="object-cover object-center scale-[1.04] animate-[heroFloat_22s_ease-in-out_infinite]"
+            />
+            {/* Cinematic vignette + colour cast */}
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_28%_42%,transparent_0%,rgba(8,8,12,0.78)_55%,rgba(8,8,12,0.94)_85%)]" />
+            <div className="absolute inset-0 bg-gradient-to-b from-[rgba(8,8,12,0.55)] via-transparent to-[rgba(8,8,12,0.92)]" />
+            {/* Drifting ambient orbs — slow, hypnotic, decorative only */}
+            <div
+              className="pointer-events-none absolute -top-24 -left-16 w-[520px] h-[520px] rounded-full blur-[120px] opacity-65 animate-[orbDriftA_18s_ease-in-out_infinite]"
+              style={{
+                background:
+                  "radial-gradient(circle, rgba(82,184,255,0.55), rgba(82,184,255,0.0) 70%)",
+              }}
+            />
+            <div
+              className="pointer-events-none absolute bottom-[-12rem] right-[-6rem] w-[640px] h-[640px] rounded-full blur-[140px] opacity-55 animate-[orbDriftB_24s_ease-in-out_infinite]"
+              style={{
+                background:
+                  "radial-gradient(circle, rgba(176,124,255,0.55), rgba(176,124,255,0.0) 70%)",
+              }}
+            />
+            {/* Subtle scan-line / grain to kill banding */}
+            <div
+              className="pointer-events-none absolute inset-0 mix-blend-overlay opacity-[0.06]"
+              style={{
+                backgroundImage:
+                  "repeating-linear-gradient(0deg, rgba(255,255,255,0.6) 0 1px, transparent 1px 3px)",
+              }}
+            />
+          </div>
+        )}
         <div className="section-box mx-auto max-w-[1440px] px-6 sm:px-12 lg:px-20 py-14 lg:py-20">
           <Reveal>
             <nav
@@ -188,7 +254,15 @@ export function ServiceDetail({
           <Reveal delay={0.18}>
             <h1
               className="mt-8 font-[var(--font-display)] font-bold leading-[1.02]
-                         tracking-[-0.028em] text-[clamp(38px,6.0vw,92px)] max-w-[1080px]"
+                         tracking-[-0.028em] text-[clamp(38px,6.0vw,92px)] max-w-[1080px]
+                         drop-shadow-[0_2px_30px_rgba(12,16,40,0.55)]"
+              style={{
+                backgroundImage:
+                  "linear-gradient(120deg, #ffffff 0%, #e6efff 38%, #f2e6ff 72%, #ffffff 100%)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+              }}
             >
               {hero.heading}
             </h1>
@@ -228,16 +302,106 @@ export function ServiceDetail({
             </Reveal>
           )}
 
+          {hero.chips && hero.chips.length > 0 && (
+            <Reveal delay={0.34}>
+              <ul className="mt-8 flex flex-wrap gap-2 list-none p-0 m-0">
+                {hero.chips.map((c, i) => (
+                  <li
+                    key={i}
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/15 bg-white/[0.05] text-[12.5px] text-white/85"
+                  >
+                    <span
+                      aria-hidden="true"
+                      className="w-1.5 h-1.5 rounded-full"
+                      style={{ background: "linear-gradient(135deg, #52b8ff, #b07cff)" }}
+                    />
+                    {c}
+                  </li>
+                ))}
+              </ul>
+            </Reveal>
+          )}
+
+          {hero.bullets && hero.bullets.length > 0 && (
+            <Reveal delay={0.46}>
+              <ul className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 max-w-[1080px] list-none p-0 m-0">
+                {hero.bullets.map((b, i) => (
+                  <li key={i} className="flex items-start gap-3 rounded-xl border border-white/10 bg-[rgba(10,10,14,0.55)] p-4">
+                    <span
+                      aria-hidden="true"
+                      className="shrink-0 w-6 h-6 rounded-full flex items-center justify-center mt-0.5"
+                      style={{
+                        background: "linear-gradient(135deg, #52b8ff, #b07cff)",
+                        boxShadow: "0 0 12px rgba(82,184,255,0.35)",
+                      }}
+                    >
+                      <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+                        <path d="M3.5 8.5l3 3 6-7" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </span>
+                    <p className="text-[13.5px] leading-[1.55] text-white/85">{b}</p>
+                  </li>
+                ))}
+              </ul>
+            </Reveal>
+          )}
+
           {stats && stats.length > 0 && (
             <Reveal delay={0.48}>
-              <div className="mt-20 grid grid-cols-2 sm:grid-cols-4 gap-px bg-white/[0.06] rounded-2xl overflow-hidden max-w-[940px]">
-                {stats.map((s) => (
-                  <div key={s.label} className="bg-[rgba(10,10,14,0.6)] p-6 lg:p-8">
-                    <div className="font-[var(--font-display)] font-bold leading-none tracking-[-0.02em] text-[clamp(34px,3.6vw,52px)] text-white">
-                      {s.value}
-                    </div>
-                    <div className="mt-3 text-[12px] leading-[1.45] text-white/55 max-w-[160px]">
-                      {s.label}
+              <div className={`mt-20 grid grid-cols-2 ${stats.length === 5 ? "sm:grid-cols-5" : "sm:grid-cols-4"} gap-3 lg:gap-4 max-w-[1100px]`}>
+                {stats.map((s, i) => (
+                  <div
+                    key={s.label}
+                    className="group relative rounded-2xl p-[1px] overflow-hidden hover:-translate-y-1 transition-transform duration-500"
+                    style={{
+                      background:
+                        "linear-gradient(135deg, rgba(82,184,255,0.30), rgba(176,124,255,0.18) 40%, rgba(255,255,255,0.05) 70%, rgba(255,255,255,0.03))",
+                    }}
+                  >
+                    <div
+                      className="relative h-full rounded-[calc(1rem-1px)] overflow-hidden p-5 lg:p-6 flex flex-col gap-3"
+                      style={{
+                        background:
+                          "radial-gradient(circle at 100% 0%, rgba(176,124,255,0.10), transparent 55%), radial-gradient(circle at 0% 100%, rgba(82,184,255,0.10), transparent 55%), #0B0B12",
+                      }}
+                    >
+                      <span
+                        aria-hidden="true"
+                        className="pointer-events-none absolute top-3 right-3 w-1.5 h-1.5 rounded-full opacity-50 group-hover:opacity-100 transition-opacity duration-500"
+                        style={{ background: "linear-gradient(135deg, #52b8ff, #b07cff)", boxShadow: "0 0 10px rgba(82,184,255,0.55)" }}
+                      />
+                      {s.icon && (
+                        <div className="relative">
+                          <span
+                            aria-hidden="true"
+                            className="absolute inset-0 -translate-x-2 -translate-y-2 w-20 h-20 rounded-full blur-2xl opacity-60 group-hover:opacity-100 transition-opacity duration-500"
+                            style={{ background: "radial-gradient(circle, rgba(82,184,255,0.45), rgba(176,124,255,0.2) 50%, transparent 75%)" }}
+                          />
+                          <div
+                            className="relative w-12 h-12 rounded-xl p-2 flex items-center justify-center"
+                            style={{
+                              background: "linear-gradient(135deg, rgba(82,184,255,0.22), rgba(176,124,255,0.22))",
+                              boxShadow: "0 0 0 1px rgba(255,255,255,0.08), inset 0 1px 0 rgba(255,255,255,0.10), 0 8px 22px -6px rgba(82,184,255,0.32)",
+                            }}
+                          >
+                            <Image src={s.icon} alt="" width={40} height={40} unoptimized className="object-contain w-full h-full" />
+                          </div>
+                        </div>
+                      )}
+                      <div
+                        className="relative font-[var(--font-display)] font-bold leading-none tracking-[-0.025em] text-[clamp(32px,3.6vw,52px)]"
+                        style={{
+                          background: "linear-gradient(135deg, #ffffff, #cbd8ff 60%, #d6cdff)",
+                          WebkitBackgroundClip: "text",
+                          WebkitTextFillColor: "transparent",
+                        }}
+                      >
+                        {s.value}
+                      </div>
+                      <div className="relative h-px w-8 bg-gradient-to-r from-brand-sky to-brand-violet rounded-full" />
+                      <div className="relative text-[12px] leading-[1.45] text-white/72">
+                        {s.label}
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -246,6 +410,8 @@ export function ServiceDetail({
           )}
         </div>
       </section>
+
+      <FeatureBands at="after-hero" />
 
       {/* ─────────── Capabilities ─────────── */}
       {capabilities && (
@@ -256,7 +422,7 @@ export function ServiceDetail({
             )}
             <div className="mt-6 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8">
               <Reveal delay={0.10}>
-                <h2 className="font-[var(--font-display)] font-bold leading-[1.04] tracking-[-0.025em] text-[clamp(28px,3.8vw,56px)] max-w-[760px]">
+                <h2 className="font-[var(--font-display)] font-bold leading-[1.04] tracking-[-0.025em] text-[clamp(28px,3.8vw,56px)] max-w-[760px] section-accent">
                   {capabilities.heading}
                 </h2>
               </Reveal>
@@ -269,24 +435,98 @@ export function ServiceDetail({
               )}
             </div>
 
-            <div className="mt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-white/[0.06] rounded-2xl overflow-hidden">
-              {capabilities.items.map((it, i) => (
-                <Reveal key={it.title} delay={0.18 + (i % 6) * 0.04}>
-                  <div className="h-full bg-[rgba(10,10,14,0.6)] p-7 lg:p-8 flex flex-col gap-4">
-                    <span className="font-[var(--font-mono)] text-[10px] tracking-[0.22em] text-brand-sky uppercase">
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
-                    <h3 className="font-[var(--font-display)] font-bold tracking-[-0.012em] text-[clamp(17px,1.4vw,20px)] text-white">
-                      {it.title}
-                    </h3>
-                    <p className="text-[13.5px] leading-[1.55] text-white/65">{it.desc}</p>
-                  </div>
-                </Reveal>
-              ))}
+            <div className="mt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5">
+              {capabilities.items.map((it, i) => {
+                const isPhoto = capabilities.displayStyle === "photo";
+                return (
+                  <Reveal key={it.title} delay={0.18 + (i % 6) * 0.04}>
+                    <div
+                      className="group relative h-full rounded-2xl p-[1px] overflow-hidden hover:-translate-y-1 transition-transform duration-500"
+                      style={{
+                        background:
+                          "linear-gradient(135deg, rgba(82,184,255,0.30), rgba(176,124,255,0.16) 38%, rgba(255,255,255,0.05) 65%, rgba(255,255,255,0.03))",
+                      }}
+                    >
+                      <div
+                        className={[
+                          "relative h-full rounded-[calc(1rem-1px)] overflow-hidden flex flex-col",
+                          isPhoto ? "gap-0" : "p-7 lg:p-8 gap-5",
+                        ].join(" ")}
+                        style={{
+                          background:
+                            "radial-gradient(circle at 100% 0%, rgba(176,124,255,0.10), transparent 55%), radial-gradient(circle at 0% 100%, rgba(82,184,255,0.10), transparent 55%), #0B0B12",
+                        }}
+                      >
+                        {/* Hover wash + corner accent */}
+                        <div
+                          aria-hidden="true"
+                          className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                          style={{
+                            background:
+                              "radial-gradient(circle at 0% 0%, rgba(82,184,255,0.18), transparent 55%), radial-gradient(circle at 100% 100%, rgba(176,124,255,0.18), transparent 55%)",
+                          }}
+                        />
+                        <span
+                          aria-hidden="true"
+                          className="pointer-events-none absolute top-3 right-3 w-1.5 h-1.5 rounded-full opacity-60 group-hover:opacity-100 transition-opacity duration-500"
+                          style={{ background: "linear-gradient(135deg, #52b8ff, #b07cff)", boxShadow: "0 0 12px rgba(82,184,255,0.55)" }}
+                        />
+
+                        {isPhoto && it.icon ? (
+                          <div className="relative aspect-[5/4] w-full overflow-hidden">
+                            <Image
+                              src={it.icon}
+                              alt={it.title}
+                              fill
+                              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                              unoptimized
+                              className="object-cover group-hover:scale-[1.04] transition-transform duration-500"
+                            />
+                            <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[rgba(10,10,14,0.85)] to-transparent" />
+                          </div>
+                        ) : it.icon ? (
+                          <div className="relative">
+                            <span
+                              aria-hidden="true"
+                              className="absolute inset-0 -translate-x-3 -translate-y-3 w-24 h-24 rounded-full blur-2xl opacity-50 group-hover:opacity-100 transition-opacity duration-500"
+                              style={{ background: "radial-gradient(circle, rgba(82,184,255,0.45), rgba(176,124,255,0.2) 50%, transparent 75%)" }}
+                            />
+                            <div
+                              className="relative w-14 h-14 rounded-xl p-2.5 flex items-center justify-center
+                                         group-hover:scale-[1.04] transition-transform duration-500"
+                              style={{
+                                background: "linear-gradient(135deg, rgba(82,184,255,0.22), rgba(176,124,255,0.22))",
+                                boxShadow:
+                                  "0 0 0 1px rgba(255,255,255,0.08), inset 0 1px 0 rgba(255,255,255,0.10), 0 10px 28px -8px rgba(82,184,255,0.35)",
+                              }}
+                            >
+                              <Image src={it.icon} alt="" width={48} height={48} unoptimized className="object-contain w-full h-full" />
+                            </div>
+                          </div>
+                        ) : (
+                          <span className="font-[var(--font-mono)] text-[10px] tracking-[0.22em] text-brand-sky uppercase">
+                            {String(i + 1).padStart(2, "0")}
+                          </span>
+                        )}
+
+                        <div className={isPhoto ? "relative p-6 flex flex-col gap-3" : "contents"}>
+                          <div className="relative h-px w-10 bg-gradient-to-r from-brand-sky to-brand-violet rounded-full" />
+                          <h3 className="relative font-[var(--font-display)] font-bold tracking-[-0.012em] text-[clamp(16px,1.3vw,19px)] text-white">
+                            {it.title}
+                          </h3>
+                          <p className="relative text-[13px] leading-[1.6] text-white/72">{it.desc}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </Reveal>
+                );
+              })}
             </div>
           </div>
         </section>
       )}
+
+      <FeatureBands at="after-capabilities" />
 
       {/* ─────────── Mid CTA Banner ─────────── */}
       {midBanner && (
@@ -316,7 +556,7 @@ export function ServiceDetail({
             )}
             <div className="mt-6 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8">
               <Reveal delay={0.10}>
-                <h2 className="font-[var(--font-display)] font-bold leading-[1.04] tracking-[-0.025em] text-[clamp(28px,3.8vw,56px)] max-w-[760px]">
+                <h2 className="font-[var(--font-display)] font-bold leading-[1.04] tracking-[-0.025em] text-[clamp(28px,3.8vw,56px)] max-w-[760px] section-accent">
                   {solutions.heading}
                 </h2>
               </Reveal>
@@ -329,20 +569,45 @@ export function ServiceDetail({
               )}
             </div>
 
-            <div className="mt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-white/[0.06] rounded-2xl overflow-hidden">
-              {solutions.items.map((it, i) => (
-                <Reveal key={it.title} delay={0.18 + (i % 4) * 0.04}>
-                  <div className="h-full bg-[rgba(10,10,14,0.6)] p-7 lg:p-8 flex flex-col gap-4">
-                    <span className="font-[var(--font-mono)] text-[10px] tracking-[0.22em] text-brand-sky uppercase">
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
-                    <h3 className="font-[var(--font-display)] font-bold tracking-[-0.012em] text-[clamp(17px,1.4vw,20px)] text-white">
-                      {it.title}
-                    </h3>
-                    <p className="text-[13.5px] leading-[1.55] text-white/65">{it.desc}</p>
-                  </div>
-                </Reveal>
-              ))}
+            <div className="mt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {solutions.items.map((it, i) => {
+                const isPhoto = solutions.displayStyle === "photo";
+                return (
+                  <Reveal key={it.title} delay={0.18 + (i % 3) * 0.05}>
+                    <div className={[
+                      "group relative h-full rounded-2xl border border-white/10 bg-[rgba(10,10,14,0.55)] flex flex-col overflow-hidden hover:border-white/25 transition-all duration-300",
+                      isPhoto ? "gap-0" : "p-7 lg:p-8 gap-5",
+                    ].join(" ")}>
+                      <div
+                        aria-hidden="true"
+                        className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                        style={{ background: "radial-gradient(circle at 0% 0%, rgba(82,184,255,0.10), transparent 60%), radial-gradient(circle at 100% 100%, rgba(176,124,255,0.10), transparent 60%)" }}
+                      />
+                      {isPhoto && it.image ? (
+                        <div className="relative aspect-[5/4] w-full overflow-hidden">
+                          <Image src={it.image} alt={it.title} fill sizes="(max-width: 640px) 100vw, 33vw" unoptimized className="object-cover group-hover:scale-[1.04] transition-transform duration-500" />
+                          <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[rgba(10,10,14,0.85)] to-transparent" />
+                        </div>
+                      ) : it.image ? (
+                        <div className="relative w-16 h-16 rounded-full flex items-center justify-center"
+                             style={{ background: "radial-gradient(circle at 40% 30%, rgba(82,184,255,0.22), rgba(176,124,255,0.16) 70%, transparent)", boxShadow: "0 0 0 1px rgba(255,255,255,0.08)" }}>
+                          <Image src={it.image} alt={it.title} width={48} height={48} unoptimized className="object-contain max-w-full max-h-full" />
+                        </div>
+                      ) : (
+                        <span className="font-[var(--font-mono)] text-[10px] tracking-[0.22em] text-brand-sky uppercase">
+                          {String(i + 1).padStart(2, "0")}
+                        </span>
+                      )}
+                      <div className={isPhoto ? "relative p-6 flex flex-col gap-3" : "contents"}>
+                        <h3 className="relative font-[var(--font-display)] font-bold tracking-[-0.012em] text-[clamp(16px,1.3vw,19px)] text-white">
+                          {it.title}
+                        </h3>
+                        <p className="relative text-[13px] leading-[1.6] text-white/70">{it.desc}</p>
+                      </div>
+                    </div>
+                  </Reveal>
+                );
+              })}
             </div>
           </div>
         </section>
@@ -357,7 +622,7 @@ export function ServiceDetail({
             )}
             <div className="mt-6 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8">
               <Reveal delay={0.10}>
-                <h2 className="font-[var(--font-display)] font-bold leading-[1.04] tracking-[-0.025em] text-[clamp(28px,3.8vw,56px)] max-w-[760px]">
+                <h2 className="font-[var(--font-display)] font-bold leading-[1.04] tracking-[-0.025em] text-[clamp(28px,3.8vw,56px)] max-w-[760px] section-accent">
                   {industries.heading}
                 </h2>
               </Reveal>
@@ -370,17 +635,38 @@ export function ServiceDetail({
               )}
             </div>
 
-            <div className="mt-14 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6">
+            <div className="mt-14 grid grid-cols-1 sm:grid-cols-2 gap-5 lg:gap-6">
               {industries.items.map((it, i) => (
                 <Reveal key={it.title} delay={0.16 + (i % 4) * 0.05}>
-                  <div className="h-full rounded-2xl glass glass-edge p-6 lg:p-7 flex flex-col gap-3">
-                    <span className="font-[var(--font-mono)] text-[10px] tracking-[0.22em] text-brand-sky uppercase">
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
-                    <h3 className="font-[var(--font-display)] font-bold tracking-[-0.012em] text-[15px] text-white">
-                      {it.title}
-                    </h3>
-                    {it.desc && <p className="text-[12.5px] leading-[1.55] text-white/65">{it.desc}</p>}
+                  <div className="group relative h-full rounded-2xl border border-white/10 bg-[rgba(10,10,14,0.55)] p-5 lg:p-6 flex gap-5 items-start overflow-hidden hover:border-white/25 transition-all duration-300">
+                    <div
+                      aria-hidden="true"
+                      className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                      style={{ background: "radial-gradient(circle at 0% 0%, rgba(82,184,255,0.10), transparent 60%), radial-gradient(circle at 100% 100%, rgba(176,124,255,0.10), transparent 60%)" }}
+                    />
+                    {it.image ? (
+                      <div className="relative shrink-0 w-[120px] h-[120px] lg:w-[140px] lg:h-[140px] overflow-hidden"
+                           style={{ clipPath: "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)" }}>
+                        <Image
+                          src={it.image}
+                          alt={it.title}
+                          fill
+                          sizes="140px"
+                          unoptimized
+                          className="object-cover group-hover:scale-[1.06] transition-transform duration-500"
+                        />
+                      </div>
+                    ) : (
+                      <span className="font-[var(--font-mono)] text-[10px] tracking-[0.22em] text-brand-sky uppercase">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                    )}
+                    <div className="relative flex flex-col gap-2 min-w-0">
+                      <h3 className="font-[var(--font-display)] font-bold tracking-[-0.012em] text-[clamp(16px,1.3vw,19px)] text-white">
+                        {it.title}
+                      </h3>
+                      {it.desc && <p className="text-[13px] leading-[1.6] text-white/70">{it.desc}</p>}
+                    </div>
                   </div>
                 </Reveal>
               ))}
@@ -390,39 +676,55 @@ export function ServiceDetail({
       )}
 
       <ExtraBanners at="after-industries" />
+      <FeatureBands at="after-industries" />
 
       {/* ─────────── Challenges (where projects get stuck) ─────────── */}
-      {challenges && (
+      {challenges && challenges.displayStyle === "slider" && (
+        <ChallengesSlider data={challenges} />
+      )}
+      {challenges && challenges.displayStyle !== "slider" && (
         <section className="relative py-24 lg:py-32" aria-label={challenges.heading}>
           <div className="section-box mx-auto max-w-[1440px] px-6 sm:px-12 lg:px-20 py-14 lg:py-20">
-            {challenges.eyebrow && (
-              <Reveal><Eyebrow>{challenges.eyebrow}</Eyebrow></Reveal>
-            )}
-            <div className="mt-6 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8">
+            <div className="text-center">
+              {challenges.eyebrow && (
+                <Reveal>
+                  <div className="flex justify-center">
+                    <Eyebrow>{challenges.eyebrow}</Eyebrow>
+                  </div>
+                </Reveal>
+              )}
               <Reveal delay={0.10}>
-                <h2 className="font-[var(--font-display)] font-bold leading-[1.04] tracking-[-0.025em] text-[clamp(28px,3.8vw,56px)] max-w-[760px]">
+                <h2 className="mt-6 font-[var(--font-display)] font-bold leading-[1.04] tracking-[-0.025em] text-[clamp(30px,4vw,56px)] max-w-[900px] mx-auto">
                   {challenges.heading}
                 </h2>
               </Reveal>
               {challenges.body && (
                 <Reveal delay={0.20}>
-                  <p className="text-[15px] leading-[1.65] text-white/65 max-w-[460px]">
+                  <p className="mt-6 text-[clamp(15px,1.2vw,17px)] leading-[1.65] text-white/85 max-w-[720px] mx-auto">
                     {challenges.body}
                   </p>
                 </Reveal>
               )}
             </div>
-            <div className="mt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-white/[0.06] rounded-2xl overflow-hidden">
+            <div className="mt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {challenges.items.map((it, i) => (
                 <Reveal key={it.title} delay={0.18 + (i % 3) * 0.05}>
-                  <div className="h-full bg-[rgba(10,10,14,0.6)] p-7 lg:p-8 flex flex-col gap-4">
-                    <span className="font-[var(--font-mono)] text-[10px] tracking-[0.22em] text-brand-sky uppercase">
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
-                    <h3 className="font-[var(--font-display)] font-bold tracking-[-0.012em] text-[clamp(17px,1.4vw,20px)] text-white">
-                      {it.title}
-                    </h3>
-                    <p className="text-[13.5px] leading-[1.55] text-white/65">{it.desc}</p>
+                  <div className="group relative h-full rounded-2xl border border-white/10 bg-[rgba(10,10,14,0.55)] flex flex-col overflow-hidden hover:border-white/25 transition-all duration-300">
+                    {it.image && (
+                      <div className="relative aspect-[5/3] w-full overflow-hidden">
+                        <Image src={it.image} alt={it.title} fill sizes="(max-width: 640px) 100vw, 33vw" unoptimized className="object-cover group-hover:scale-[1.04] transition-transform duration-500" />
+                        <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-[rgba(10,10,14,0.85)] to-transparent" />
+                      </div>
+                    )}
+                    <div className="p-6 lg:p-7 flex flex-col gap-3">
+                      <span className="font-[var(--font-mono)] text-[10px] tracking-[0.22em] text-brand-sky uppercase">
+                        STEP {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <h3 className="font-[var(--font-display)] font-bold tracking-[-0.012em] text-[clamp(17px,1.4vw,20px)] text-white">
+                        {it.title}
+                      </h3>
+                      <p className="text-[13.5px] leading-[1.6] text-white/70">{it.desc}</p>
+                    </div>
                   </div>
                 </Reveal>
               ))}
@@ -432,6 +734,7 @@ export function ServiceDetail({
       )}
 
       <ExtraBanners at="after-challenges" />
+      <FeatureBands at="after-challenges" />
 
       {/* ─────────── Impact (real business outcomes) ─────────── */}
       {impact && (
@@ -442,7 +745,7 @@ export function ServiceDetail({
             )}
             <div className="mt-6 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8">
               <Reveal delay={0.10}>
-                <h2 className="font-[var(--font-display)] font-bold leading-[1.04] tracking-[-0.025em] text-[clamp(28px,3.8vw,56px)] max-w-[760px]">
+                <h2 className="font-[var(--font-display)] font-bold leading-[1.04] tracking-[-0.025em] text-[clamp(28px,3.8vw,56px)] max-w-[760px] section-accent">
                   {impact.heading}
                 </h2>
               </Reveal>
@@ -454,24 +757,120 @@ export function ServiceDetail({
                 </Reveal>
               )}
             </div>
-            <div className="mt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
-              {impact.items.map((it, i) => (
-                <Reveal key={it.title} delay={0.18 + (i % 3) * 0.05}>
-                  <div className="h-full rounded-2xl glass glass-edge p-7 lg:p-8 flex flex-col gap-3">
-                    <h3 className="font-[var(--font-display)] font-bold tracking-[-0.012em] text-[clamp(17px,1.4vw,20px)] text-white">
-                      {it.title}
-                    </h3>
-                    <p className="text-[13.5px] leading-[1.55] text-white/65">{it.desc}</p>
+            {impact.image ? (
+              <div className="mt-14 grid grid-cols-1 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] gap-8 lg:gap-12 items-start">
+                <Reveal>
+                  <div className="relative aspect-[4/5] rounded-2xl overflow-hidden border border-white/10">
+                    <Image src={impact.image} alt="" fill sizes="(max-width: 1024px) 100vw, 40vw" unoptimized className="object-cover" />
                   </div>
                 </Reveal>
-              ))}
-            </div>
+                <ul className="flex flex-col gap-4 list-none p-0 m-0">
+                  {impact.items.map((it, i) => (
+                    <Reveal key={it.title} delay={0.10 + (i % 5) * 0.05}>
+                      <li className="group relative rounded-2xl border border-white/10 bg-[rgba(10,10,14,0.55)] p-6 flex gap-4 hover:border-white/25 transition-all duration-300">
+                        <span
+                          aria-hidden="true"
+                          className="shrink-0 w-10 h-10 rounded-lg flex items-center justify-center"
+                          style={{ background: "linear-gradient(135deg, rgba(82,184,255,0.30), rgba(176,124,255,0.30))", boxShadow: "0 0 0 1px rgba(255,255,255,0.08)" }}
+                        >
+                          {it.icon ? (
+                            <Image src={it.icon} alt="" width={22} height={22} unoptimized className="object-contain" />
+                          ) : (
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M12 2l2.9 6.8L22 9.6l-5.5 4.9 1.7 7.2L12 17.9 5.8 21.7 7.5 14.5 2 9.6l7.1-.8L12 2z" fill="white" />
+                            </svg>
+                          )}
+                        </span>
+                        <div className="min-w-0">
+                          <h3 className="font-[var(--font-display)] font-bold tracking-[-0.012em] text-[16px] text-white">
+                            {it.title}
+                          </h3>
+                          <p className="mt-2 text-[13.5px] leading-[1.6] text-white/70">{it.desc}</p>
+                        </div>
+                      </li>
+                    </Reveal>
+                  ))}
+                </ul>
+              </div>
+            ) : (
+              <div className="mt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
+                {impact.items.map((it, i) => {
+                  // Subtle, per-card colour tint cycle. Matches the live page's
+                  // pastel-on-dark "Economics" treatment without going neon.
+                  const tints = [
+                    { ring: "rgba(82,184,255,0.45)", glow: "rgba(82,184,255,0.18)" },
+                    { ring: "rgba(176,124,255,0.45)", glow: "rgba(176,124,255,0.18)" },
+                    { ring: "rgba(120,196,255,0.45)", glow: "rgba(120,196,255,0.18)" },
+                    { ring: "rgba(140,144,255,0.45)", glow: "rgba(140,144,255,0.18)" },
+                    { ring: "rgba(82,184,255,0.45)", glow: "rgba(82,184,255,0.18)" },
+                    { ring: "rgba(176,124,255,0.45)", glow: "rgba(176,124,255,0.18)" },
+                  ];
+                  const tint = tints[i % tints.length];
+                  return (
+                    <Reveal key={it.title} delay={0.18 + (i % 3) * 0.05}>
+                      <div
+                        className="group relative h-full overflow-hidden rounded-2xl p-7 lg:p-8 flex flex-col gap-4
+                                   border border-white/10 hover:border-white/25
+                                   transition-all duration-300 hover:-translate-y-0.5"
+                        style={{
+                          background:
+                            `linear-gradient(155deg, rgba(255,255,255,0.05) 0%, rgba(10,10,16,0.85) 55%), ` +
+                            `radial-gradient(120% 80% at 0% 0%, ${tint.glow}, transparent 60%)`,
+                          boxShadow: `inset 0 1px 0 rgba(255,255,255,0.06), 0 16px 40px -22px ${tint.glow}`,
+                        }}
+                      >
+                        {/* Numbered badge */}
+                        <div className="flex items-center justify-between">
+                          <span
+                            aria-hidden="true"
+                            className="inline-flex items-center justify-center w-10 h-10 rounded-full font-[var(--font-mono)] text-[12px] font-medium text-white"
+                            style={{
+                              background: `linear-gradient(135deg, ${tint.ring}, rgba(176,124,255,0.35))`,
+                              boxShadow: `0 0 0 1px rgba(255,255,255,0.10), 0 0 22px -6px ${tint.glow}`,
+                            }}
+                          >
+                            {String(i + 1).padStart(2, "0")}
+                          </span>
+                          {it.icon && (
+                            <Image
+                              src={it.icon}
+                              alt=""
+                              width={28}
+                              height={28}
+                              unoptimized
+                              className="opacity-80 group-hover:opacity-100 transition-opacity"
+                            />
+                          )}
+                        </div>
+
+                        <h3 className="font-[var(--font-display)] font-bold tracking-[-0.012em] text-[clamp(17px,1.5vw,21px)] text-white leading-[1.18]">
+                          {it.title}
+                        </h3>
+                        <p className="text-[13.5px] leading-[1.6] text-white/70">{it.desc}</p>
+
+                        {/* Hairline gradient at the top edge */}
+                        <span
+                          aria-hidden="true"
+                          className="absolute top-0 left-0 right-0 h-px"
+                          style={{
+                            background: `linear-gradient(90deg, transparent 0%, ${tint.ring} 35%, ${tint.ring} 65%, transparent 100%)`,
+                          }}
+                        />
+                      </div>
+                    </Reveal>
+                  );
+                })}
+              </div>
+            )}
           </div>
         </section>
       )}
 
       {/* ─────────── Why Choose ─────────── */}
-      {whyChoose && (
+      {whyChoose && whyChoose.displayStyle === "slider" && (
+        <WhyChooseSlider data={whyChoose} />
+      )}
+      {whyChoose && whyChoose.displayStyle !== "slider" && (
         <section className="relative py-24 lg:py-32" aria-label={whyChoose.heading}>
           <div className="section-box mx-auto max-w-[1440px] px-6 sm:px-12 lg:px-20 py-14 lg:py-20">
             {whyChoose.eyebrow && (
@@ -479,7 +878,7 @@ export function ServiceDetail({
             )}
             <div className="mt-6 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8">
               <Reveal delay={0.10}>
-                <h2 className="font-[var(--font-display)] font-bold leading-[1.04] tracking-[-0.025em] text-[clamp(28px,3.8vw,56px)] max-w-[680px]">
+                <h2 className="font-[var(--font-display)] font-bold leading-[1.04] tracking-[-0.025em] text-[clamp(28px,3.8vw,56px)] max-w-[680px] section-accent">
                   {whyChoose.heading}
                 </h2>
               </Reveal>
@@ -492,114 +891,138 @@ export function ServiceDetail({
               )}
             </div>
 
-            <div className="mt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-white/[0.06] rounded-2xl overflow-hidden">
-              {whyChoose.items.map((it, i) => (
-                <Reveal key={it.title} delay={0.18 + (i % 3) * 0.06}>
-                  <div className="h-full bg-[rgba(10,10,14,0.6)] p-8 lg:p-10 flex flex-col gap-4">
-                    <h3 className="font-[var(--font-display)] font-bold tracking-[-0.012em] text-[clamp(18px,1.5vw,22px)] text-white">
-                      {it.title}
-                    </h3>
-                    <p className="text-[14px] leading-[1.60] text-white/70">{it.desc}</p>
+            {whyChoose.image ? (
+              <div className="mt-14 grid grid-cols-1 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.4fr)] gap-6 lg:gap-8 items-start">
+                <Reveal>
+                  <div className="relative aspect-[4/5] rounded-2xl overflow-hidden border border-white/10 lg:sticky lg:top-24">
+                    <Image src={whyChoose.image} alt="" fill sizes="(max-width: 1024px) 100vw, 40vw" unoptimized className="object-cover" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[rgba(10,10,14,0.85)] via-[rgba(10,10,14,0.1)] to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-transparent to-[rgba(82,184,255,0.18)]" />
                   </div>
                 </Reveal>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* ─────────── Tech Stack ─────────── */}
-      {techStack && (
-        <section className="relative py-24 lg:py-32" aria-label={techStack.heading}>
-          <div className="section-box mx-auto max-w-[1440px] px-6 sm:px-12 lg:px-20 py-14 lg:py-20">
-            {techStack.eyebrow && (
-              <Reveal><Eyebrow>{techStack.eyebrow}</Eyebrow></Reveal>
-            )}
-            <Reveal delay={0.10}>
-              <h2 className="mt-6 font-[var(--font-display)] font-bold leading-[1.04] tracking-[-0.025em] text-[clamp(28px,3.8vw,56px)] max-w-[760px]">
-                {techStack.heading}
-              </h2>
-            </Reveal>
-            {techStack.body && (
-              <Reveal delay={0.20}>
-                <p className="mt-6 text-[15px] leading-[1.65] text-white/65 max-w-[640px]">
-                  {techStack.body}
-                </p>
-              </Reveal>
-            )}
-
-            <div className="mt-14 grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
-              {techStack.groups.map((g, i) => (
-                <Reveal key={g.title} delay={0.18 + (i % 2) * 0.06}>
-                  <div className="h-full rounded-2xl glass glass-edge p-7 lg:p-9">
-                    <h3 className="font-[var(--font-mono)] text-[10px] uppercase tracking-[0.22em] text-brand-sky">
-                      {g.title}
-                    </h3>
-                    <div className="mt-6 flex flex-wrap gap-2">
-                      {g.items.map((tech) => (
-                        <span
-                          key={tech}
-                          className="inline-flex items-center px-3 py-1.5 rounded-full
-                                     border border-white/[0.12] bg-white/[0.03]
-                                     text-[12.5px] text-white/80
-                                     font-[var(--font-brand)]"
-                        >
-                          {tech}
-                        </span>
-                      ))}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {whyChoose.items.map((it, i) => (
+                    <Reveal key={it.title} delay={0.12 + (i % 2) * 0.06}>
+                      <div className="group relative h-full rounded-2xl border border-white/10 bg-[rgba(10,10,14,0.65)] p-6 lg:p-7 flex flex-col gap-4 overflow-hidden hover:border-white/25 transition-all duration-300">
+                        <div
+                          aria-hidden="true"
+                          className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                          style={{ background: "radial-gradient(circle at 100% 0%, rgba(82,184,255,0.10), transparent 60%), radial-gradient(circle at 0% 100%, rgba(176,124,255,0.10), transparent 60%)" }}
+                        />
+                        <div className="relative flex items-start justify-between gap-3">
+                          {it.icon ? (
+                            <div className="shrink-0 w-12 h-12 rounded-xl p-2 flex items-center justify-center"
+                                 style={{ background: "linear-gradient(135deg, rgba(82,184,255,0.22), rgba(176,124,255,0.22))", boxShadow: "0 0 0 1px rgba(255,255,255,0.07)" }}>
+                              <Image src={it.icon} alt="" width={40} height={40} unoptimized className="object-contain w-full h-full" />
+                            </div>
+                          ) : (
+                            <span className="font-[var(--font-mono)] text-[10px] tracking-[0.22em] text-brand-sky uppercase">
+                              {String(i + 1).padStart(2, "0")}
+                            </span>
+                          )}
+                          <span
+                            aria-hidden="true"
+                            className="shrink-0 w-7 h-7 rounded-full border border-white/15 flex items-center justify-center text-white/55 group-hover:text-white group-hover:border-white/35 transition-colors"
+                          >
+                            <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+                              <path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" strokeWidth="1.6" />
+                            </svg>
+                          </span>
+                        </div>
+                        <h3 className="relative font-[var(--font-display)] font-bold tracking-[-0.012em] text-[clamp(16px,1.3vw,19px)] text-white">
+                          {it.title}
+                        </h3>
+                        <p className="relative text-[13.5px] leading-[1.6] text-white/70">{it.desc}</p>
+                      </div>
+                    </Reveal>
+                  ))}
+                </div>
+              </div>
+            ) : (
+            <div className="mt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5">
+              {whyChoose.items.map((it, i) => (
+                <Reveal key={it.title} delay={0.18 + (i % 3) * 0.06}>
+                  <div
+                    className="group relative h-full rounded-2xl p-[1px] overflow-hidden hover:-translate-y-1 transition-transform duration-500"
+                    style={{
+                      background:
+                        "linear-gradient(135deg, rgba(82,184,255,0.30), rgba(176,124,255,0.16) 38%, rgba(255,255,255,0.05) 65%, rgba(255,255,255,0.03))",
+                    }}
+                  >
+                    <div
+                      className="relative h-full rounded-[calc(1rem-1px)] overflow-hidden p-7 lg:p-9 flex flex-col gap-5"
+                      style={{
+                        background:
+                          "radial-gradient(circle at 100% 0%, rgba(82,184,255,0.12), transparent 55%), radial-gradient(circle at 0% 100%, rgba(176,124,255,0.12), transparent 55%), #0B0B12",
+                      }}
+                    >
+                      <div
+                        aria-hidden="true"
+                        className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                        style={{ background: "radial-gradient(circle at 50% 0%, rgba(82,184,255,0.18), transparent 55%), radial-gradient(circle at 50% 100%, rgba(176,124,255,0.18), transparent 55%)" }}
+                      />
+                      <span
+                        aria-hidden="true"
+                        className="pointer-events-none absolute top-3 right-3 w-1.5 h-1.5 rounded-full opacity-60 group-hover:opacity-100 transition-opacity duration-500"
+                        style={{ background: "linear-gradient(135deg, #52b8ff, #b07cff)", boxShadow: "0 0 12px rgba(82,184,255,0.55)" }}
+                      />
+                      {it.icon && (
+                        <div className="relative">
+                          <span
+                            aria-hidden="true"
+                            className="absolute inset-0 -translate-x-3 -translate-y-3 w-24 h-24 rounded-full blur-2xl opacity-50 group-hover:opacity-100 transition-opacity duration-500"
+                            style={{ background: "radial-gradient(circle, rgba(82,184,255,0.45), rgba(176,124,255,0.2) 50%, transparent 75%)" }}
+                          />
+                          <div
+                            className="relative w-14 h-14 rounded-xl p-2.5 flex items-center justify-center group-hover:scale-[1.04] transition-transform duration-500"
+                            style={{
+                              background: "linear-gradient(135deg, rgba(82,184,255,0.22), rgba(176,124,255,0.22))",
+                              boxShadow: "0 0 0 1px rgba(255,255,255,0.08), inset 0 1px 0 rgba(255,255,255,0.10), 0 10px 28px -8px rgba(82,184,255,0.35)",
+                            }}
+                          >
+                            <Image src={it.icon} alt="" width={48} height={48} unoptimized className="object-contain w-full h-full" />
+                          </div>
+                        </div>
+                      )}
+                      <div className="relative h-px w-10 bg-gradient-to-r from-brand-sky to-brand-violet rounded-full" />
+                      <h3 className="relative font-[var(--font-display)] font-bold tracking-[-0.012em] text-[clamp(18px,1.5vw,22px)] text-white">
+                        {it.title}
+                      </h3>
+                      <p className="relative text-[14px] leading-[1.60] text-white/72">{it.desc}</p>
                     </div>
                   </div>
                 </Reveal>
               ))}
             </div>
+            )}
           </div>
         </section>
       )}
+
+      {/* ─────────── Product Demo (tabbed videos) ─────────── */}
+      {productDemo && <ProductDemo data={productDemo} />}
+
+      {/* ─────────── Tech Stack (tabbed logo cards) ─────────── */}
+      {techStack && <TechStackTabbed data={techStack} />}
 
       <ExtraBanners at="after-techStack" />
+      <FeatureBands at="after-techStack" />
 
       {/* ─────────── Process / Methodology ─────────── */}
-      {process && (
-        <section className="relative py-24 lg:py-32" aria-label={process.heading}>
-          <div className="section-box mx-auto max-w-[1440px] px-6 sm:px-12 lg:px-20 py-14 lg:py-20">
-            {process.eyebrow && (
-              <Reveal><Eyebrow>{process.eyebrow}</Eyebrow></Reveal>
-            )}
-            <div className="mt-6 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8">
-              <Reveal delay={0.10}>
-                <h2 className="font-[var(--font-display)] font-bold leading-[1.04] tracking-[-0.025em] text-[clamp(28px,3.8vw,56px)] max-w-[720px]">
-                  {process.heading}
-                </h2>
-              </Reveal>
-              {process.body && (
-                <Reveal delay={0.20}>
-                  <p className="text-[15px] leading-[1.65] text-white/65 max-w-[460px]">
-                    {process.body}
-                  </p>
-                </Reveal>
-              )}
-            </div>
-
-            <ol className="mt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-white/[0.06] rounded-2xl overflow-hidden list-none p-0 m-0">
-              {process.steps.map((step, i) => (
-                <Reveal key={step.title} delay={0.18 + (i % 4) * 0.06}>
-                  <li className="h-full bg-[rgba(10,10,14,0.6)] p-7 lg:p-8 flex flex-col gap-4">
-                    <span className="font-[var(--font-mono)] text-[10px] tracking-[0.22em] text-brand-sky">
-                      STEP {String(i + 1).padStart(2, "0")}
-                    </span>
-                    <h3 className="font-[var(--font-display)] font-bold tracking-[-0.012em] text-[clamp(17px,1.4vw,20px)] text-white">
-                      {step.title}
-                    </h3>
-                    <p className="text-[13.5px] leading-[1.55] text-white/65">{step.desc}</p>
-                  </li>
-                </Reveal>
-              ))}
-            </ol>
-          </div>
-        </section>
-      )}
+      {process && process.displayStyle === "grid" && <ProcessGrid data={process} />}
+      {process && process.displayStyle !== "grid" && <ProcessSlider data={process} />}
 
       <ExtraBanners at="after-process" />
+      <FeatureBands at="after-process" />
+
+      {/* ─────────── Case Studies (tabbed) ─────────── */}
+      {caseStudies && <CaseStudiesTabbed data={caseStudies} />}
+
+      {/* ─────────── Trusted Partners ─────────── */}
+      {content.industryLeaderBanner && <IndustryLeaderBanner />}
+      {!content.hideTrustedPartners && !content.industryLeaderBanner && <TrustedPartnersGrid />}
+
+      <FeatureBands at="before-faq" />
 
       {/* ─────────── FAQ ─────────── */}
       {faq && (
@@ -630,6 +1053,8 @@ export function ServiceDetail({
           </div>
         </section>
       )}
+
+      <FeatureBands at="before-closing" />
 
       {/* ─────────── Closing CTA ─────────── */}
       {closing && (

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Nav } from "@/components/sections/Nav";
+import { Contact } from "@/components/sections/Contact";
 import { Footer } from "@/components/sections/Footer";
 import { ModalsHost } from "@/components/sections/ModalsHost";
 import { BackgroundScene } from "@/components/sections/BackgroundScene";
@@ -59,7 +60,12 @@ export default async function ServicePage({
       <Nav />
 
       {detail ? (
-        <ServiceDetail content={detail} slug={slug} />
+        <>
+          <ServiceDetail content={detail} slug={slug} />
+          <div className="scrim-section relative">
+            <Contact />
+          </div>
+        </>
       ) : (
         <main className="relative" style={{ zIndex: 1 }}>
           {/* Stub branch is noindex (see generateMetadata above) — no

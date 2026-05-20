@@ -1,0 +1,14 @@
+<svg width="140" height="116" viewBox="0 0 140 116" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="m136.114 66.094-26.417 41.833a15.26 15.26 0 0 1-12.944 7.172H42.319a15.227 15.227 0 0 1-12.945-7.172L3.228 66.094a15.251 15.251 0 0 1-.014-16.173L29.631 8.088C32.43 3.616 37.303.9 42.56.9h54.45a15.278 15.278 0 0 1 12.943 7.158l26.145 41.862a15.252 15.252 0 0 1 .015 16.173z" fill="#fff" fill-opacity=".07" stroke="url(#ogqyt3tika)" stroke-width="1.8" stroke-miterlimit="10"/>
+    <path d="M99.822 16.431c.928-1.472 2.472-1.643 3.086-1.643.629 0 2.157.157 3.086 1.643l1.757 2.829v-.057l20.774 33.246c2.115 3.386 2.115 7.759 0 11.13l-9.758 15.53-13.044 20.66a3.385 3.385 0 0 1-2.929 1.629c-.586 0-2.028-.158-2.957-1.644L77.306 63.678c-2.115-3.371-2.13-7.728-.057-11.129l22.573-36.118z" fill="#fff" fill-opacity=".07" stroke="url(#tpode6xhub)" stroke-miterlimit="10"/>
+    <defs>
+        <linearGradient id="ogqyt3tika" x1=".901" y1="58" x2="138.427" y2="58" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#52B8FF"/>
+            <stop offset="1" stop-color="#B07CFF"/>
+        </linearGradient>
+        <linearGradient id="tpode6xhub" x1="75.707" y1="58.093" x2="130.111" y2="58.093" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#52B8FF"/>
+            <stop offset="1" stop-color="#B07CFF"/>
+        </linearGradient>
+    </defs>
+</svg>
