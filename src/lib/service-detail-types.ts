@@ -80,7 +80,12 @@ export type ServiceDetailContent = {
      *  "logo-grid" = dense grid of logo tiles (white bg, brand mark only)
      *    — matches the blockchain-development "Trusted by Industry Leader".
      *  Default: "icon-cards". */
-    itemsLayout?: "icon-cards" | "check-grid" | "image-cards" | "mini-cards" | "logo-grid" | "big-icons";
+    itemsLayout?: "icon-cards" | "check-grid" | "image-cards" | "mini-cards" | "logo-grid" | "big-icons" | "workflow-cards";
+    /** When itemsLayout is "logo-grid": "light" (default) renders
+     *  white tiles for color logos. "dark" renders transparent/dark
+     *  tiles for white wordmark SVGs designed for dark backgrounds
+     *  (matches the live brand strip below the AI Automation hero). */
+    tileTheme?: "light" | "dark";
     cta?: ServiceCta;
   }>;
 

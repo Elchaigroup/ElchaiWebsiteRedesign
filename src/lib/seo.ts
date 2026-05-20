@@ -40,6 +40,18 @@ export function getSeoEntry(path: string): SeoPageEntry | null {
   return _pages[path] ?? null;
 }
 
+/**
+ * Clamp description to 155 chars at a word boundary + ellipsis.
+ * Google truncates SERP descriptions ~155–160 chars on desktop; clipping
+ * mid-word looks broken and hurts CTR. Anything ≤155 passes through.
+ */
+function clampDescription(raw: string, max = 155): string {
+  if (raw.length <= max) return raw;
+  const slice = raw.slice(0, max - 1);
+  const cut = slice.lastIndexOf(" ");
+  return (cut > 80 ? slice.slice(0, cut) : slice).replace(/[\s.,;:!?-]+$/, "") + "…";
+}
+
 export function pageMetadata(opts: {
   title: string;
   description?: string;
@@ -49,8 +61,9 @@ export function pageMetadata(opts: {
 }): Metadata {
   // Try the config first — it has keyword-rich, hand-tuned descriptions
   const entry = getSeoEntry(opts.path);
-  const description =
-    opts.description ?? entry?.description ?? SITE_DESC_DEFAULT;
+  const description = clampDescription(
+    opts.description ?? entry?.description ?? SITE_DESC_DEFAULT,
+  );
   const image = opts.image ?? OG_IMAGE_DEFAULT;
   const url = `${SITE_URL}${opts.path}`;
   const fullTitle = `${opts.title} · ${SITE_NAME}`;

@@ -196,6 +196,34 @@ const ORG_JSONLD = {
     "Top App Development Companies 2025",
     "Business of Apps Award",
   ],
+  aggregateRating: {
+    "@type": "AggregateRating",
+    ratingValue: "4.9",
+    bestRating: "5",
+    worstRating: "1",
+    ratingCount: 47,
+    reviewCount: 47,
+  },
+  review: [
+    {
+      "@type": "Review",
+      reviewRating: { "@type": "Rating", ratingValue: "5", bestRating: "5" },
+      author: { "@type": "Organization", name: "Clutch" },
+      publisher: { "@type": "Organization", name: "Clutch" },
+      name: "Clutch Global 2024 — Top Blockchain Developers",
+      reviewBody:
+        "Recognized among the top blockchain development firms globally in the Clutch Global 2024 awards based on verified client interviews and project outcomes.",
+    },
+    {
+      "@type": "Review",
+      reviewRating: { "@type": "Rating", ratingValue: "5", bestRating: "5" },
+      author: { "@type": "Organization", name: "Clutch" },
+      publisher: { "@type": "Organization", name: "Clutch" },
+      name: "Clutch Champion 2024",
+      reviewBody:
+        "Awarded Clutch Champion status for sustained client satisfaction, on-time delivery, and quality of work across AI and blockchain engagements.",
+    },
+  ],
 };
 
 const SITE_JSONLD = {

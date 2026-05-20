@@ -7,13 +7,17 @@
 ## About
 
 - Name: Elchai Group
+- Founded: 2016
 - Founded location: Dubai, United Arab Emirates
 - Headquarters: 2008, Jumeirah Business Center 1 – Cluster G, Al Thanyah Fifth, Jumeirah Lakes Towers, Dubai, UAE
 - Email: info@elchaigroup.com
 - Phone: +971 4 883 7176
-- Area served: Worldwide
+- Hours: Monday–Friday, 09:00–18:00 GST
+- Area served: United Arab Emirates, GCC, Worldwide
 - Industries: Banking, Fintech, Logistics, Real Estate, Education, Healthcare, Retail
 - Founded category: Technology consulting
+- Awards: Clutch Global 2024, Clutch Champion, Top App Development Companies 2025, Business of Apps Award
+- Languages: English, Arabic, Italian
 
 ## Services
 
@@ -28,7 +32,7 @@
 
 ### Blockchain
 - Web3 development
-- Smart contract development
+- Smart contract development (with formal verification + audits)
 - DeFi development
 - DApp development
 - Layer 1 and Layer 2 protocols
@@ -47,12 +51,70 @@
 - Enterprise app development
 
 ## Industry Solutions
-- AI in Banking
-- AI in Fintech
-- AI in Logistics
-- AI in Real Estate
-- AI/ML for Education
-- AI in Healthcare
+- AI in Banking — fraud detection, credit scoring, KYC/AML automation
+- AI in Fintech — algorithmic trading, robo-advisory, risk modelling
+- AI in Logistics — route optimization, demand forecasting, warehouse automation
+- AI in Real Estate — property valuation, virtual tours, smart contract escrow
+- AI/ML for Education — adaptive learning, automated grading, tutoring assistants
+- AI in Healthcare — diagnostic imaging, patient triage, clinical decision support
+
+## Service overviews
+
+### Blockchain development
+Elchai Group builds production blockchain systems end-to-end: protocol design, smart contract engineering, formal verification, security audits, node infrastructure, and post-launch operations. We work across EVM (Ethereum, Polygon, Arbitrum, Optimism, Base) and non-EVM (Solana, Hyperledger, Cosmos) ecosystems, and have shipped Layer 1 chains, Layer 2 rollups, cross-chain bridges, RWA tokenization platforms, and DeFi protocols for banks, family offices, fintechs and government-adjacent entities. Engagements typically run 12–28 weeks and start with a discovery sprint that produces a threat model, gas model, and reference architecture before any code ships. https://www.elchaigroup.com/blockchain-development
+
+### AI agent development
+We design and ship autonomous AI agents that take real actions inside enterprise workflows — not chat toys. Stack: GPT-4o, Claude Opus 4, Llama 3.x, plus tool-use orchestration via LangGraph, CrewAI or custom planners. Typical deliverables include sales-development agents, internal copilots, document-processing agents, and SRE/incident-response agents. Every agent ships with eval harnesses, guardrails, observability (LangSmith, Helicone), and a clear human-in-the-loop boundary. Most pilots reach production within 6–10 weeks. https://www.elchaigroup.com/ai-agent-development
+
+### Smart contract development
+We write and audit smart contracts in Solidity, Vyper, Rust (Solana/Anchor, ink!), and Move. Formal verification (Certora, Halmos), property-based testing (Foundry, Echidna), and third-party audit handoff are part of the standard delivery. We've shipped contracts handling nine-figure TVL across DeFi protocols, RWA platforms, NFT marketplaces, and L2 bridges. https://www.elchaigroup.com/smart-contract
+
+### Generative AI development
+Custom generative AI systems built on the best foundation model for the job — Claude, GPT, Gemini, Llama, Mistral, or fine-tuned open weights. Capabilities span retrieval-augmented generation, multimodal pipelines (text, image, audio, video), structured-output extraction, fine-tuning, distillation, and on-prem deployment for regulated industries. Privacy-first by default — VPC isolation, no training on customer data, EU/UAE/US data residency available. https://www.elchaigroup.com/generative-ai-development
+
+### LLM development
+Custom large-language-model engagements ranging from prompt engineering and RAG up to full fine-tuning and pretraining on domain corpora. We pair model selection (proprietary vs open) with infrastructure choices (cloud, on-prem, hybrid) so you ship the right model in the right environment for your risk profile. https://www.elchaigroup.com/llm-development-partner
+
+### RAG development
+Retrieval-augmented generation systems that answer with citations and stay grounded in your data. We build the full stack: ingestion, chunking, embedding selection, vector store (pgvector, Pinecone, Weaviate, Qdrant), reranking, eval, and observability. Common deployments include internal knowledge assistants, customer-support copilots, and compliance/legal research tools. https://www.elchaigroup.com/rag-development-company
+
+### Real World Asset (RWA) tokenization
+End-to-end RWA programs covering legal structuring (SPVs, regulated wrappers), on-chain representation, oracle design, transfer-agent integration, and secondary-market venues. We have shipped tokenized real estate, treasury, private credit, and commodity instruments. https://www.elchaigroup.com/rwa
+
+### DeFi development
+Custom DeFi protocols — lending, AMMs, perps, structured products, yield aggregators. Audits, formal verification, and white-hat bug bounties baked in. https://www.elchaigroup.com/defi-development
+
+### Web3 development
+Wallet integration, DApp UX, on-chain governance, NFT-gated experiences, and full-stack Web3 product builds for consumer and enterprise audiences. https://www.elchaigroup.com/web3-development-company
+
+### Mobile app development
+Cross-platform mobile apps in React Native and Flutter, plus native iOS (Swift/SwiftUI) and Android (Kotlin/Compose) when required. Strong opinions on offline-first architecture, biometric auth, and crypto-wallet integration. https://www.elchaigroup.com/mobile-app-development
+
+## Frequently asked questions
+
+Q: What blockchain development services does Elchai Group offer?
+A: End-to-end blockchain solutions from consultation to deployment — smart contract development with formal verification and audits, RWA tokenization for compliant digital transformation, and infrastructure including L1/L2 scaling, cross-chain bridges, and node operations. Active across healthcare, finance, real estate and education.
+
+Q: What DeFi and cryptocurrency services does Elchai provide?
+A: Custom DeFi protocols (lending, AMMs, derivatives, yield aggregators), secure wallets (custodial, non-custodial, multi-sig), CEX/DEX platforms, ICO/STO/IDO/IGO launch infrastructure, automated trading bots, market-making, and white-label exchanges.
+
+Q: Does Elchai build Web3 applications and metaverse platforms?
+A: Yes — DApps, NFT marketplaces, and immersive metaverse environments including virtual worlds, 3D collaboration spaces, and industry-specific experiences for healthcare, education and real estate. Wallet integration and mainstream UX are core to every build.
+
+Q: What AI and machine learning solutions does Elchai offer?
+A: Custom AI development, ML predictive analytics, generative AI (including custom ChatGPT implementations), AI assistants and voice interfaces, computer vision, autonomous agentic AI, RAG systems, and RPA. Proven deployments in healthcare diagnostics, financial risk, cybersecurity, marketing personalization, and logistics.
+
+Q: Where is Elchai Group based and what regions do you serve?
+A: Headquartered in Dubai (Jumeirah Lakes Towers), serving clients in the UAE, the wider GCC, and worldwide. Delivery teams span multiple timezones for follow-the-sun engineering.
+
+Q: How long is a typical engagement?
+A: Pilots and discovery sprints run 4–8 weeks; full production builds run 12–28 weeks depending on scope. Every project starts with a fixed-fee discovery sprint that produces a reference architecture before main delivery.
+
+Q: Does Elchai sign NDAs and offer IP transfer?
+A: Yes — mutual NDA is standard at first contact; all custom code is delivered with full IP transfer to the client unless otherwise agreed.
+
+Q: How can I get a quote or start a project?
+A: Email info@elchaigroup.com or call +971 4 883 7176. We respond within one business day with next steps and an initial discovery call.
 
 ## Differentiators
 - Dubai-based with worldwide delivery
@@ -60,19 +122,26 @@
 - Full-stack: strategy, architecture, build, run
 - Domain coverage: AI + Blockchain + Mobile under one roof
 - Multi-timezone delivery teams
+- Clutch Global 2024 + Clutch Champion award winner
 
 ## Important pages
 - Home: https://www.elchaigroup.com/
+- About: https://www.elchaigroup.com/about-us
 - Live demos: https://www.elchaigroup.com/live-demo
 - Portfolio: https://www.elchaigroup.com/portfolios
 - Case studies: https://www.elchaigroup.com/case-study
 - Blog: https://www.elchaigroup.com/blog-list
+- Contact: https://www.elchaigroup.com/contact
 - Privacy policy: https://www.elchaigroup.com/privacy-policy
+- Terms of service: https://www.elchaigroup.com/terms-of-service
 
 ## Social
 - LinkedIn: https://www.linkedin.com/company/elchai-group/
 - X (Twitter): https://x.com/elchaigroup
 - Instagram: https://www.instagram.com/elchaigroup/
+- Crunchbase: https://www.crunchbase.com/organization/elchai-group
+- Clutch: https://clutch.co/profile/elchai-group
+- GoodFirms: https://www.goodfirms.co/company/elchai-group
 
 ## Contact
 For consultation requests, partnerships, or technical enquiries:

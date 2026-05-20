@@ -551,21 +551,21 @@ export const resources = {
       title:
         'NFT Business Applications: Digital Asset Innovation Beyond Art and Collectibles',
       readTime: '3 Min Read',
-      href: '/nft-business-applications-digital-asset-innovation-beyond-art-and-collectibles/',
+      href: '/blog/nft-business-applications-digital-asset-innovation-beyond-art-and-collectibles',
     },
     {
       tag: 'blog',
       title:
         'AI Machine Learning Solutions: Transforming Data into Competitive...',
       readTime: '3 Min Read',
-      href: '/ai-machine-learning-solutions-transforming-data-into-competitive-business-intelligence/',
+      href: '/blog/ai-machine-learning-solutions-transforming-data-into-competitive-business-intelligence',
     },
     {
       tag: 'blog',
       title:
         'Web3 Digital Transformation: Decentralized Solutions for Modern...',
       readTime: '5 Min Read',
-      href: '/web3-digital-transformation-decentralized-solutions-for-modern-enterprise-architecture/',
+      href: '/blog/web3-digital-transformation-decentralized-solutions-for-modern-enterprise-architecture',
     },
   ],
 } as const;

@@ -26,6 +26,7 @@ import { ProcessGrid } from "@/components/sections/ProcessGrid";
 import { ProcessSlider } from "@/components/sections/ProcessSlider";
 import { ProductDemo } from "@/components/sections/ProductDemo";
 import { TechStackTabbed } from "@/components/sections/TechStackTabbed";
+import { TopicIcon } from "@/components/sections/TopicIcon";
 import { TrustedPartnersGrid } from "@/components/sections/TrustedPartnersGrid";
 import { IndustryLeaderBanner } from "@/components/sections/IndustryLeaderBanner";
 import { WhyChooseSlider } from "@/components/sections/WhyChooseSlider";
@@ -435,7 +436,10 @@ export function ServiceDetail({
               )}
             </div>
 
-            <div className="mt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5">
+            <div className={[
+              "mt-14 grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-5",
+              capabilities.displayStyle === "photo" ? "lg:grid-cols-3 lg:gap-6" : "lg:grid-cols-4",
+            ].join(" ")}>
               {capabilities.items.map((it, i) => {
                 const isPhoto = capabilities.displayStyle === "photo";
                 return (
@@ -472,19 +476,57 @@ export function ServiceDetail({
                           style={{ background: "linear-gradient(135deg, #52b8ff, #b07cff)", boxShadow: "0 0 12px rgba(82,184,255,0.55)" }}
                         />
 
+                        {/* Faint topic-aware watermark behind the copy.
+                            Only renders when there's no full-bleed photo. */}
+                        {!isPhoto && !it.icon && (
+                          <span
+                            aria-hidden="true"
+                            className="pointer-events-none absolute -bottom-6 -right-6 w-44 h-44 text-white opacity-[0.06] group-hover:opacity-[0.10] transition-opacity duration-500"
+                          >
+                            <TopicIcon title={it.title} index={i} className="block w-full h-full" />
+                          </span>
+                        )}
+
                         {isPhoto && it.icon ? (
-                          <div className="relative aspect-[5/4] w-full overflow-hidden">
+                          <div className="relative aspect-[4/3] w-full overflow-hidden">
                             <Image
                               src={it.icon}
                               alt={it.title}
                               fill
                               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                               unoptimized
-                              className="object-cover group-hover:scale-[1.04] transition-transform duration-500"
+                              className="object-cover scale-[1.02] group-hover:scale-[1.08] transition-transform duration-[900ms] ease-out"
                             />
-                            <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[rgba(10,10,14,0.85)] to-transparent" />
+                            {/* layered gradient: deep at bottom for legibility, soft mid for depth */}
+                            <div
+                              aria-hidden="true"
+                              className="absolute inset-0"
+                              style={{
+                                background:
+                                  "linear-gradient(to top, rgba(11,11,18,0.96) 0%, rgba(11,11,18,0.55) 32%, rgba(11,11,18,0.12) 68%, rgba(11,11,18,0.04) 100%)",
+                              }}
+                            />
+                            {/* inner vignette frame */}
+                            <div
+                              aria-hidden="true"
+                              className="pointer-events-none absolute inset-0"
+                              style={{ boxShadow: "inset 0 0 80px 20px rgba(11,11,18,0.30)" }}
+                            />
+                            {/* editorial index */}
+                            <span className="absolute top-4 left-5 font-[var(--font-mono)] text-[10px] tracking-[0.28em] text-white/65 uppercase">
+                              {String(i + 1).padStart(2, "0")}
+                            </span>
+                            {/* hairline under index */}
+                            <span
+                              aria-hidden="true"
+                              className="absolute top-[1.85rem] left-5 right-5 h-px"
+                              style={{
+                                background:
+                                  "linear-gradient(to right, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.06) 60%, transparent 100%)",
+                              }}
+                            />
                           </div>
-                        ) : it.icon ? (
+                        ) : (
                           <div className="relative">
                             <span
                               aria-hidden="true"
@@ -500,21 +542,55 @@ export function ServiceDetail({
                                   "0 0 0 1px rgba(255,255,255,0.08), inset 0 1px 0 rgba(255,255,255,0.10), 0 10px 28px -8px rgba(82,184,255,0.35)",
                               }}
                             >
-                              <Image src={it.icon} alt="" width={48} height={48} unoptimized className="object-contain w-full h-full" />
+                              {it.icon ? (
+                                <Image src={it.icon} alt="" width={48} height={48} unoptimized className="object-contain w-full h-full" />
+                              ) : (
+                                <span
+                                  className="block w-full h-full text-white"
+                                  style={{ filter: "drop-shadow(0 2px 6px rgba(82,184,255,0.45))" }}
+                                >
+                                  <TopicIcon title={it.title} index={i} className="block w-full h-full" />
+                                </span>
+                              )}
                             </div>
                           </div>
-                        ) : (
-                          <span className="font-[var(--font-mono)] text-[10px] tracking-[0.22em] text-brand-sky uppercase">
-                            {String(i + 1).padStart(2, "0")}
-                          </span>
                         )}
 
-                        <div className={isPhoto ? "relative p-6 flex flex-col gap-3" : "contents"}>
-                          <div className="relative h-px w-10 bg-gradient-to-r from-brand-sky to-brand-violet rounded-full" />
-                          <h3 className="relative font-[var(--font-display)] font-bold tracking-[-0.012em] text-[clamp(16px,1.3vw,19px)] text-white">
+                        <div className={isPhoto ? "relative px-6 lg:px-7 pt-6 pb-7 flex flex-col gap-3.5" : "contents"}>
+                          {isPhoto ? (
+                            <div className="relative flex items-center justify-between">
+                              <div
+                                className="h-px w-10 rounded-full transition-all duration-500 group-hover:w-16"
+                                style={{ background: "linear-gradient(to right, #52b8ff, #b07cff)" }}
+                              />
+                              <span
+                                aria-hidden="true"
+                                className="text-white/45 group-hover:text-white group-hover:translate-x-1 transition-all duration-500 text-[15px] leading-none font-light"
+                              >
+                                →
+                              </span>
+                            </div>
+                          ) : (
+                            <div className="relative h-px w-10 bg-gradient-to-r from-brand-sky to-brand-violet rounded-full" />
+                          )}
+                          <h3
+                            className={[
+                              "relative font-[var(--font-display)] font-semibold text-white leading-[1.2]",
+                              isPhoto
+                                ? "tracking-[-0.018em] text-[clamp(17px,1.45vw,21px)]"
+                                : "tracking-[-0.012em] text-[clamp(16px,1.3vw,19px)]",
+                            ].join(" ")}
+                          >
                             {it.title}
                           </h3>
-                          <p className="relative text-[13px] leading-[1.6] text-white/72">{it.desc}</p>
+                          <p
+                            className={[
+                              "relative leading-[1.65] text-white/68",
+                              isPhoto ? "text-[13.5px]" : "text-[13px]",
+                            ].join(" ")}
+                          >
+                            {it.desc}
+                          </p>
                         </div>
                       </div>
                     </div>
@@ -638,34 +714,83 @@ export function ServiceDetail({
             <div className="mt-14 grid grid-cols-1 sm:grid-cols-2 gap-5 lg:gap-6">
               {industries.items.map((it, i) => (
                 <Reveal key={it.title} delay={0.16 + (i % 4) * 0.05}>
-                  <div className="group relative h-full rounded-2xl border border-white/10 bg-[rgba(10,10,14,0.55)] p-5 lg:p-6 flex gap-5 items-start overflow-hidden hover:border-white/25 transition-all duration-300">
+                  <div
+                    className="group relative h-full rounded-2xl p-[1px] overflow-hidden hover:-translate-y-1 transition-transform duration-500"
+                    style={{
+                      background:
+                        "linear-gradient(135deg, rgba(82,184,255,0.30), rgba(176,124,255,0.16) 38%, rgba(255,255,255,0.05) 65%, rgba(255,255,255,0.03))",
+                    }}
+                  >
                     <div
-                      aria-hidden="true"
-                      className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                      style={{ background: "radial-gradient(circle at 0% 0%, rgba(82,184,255,0.10), transparent 60%), radial-gradient(circle at 100% 100%, rgba(176,124,255,0.10), transparent 60%)" }}
-                    />
-                    {it.image ? (
-                      <div className="relative shrink-0 w-[120px] h-[120px] lg:w-[140px] lg:h-[140px] overflow-hidden"
-                           style={{ clipPath: "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)" }}>
-                        <Image
-                          src={it.image}
-                          alt={it.title}
-                          fill
-                          sizes="140px"
-                          unoptimized
-                          className="object-cover group-hover:scale-[1.06] transition-transform duration-500"
-                        />
+                      className="relative h-full rounded-[calc(1rem-1px)] overflow-hidden p-5 lg:p-6 flex gap-5 items-start"
+                      style={{
+                        background:
+                          "radial-gradient(circle at 100% 0%, rgba(176,124,255,0.10), transparent 55%), radial-gradient(circle at 0% 100%, rgba(82,184,255,0.10), transparent 55%), #0B0B12",
+                      }}
+                    >
+                      <div
+                        aria-hidden="true"
+                        className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                        style={{ background: "radial-gradient(circle at 0% 0%, rgba(82,184,255,0.18), transparent 55%), radial-gradient(circle at 100% 100%, rgba(176,124,255,0.18), transparent 55%)" }}
+                      />
+                      <span
+                        aria-hidden="true"
+                        className="pointer-events-none absolute top-3 right-3 w-1.5 h-1.5 rounded-full opacity-60 group-hover:opacity-100 transition-opacity duration-500"
+                        style={{ background: "linear-gradient(135deg, #52b8ff, #b07cff)", boxShadow: "0 0 12px rgba(82,184,255,0.55)" }}
+                      />
+                      {/* Faint topic watermark when no photo */}
+                      {!it.image && (
+                        <span
+                          aria-hidden="true"
+                          className="pointer-events-none absolute -bottom-6 -right-6 w-44 h-44 text-white opacity-[0.06] group-hover:opacity-[0.10] transition-opacity duration-500"
+                        >
+                          <TopicIcon title={it.title} index={i} className="block w-full h-full" />
+                        </span>
+                      )}
+
+                      {it.image ? (
+                        <div className="relative shrink-0 w-[120px] h-[120px] lg:w-[140px] lg:h-[140px] overflow-hidden group-hover:scale-[1.04] transition-transform duration-500"
+                             style={{ clipPath: "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)" }}>
+                          <Image
+                            src={it.image}
+                            alt={it.title}
+                            fill
+                            sizes="140px"
+                            unoptimized
+                            className="object-cover"
+                          />
+                        </div>
+                      ) : (
+                        <div className="relative shrink-0">
+                          <span
+                            aria-hidden="true"
+                            className="absolute inset-0 w-24 h-24 -translate-x-2 -translate-y-2 rounded-full blur-2xl opacity-50 group-hover:opacity-100 transition-opacity duration-500"
+                            style={{ background: "radial-gradient(circle, rgba(82,184,255,0.45), rgba(176,124,255,0.2) 50%, transparent 75%)" }}
+                          />
+                          <div
+                            className="relative w-20 h-20 flex items-center justify-center p-3 group-hover:scale-[1.04] transition-transform duration-500"
+                            style={{
+                              clipPath: "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)",
+                              background: "linear-gradient(135deg, rgba(82,184,255,0.28), rgba(176,124,255,0.28))",
+                              boxShadow: "0 0 0 1px rgba(255,255,255,0.08), inset 0 1px 0 rgba(255,255,255,0.10), 0 10px 28px -8px rgba(82,184,255,0.35)",
+                            }}
+                          >
+                            <span
+                              className="block w-full h-full text-white"
+                              style={{ filter: "drop-shadow(0 2px 6px rgba(82,184,255,0.45))" }}
+                            >
+                              <TopicIcon title={it.title} index={i} className="block w-full h-full" />
+                            </span>
+                          </div>
+                        </div>
+                      )}
+                      <div className="relative flex flex-col gap-2 min-w-0 flex-1">
+                        <div className="h-px w-8 bg-gradient-to-r from-brand-sky to-brand-violet rounded-full" />
+                        <h3 className="font-[var(--font-display)] font-bold tracking-[-0.012em] text-[clamp(16px,1.3vw,19px)] text-white">
+                          {it.title}
+                        </h3>
+                        {it.desc && <p className="text-[13px] leading-[1.6] text-white/72">{it.desc}</p>}
                       </div>
-                    ) : (
-                      <span className="font-[var(--font-mono)] text-[10px] tracking-[0.22em] text-brand-sky uppercase">
-                        {String(i + 1).padStart(2, "0")}
-                      </span>
-                    )}
-                    <div className="relative flex flex-col gap-2 min-w-0">
-                      <h3 className="font-[var(--font-display)] font-bold tracking-[-0.012em] text-[clamp(16px,1.3vw,19px)] text-white">
-                        {it.title}
-                      </h3>
-                      {it.desc && <p className="text-[13px] leading-[1.6] text-white/70">{it.desc}</p>}
                     </div>
                   </div>
                 </Reveal>

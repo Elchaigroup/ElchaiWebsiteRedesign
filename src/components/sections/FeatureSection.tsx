@@ -188,6 +188,68 @@ export function FeatureSection({ data }: { data: Feature }) {
                   </ul>
                 );
               }
+              if (layout === "workflow-cards") {
+                return (
+                  <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-6 list-none p-0 m-0">
+                    {data.items!.map((it, i) => (
+                      <Reveal key={`${it.title}-${i}`} delay={0.06 + (i % 4) * 0.05}>
+                        <li
+                          className="group relative h-full rounded-2xl p-[1px] overflow-hidden hover:-translate-y-1 transition-transform duration-500"
+                          style={{
+                            background:
+                              "linear-gradient(135deg, rgba(82,184,255,0.32), rgba(176,124,255,0.18) 38%, rgba(255,255,255,0.05) 65%, rgba(255,255,255,0.03))",
+                          }}
+                        >
+                          <div
+                            className="relative h-full rounded-[calc(1rem-1px)] overflow-hidden flex flex-col"
+                            style={{
+                              background:
+                                "radial-gradient(circle at 100% 0%, rgba(176,124,255,0.10), transparent 55%), radial-gradient(circle at 0% 100%, rgba(82,184,255,0.10), transparent 55%), #0B0B12",
+                            }}
+                          >
+                            {it.image && (
+                              <div className="relative aspect-[5/4] w-full overflow-hidden">
+                                <Image
+                                  src={it.image}
+                                  alt={it.title}
+                                  fill
+                                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                                  unoptimized
+                                  className="object-cover group-hover:scale-[1.05] transition-transform duration-700"
+                                />
+                                <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-[rgba(11,11,18,0.85)] to-transparent" />
+                                <span
+                                  aria-hidden="true"
+                                  className="absolute top-3 left-3 inline-flex items-center justify-center w-9 h-9 rounded-full text-[12px] font-bold text-white font-[var(--font-mono)]"
+                                  style={{
+                                    background:
+                                      "linear-gradient(135deg, rgba(82,184,255,0.95), rgba(176,124,255,0.95))",
+                                    boxShadow:
+                                      "0 4px 16px -4px rgba(82,184,255,0.55), inset 0 0 0 1px rgba(255,255,255,0.25)",
+                                  }}
+                                >
+                                  {String(i + 1).padStart(2, "0")}
+                                </span>
+                              </div>
+                            )}
+                            <div className="relative p-5 lg:p-6 flex flex-col gap-2.5 flex-1">
+                              <span className="font-[var(--font-mono)] text-[10px] tracking-[0.22em] text-brand-sky/90 uppercase">
+                                Step {String(i + 1).padStart(2, "0")}
+                              </span>
+                              <h3 className="font-[var(--font-display)] font-bold tracking-[-0.012em] text-[clamp(16px,1.3vw,19px)] text-white leading-tight">
+                                {it.title}
+                              </h3>
+                              {it.desc && (
+                                <p className="text-[13px] leading-[1.6] text-white/70">{it.desc}</p>
+                              )}
+                            </div>
+                          </div>
+                        </li>
+                      </Reveal>
+                    ))}
+                  </ul>
+                );
+              }
               if (layout === "big-icons") {
                 return (
                   <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-5 sm:gap-6 list-none p-0 m-0">
@@ -213,34 +275,47 @@ export function FeatureSection({ data }: { data: Feature }) {
                 );
               }
               if (layout === "logo-grid") {
+                const isDark = data.tileTheme === "dark";
                 return (
                   <Reveal>
                     <div className="relative overflow-hidden" aria-label="Partner logos marquee">
                       <InfiniteSlider gap={16} speed={48} speedOnHover={18} className="py-2">
-                        {data.items!.map((it, i) => (
-                          <span
-                            key={`${it.title}-${i}`}
-                            title={it.title}
-                            className="inline-flex shrink-0 items-center justify-center w-[180px] h-[88px] sm:w-[200px] sm:h-[100px]
-                                       rounded-xl border border-white/10 bg-white px-5 hover:border-white/30
-                                       transition-all duration-300"
-                          >
-                            {it.icon ? (
-                              <Image
-                                src={it.icon}
-                                alt={it.title}
-                                width={140}
-                                height={70}
-                                unoptimized
-                                className="object-contain max-w-full max-h-[60%] w-auto"
-                              />
-                            ) : (
-                              <span className="font-[var(--font-display)] text-[13px] font-bold text-black/85 text-center leading-tight">
-                                {it.title}
-                              </span>
-                            )}
-                          </span>
-                        ))}
+                        {data.items!.map((it, i) => {
+                          const logoSrc = it.icon ?? it.image;
+                          return (
+                            <span
+                              key={`${it.title}-${i}`}
+                              title={it.title}
+                              className={[
+                                "inline-flex shrink-0 items-center justify-center w-[180px] h-[88px] sm:w-[200px] sm:h-[100px]",
+                                "rounded-xl px-5 transition-all duration-300",
+                                isDark
+                                  ? "border border-white/12 bg-white/[0.04] backdrop-blur-sm hover:border-white/30 hover:bg-white/[0.06]"
+                                  : "border border-white/10 bg-white hover:border-white/30",
+                              ].join(" ")}
+                            >
+                              {logoSrc ? (
+                                <Image
+                                  src={logoSrc}
+                                  alt={it.title}
+                                  width={140}
+                                  height={70}
+                                  unoptimized
+                                  className="object-contain max-w-full max-h-[60%] w-auto"
+                                />
+                              ) : (
+                                <span
+                                  className={[
+                                    "font-[var(--font-display)] text-[13px] font-bold text-center leading-tight",
+                                    isDark ? "text-white/90" : "text-black/85",
+                                  ].join(" ")}
+                                >
+                                  {it.title}
+                                </span>
+                              )}
+                            </span>
+                          );
+                        })}
                       </InfiniteSlider>
                       {/* edge fades */}
                       <div aria-hidden="true" className="pointer-events-none absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-[#0B0B12] to-transparent" />
