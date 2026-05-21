@@ -185,6 +185,12 @@ export type ServiceDetailContent = {
     eyebrow?: string;
     heading: string;
     body?: string;
+    /** "tabs" (default) renders a tabbed logo-tile carousel
+     *  (one group visible at a time).
+     *  "checklist-grid" renders all groups simultaneously as a
+     *  responsive card grid where each item is a check-icon row —
+     *  matches the live computer-vision-software-development layout. */
+    displayStyle?: "tabs" | "checklist-grid";
     /** Items can be plain strings (renders as chips) or
      *  { name, logo } pairs (renders as logo tiles like the live
      *  metaverse-development "Blockchain Tech Stack" tabs). */

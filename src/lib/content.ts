@@ -123,7 +123,7 @@ export const nav = {
         title: 'Machine Learning',
         items: [
           { label: 'ML Development', href: '/machine-learning-development/' },
-          { label: 'Hire ChatGPT Developer', href: '/generative-ai-development/' },
+          { label: 'Hire ChatGPT Developer', href: '/chat-gpt/' },
           { label: 'Agentic AI', href: '/ai-agent-development/' },
           { label: 'Voice Assistant', href: '/ai-voice-assist/' },
         ],
@@ -131,7 +131,7 @@ export const nav = {
       {
         title: 'Industries',
         items: [
-          { label: 'AI In Healthcare', href: '/ai-healthcare-software-development/#' },
+          { label: 'AI In Healthcare', href: '/ai-healthcare-software-development/' },
           { label: 'AI In Logistics', href: '/ai-logistics-software/' },
           { label: 'AI In Fintech', href: '/ai-fintech-solutions/' },
           { label: 'AI In Banking', href: '/ai-banking-solutions/' },

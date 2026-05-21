@@ -193,45 +193,63 @@ export function ServiceDetail({
         className="relative pt-40 pb-24 lg:pt-48 lg:pb-32 overflow-hidden"
         aria-label={hero.heading}
       >
-        {hero.image && (
-          <div aria-hidden="true" className="absolute inset-0 -z-10">
-            <Image
-              src={hero.image}
-              alt=""
-              fill
-              sizes="100vw"
-              priority
-              unoptimized
-              className="object-cover object-center scale-[1.04] animate-[heroFloat_22s_ease-in-out_infinite]"
-            />
-            {/* Cinematic vignette + colour cast */}
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_28%_42%,transparent_0%,rgba(8,8,12,0.78)_55%,rgba(8,8,12,0.94)_85%)]" />
-            <div className="absolute inset-0 bg-gradient-to-b from-[rgba(8,8,12,0.55)] via-transparent to-[rgba(8,8,12,0.92)]" />
-            {/* Drifting ambient orbs — slow, hypnotic, decorative only */}
-            <div
-              className="pointer-events-none absolute -top-24 -left-16 w-[520px] h-[520px] rounded-full blur-[120px] opacity-65 animate-[orbDriftA_18s_ease-in-out_infinite]"
-              style={{
-                background:
-                  "radial-gradient(circle, rgba(82,184,255,0.55), rgba(82,184,255,0.0) 70%)",
-              }}
-            />
-            <div
-              className="pointer-events-none absolute bottom-[-12rem] right-[-6rem] w-[640px] h-[640px] rounded-full blur-[140px] opacity-55 animate-[orbDriftB_24s_ease-in-out_infinite]"
-              style={{
-                background:
-                  "radial-gradient(circle, rgba(176,124,255,0.55), rgba(176,124,255,0.0) 70%)",
-              }}
-            />
-            {/* Subtle scan-line / grain to kill banding */}
-            <div
-              className="pointer-events-none absolute inset-0 mix-blend-overlay opacity-[0.06]"
-              style={{
-                backgroundImage:
-                  "repeating-linear-gradient(0deg, rgba(255,255,255,0.6) 0 1px, transparent 1px 3px)",
-              }}
-            />
-          </div>
-        )}
+        {/* Atmospheric backdrop — transparent base lets the BackgroundScene 3D canvas
+            (mounted at the page level) show through; only soft tinted gradients,
+            drifting orbs, dotted grid, and a subtle vignette on top. */}
+        <div aria-hidden="true" className="absolute inset-0 -z-10">
+          {/* Soft tinted overlays — transparent so the 3D scene reads through */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(ellipse at 22% 30%, rgba(24,38,68,0.32), transparent 60%), radial-gradient(ellipse at 78% 70%, rgba(40,22,68,0.32), transparent 60%)",
+            }}
+          />
+          {/* Drifting ambient orbs */}
+          <div
+            className="pointer-events-none absolute -top-24 -left-16 w-[520px] h-[520px] rounded-full blur-[120px] opacity-65 animate-[orbDriftA_18s_ease-in-out_infinite]"
+            style={{
+              background:
+                "radial-gradient(circle, rgba(82,184,255,0.55), rgba(82,184,255,0.0) 70%)",
+            }}
+          />
+          <div
+            className="pointer-events-none absolute bottom-[-12rem] right-[-6rem] w-[640px] h-[640px] rounded-full blur-[140px] opacity-55 animate-[orbDriftB_24s_ease-in-out_infinite]"
+            style={{
+              background:
+                "radial-gradient(circle, rgba(176,124,255,0.55), rgba(176,124,255,0.0) 70%)",
+            }}
+          />
+          <div
+            className="pointer-events-none absolute top-[35%] left-[55%] w-[420px] h-[420px] rounded-full blur-[110px] opacity-40 animate-[orbDriftA_26s_ease-in-out_infinite]"
+            style={{
+              background:
+                "radial-gradient(circle, rgba(24,222,255,0.45), rgba(24,222,255,0.0) 70%)",
+            }}
+          />
+          {/* Dotted grid texture — masked for depth */}
+          <div
+            className="absolute inset-0 opacity-[0.08]"
+            style={{
+              backgroundImage:
+                "radial-gradient(rgba(255,255,255,0.7) 1px, transparent 1px)",
+              backgroundSize: "28px 28px",
+              maskImage:
+                "radial-gradient(ellipse at center, black 35%, transparent 78%)",
+              WebkitMaskImage:
+                "radial-gradient(ellipse at center, black 35%, transparent 78%)",
+            }}
+          />
+          {/* Subtle vignette + scan-line texture — kept very light so the 3D scene reads through */}
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_50%,transparent_0%,rgba(8,8,12,0.18)_75%,rgba(8,8,12,0.35)_100%)]" />
+          <div
+            className="pointer-events-none absolute inset-0 mix-blend-overlay opacity-[0.05]"
+            style={{
+              backgroundImage:
+                "repeating-linear-gradient(0deg, rgba(255,255,255,0.6) 0 1px, transparent 1px 3px)",
+            }}
+          />
+        </div>
         <div className="section-box mx-auto max-w-[1440px] px-6 sm:px-12 lg:px-20 py-14 lg:py-20">
           <Reveal>
             <nav
@@ -385,7 +403,7 @@ export function ServiceDetail({
                               boxShadow: "0 0 0 1px rgba(255,255,255,0.08), inset 0 1px 0 rgba(255,255,255,0.10), 0 8px 22px -6px rgba(82,184,255,0.32)",
                             }}
                           >
-                            <Image src={s.icon} alt="" width={40} height={40} unoptimized className="object-contain w-full h-full" />
+                            <Image src={s.icon} alt="" aria-hidden="true" width={40} height={40} unoptimized className="object-contain w-full h-full" />
                           </div>
                         </div>
                       )}
@@ -543,7 +561,7 @@ export function ServiceDetail({
                               }}
                             >
                               {it.icon ? (
-                                <Image src={it.icon} alt="" width={48} height={48} unoptimized className="object-contain w-full h-full" />
+                                <Image src={it.icon} alt="" aria-hidden="true" width={48} height={48} unoptimized className="object-contain w-full h-full" />
                               ) : (
                                 <span
                                   className="block w-full h-full text-white"
@@ -886,7 +904,7 @@ export function ServiceDetail({
               <div className="mt-14 grid grid-cols-1 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] gap-8 lg:gap-12 items-start">
                 <Reveal>
                   <div className="relative aspect-[4/5] rounded-2xl overflow-hidden border border-white/10">
-                    <Image src={impact.image} alt="" fill sizes="(max-width: 1024px) 100vw, 40vw" unoptimized className="object-cover" />
+                    <Image src={impact.image} alt="" aria-hidden="true" fill sizes="(max-width: 1024px) 100vw, 40vw" unoptimized className="object-cover" />
                   </div>
                 </Reveal>
                 <ul className="flex flex-col gap-4 list-none p-0 m-0">
@@ -899,7 +917,7 @@ export function ServiceDetail({
                           style={{ background: "linear-gradient(135deg, rgba(82,184,255,0.30), rgba(176,124,255,0.30))", boxShadow: "0 0 0 1px rgba(255,255,255,0.08)" }}
                         >
                           {it.icon ? (
-                            <Image src={it.icon} alt="" width={22} height={22} unoptimized className="object-contain" />
+                            <Image src={it.icon} alt="" aria-hidden="true" width={22} height={22} unoptimized className="object-contain" />
                           ) : (
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                               <path d="M12 2l2.9 6.8L22 9.6l-5.5 4.9 1.7 7.2L12 17.9 5.8 21.7 7.5 14.5 2 9.6l7.1-.8L12 2z" fill="white" />
@@ -960,6 +978,7 @@ export function ServiceDetail({
                             <Image
                               src={it.icon}
                               alt=""
+                              aria-hidden="true"
                               width={28}
                               height={28}
                               unoptimized
@@ -1020,7 +1039,7 @@ export function ServiceDetail({
               <div className="mt-14 grid grid-cols-1 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.4fr)] gap-6 lg:gap-8 items-start">
                 <Reveal>
                   <div className="relative aspect-[4/5] rounded-2xl overflow-hidden border border-white/10 lg:sticky lg:top-24">
-                    <Image src={whyChoose.image} alt="" fill sizes="(max-width: 1024px) 100vw, 40vw" unoptimized className="object-cover" />
+                    <Image src={whyChoose.image} alt="" aria-hidden="true" fill sizes="(max-width: 1024px) 100vw, 40vw" unoptimized className="object-cover" />
                     <div className="absolute inset-0 bg-gradient-to-t from-[rgba(10,10,14,0.85)] via-[rgba(10,10,14,0.1)] to-transparent" />
                     <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-transparent to-[rgba(82,184,255,0.18)]" />
                   </div>
@@ -1038,7 +1057,7 @@ export function ServiceDetail({
                           {it.icon ? (
                             <div className="shrink-0 w-12 h-12 rounded-xl p-2 flex items-center justify-center"
                                  style={{ background: "linear-gradient(135deg, rgba(82,184,255,0.22), rgba(176,124,255,0.22))", boxShadow: "0 0 0 1px rgba(255,255,255,0.07)" }}>
-                              <Image src={it.icon} alt="" width={40} height={40} unoptimized className="object-contain w-full h-full" />
+                              <Image src={it.icon} alt="" aria-hidden="true" width={40} height={40} unoptimized className="object-contain w-full h-full" />
                             </div>
                           ) : (
                             <span className="font-[var(--font-mono)] text-[10px] tracking-[0.22em] text-brand-sky uppercase">
@@ -1105,7 +1124,7 @@ export function ServiceDetail({
                               boxShadow: "0 0 0 1px rgba(255,255,255,0.08), inset 0 1px 0 rgba(255,255,255,0.10), 0 10px 28px -8px rgba(82,184,255,0.35)",
                             }}
                           >
-                            <Image src={it.icon} alt="" width={48} height={48} unoptimized className="object-contain w-full h-full" />
+                            <Image src={it.icon} alt="" aria-hidden="true" width={48} height={48} unoptimized className="object-contain w-full h-full" />
                           </div>
                         </div>
                       )}

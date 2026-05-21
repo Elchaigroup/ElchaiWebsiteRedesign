@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { pageMetadata } from "@/lib/seo";
 import { JsonLd } from "@/lib/JsonLd";
 import { Nav } from "@/components/sections/Nav";
@@ -7,6 +8,7 @@ import { ModalsHost } from "@/components/sections/ModalsHost";
 import { BackgroundScene } from "@/components/sections/BackgroundScene";
 import { CursorSpotlight } from "@/components/primitives/CursorSpotlight";
 import { Reveal } from "@/components/primitives/Reveal";
+import { InfiniteSlider } from "@/components/ui/infinite-slider";
 
 export const metadata = pageMetadata({
   title: "About Us",
@@ -15,39 +17,95 @@ export const metadata = pageMetadata({
   path: "/about-us",
 });
 
-const STATS = [
-  { value: "80+", label: "Businesses Empowered" },
-  { value: "80+", label: "Countries" },
-  { value: "80+", label: "Enterprise Solutions Delivered" },
-  { value: "80+", label: "Startups Empowered" },
-  { value: "80+", label: "Million-Funded Startups" },
+const TRUSTED_BRANDS = [
+  "/elchai/about/light_elchai_partner_logo_1.webp",
+  "/elchai/about/light_elchai_partner_logo_2.webp",
+  "/elchai/about/light_elchai_partner_logo_3.webp",
+  "/elchai/about/light_elchai_partner_logo_4.webp",
+  "/elchai/about/light_elchai_partner_logo_5.webp",
+  "/elchai/about/light_elchai_partner_logo_6.webp",
+] as const;
+
+const STATS_TOP = [
+  { value: "10,000+", label: "Businesses" },
+  { value: "150+",    label: "Countries" },
+] as const;
+
+const STATS_BOTTOM = [
+  { value: "2,000+", label: "Enterprise Solutions Delivered", icon: "/elchai/about/about-counter-icn_1.svg" },
+  { value: "6,000+", label: "Startups Empowered",             icon: "/elchai/about/about-counter-icn_2.svg" },
+  { value: "120+",   label: "Million-Funded Startups",        icon: "/elchai/about/about-counter-icn_3.svg" },
 ] as const;
 
 const TEAM = [
-  { name: "Flavio Elia",          role: "Founder",                                    linkedin: "https://www.linkedin.com/in/flavio-elia/" },
-  { name: "Konstantin Kirchfeld", role: "Managing Partner & COO",                     linkedin: "https://www.linkedin.com/in/konstantin-kirchfeld-9b71975a/" },
-  { name: "Stefano Curzio",       role: "Managing Partner & CFO",                     linkedin: "https://www.linkedin.com/in/stefanocurzio/" },
-  { name: "Corrado Salmé",        role: "Country CEO, Belgium",                       linkedin: "https://www.linkedin.com/in/corrado-salm%C3%A9-688215401/" },
-  { name: "Aseem Ghavri",         role: "Head of Strategic Partnerships",             linkedin: "https://ae.linkedin.com/in/aseemghavri" },
-  { name: "Giorgia Cristina",     role: "Financial Analyst",                          linkedin: "https://www.linkedin.com/in/giorgia-cristina-panico-7b4a1b171/" },
-  { name: "Sukhchain Singh",      role: "CTO",                                        linkedin: "https://www.linkedin.com/in/sukhchainsingh/" },
-  { name: "Jacopo Dellai",        role: "SSA",                                        linkedin: "https://www.linkedin.com/in/jacopo-dellai-a31757188/" },
-  { name: "Albert Palay",         role: "Strategic Partnerships & Development Lead",  linkedin: "http://linkedin.com/in/albert-palay-a445577" },
-  { name: "Charles David",        role: "Head of AI",                                 linkedin: "https://www.linkedin.com/in/charlesaarondavid/" },
-  { name: "Jasna Ali",            role: "IT Project Manager",                         linkedin: "https://www.linkedin.com/in/jasna-ali-2067111a1/" },
-  { name: "Florian Katiaj",       role: "SSA (Albania)",                              linkedin: "https://www.linkedin.com/in/florian-katiaj-ba8406145" },
-  { name: "Diana Guevarra",       role: "Business Manager (UAE)",                     linkedin: "https://www.linkedin.com/in/dianna-rose-guevarra-1007a3221" },
-  { name: "Angela Cordella",      role: "Business Manager (EU)",                      linkedin: "http://www.linkedin.com/in/angela-cordella-69112739b" },
-  { name: "Pargat Dhillon",       role: "Tech Head",                                  linkedin: "https://www.linkedin.com/in/pargatd/" },
-  { name: "Ritika Grover",        role: "Marketing Head",                             linkedin: "https://www.linkedin.com/in/ritika-grover-272301136/" },
-  { name: "Nidhi Chandel",        role: "HR & People Manager",                        linkedin: "https://www.linkedin.com/in/nidhi-chandel/" },
+  { name: "Flavio Elia",          role: "Founder",                                    photo: "/elchai/about/Flavio_Elia2.webp",       linkedin: "https://www.linkedin.com/in/flavio-elia/" },
+  { name: "Konstantin Kirchfeld", role: "Managing Partner & COO",                     photo: "/elchai/about/Konstantin_Kirchfeld.webp", linkedin: "https://www.linkedin.com/in/konstantin-kirchfeld-9b71975a/" },
+  { name: "Stefano Curzio",       role: "Managing Partner & CFO",                     photo: "/elchai/about/1Stefano-Curzio.webp",    linkedin: "https://www.linkedin.com/in/stefanocurzio/" },
+  { name: "Corrado Salmé",        role: "Country CEO, Belgium",                       photo: "/elchai/about/Corrado_Salme.jpeg",      linkedin: "https://www.linkedin.com/in/corrado-salm%C3%A9-688215401/" },
+  { name: "Aseem Ghavri",         role: "Head of Strategic Partnerships",             photo: "/elchai/about/Aseem_CTO.webp",          linkedin: "https://ae.linkedin.com/in/aseemghavri" },
+  { name: "Giorgia Cristina",     role: "Financial Analyst",                          photo: "/elchai/about/Giorgia-Cristina.jpeg",   linkedin: "https://www.linkedin.com/in/giorgia-cristina-panico-7b4a1b171/" },
+  { name: "Sukhchain Singh",      role: "CTO",                                        photo: "/elchai/about/Sukhchain_Singh1.webp",   linkedin: "https://www.linkedin.com/in/sukhchainsingh/" },
+  { name: "Jacopo Dellai",        role: "SSA",                                        photo: "/elchai/about/Jacopo_Dellai.webp",      linkedin: "https://www.linkedin.com/in/jacopo-dellai-a31757188/" },
+  { name: "Albert Palay",         role: "Strategic Partnerships & Development Lead",  photo: "/elchai/about/Albert_Palay.webp",       linkedin: "http://linkedin.com/in/albert-palay-a445577" },
+  { name: "Charles David",        role: "Head of AI",                                 photo: "/elchai/about/Charles_David.webp",      linkedin: "https://www.linkedin.com/in/charlesaarondavid/" },
+  { name: "Jasna Ali",            role: "IT Project Manager",                         photo: "/elchai/about/Jasna.webp",              linkedin: "https://www.linkedin.com/in/jasna-ali-2067111a1/" },
+  { name: "Florian Katiaj",       role: "SSA (Albania)",                              photo: "/elchai/about/Florian-Katiaj.webp",     linkedin: "https://www.linkedin.com/in/florian-katiaj-ba8406145" },
+  { name: "Diana Guevarra",       role: "Business Manager (UAE)",                     photo: "/elchai/about/Diana-Guevarra.webp",     linkedin: "https://www.linkedin.com/in/dianna-rose-guevarra-1007a3221" },
+  { name: "Angela Cordella",      role: "Business Manager (EU)",                      photo: "/elchai/about/Angela-Cordella.webp",    linkedin: "http://www.linkedin.com/in/angela-cordella-69112739b" },
+  { name: "Pargat Dhillon",       role: "Tech Head",                                  photo: "/elchai/about/Pargat-Dhillon.webp",     linkedin: "https://www.linkedin.com/in/pargatd/" },
+  { name: "Ritika Grover",        role: "Marketing Head",                             photo: "/elchai/about/Ritika-Grover.webp",      linkedin: "https://www.linkedin.com/in/ritika-grover-272301136/" },
+  { name: "Nidhi Chandel",        role: "HR & People Manager",                        photo: "/elchai/about/Nidhi-Chandel.webp",      linkedin: "https://www.linkedin.com/in/nidhi-chandel/" },
 ] as const;
 
 const TEAM_COMPOSITION = [
-  { value: "80+", title: "Developers",  note: "Top-tier App Developers" },
-  { value: "80+", title: "Designers",   note: "UI/UX Designers" },
-  { value: "80+", title: "Marketers",   note: "Marketing Ninjas" },
-  { value: "80+", title: "Builders",    note: "Business Analysts" },
+  {
+    value: "650+",
+    title: "Developers",
+    note: "Top-tier App Developers",
+    avatars: [
+      "/elchai/about/user-1.webp",
+      "/elchai/about/user-2.webp",
+      "/elchai/about/user-3.webp",
+      "/elchai/about/user-4.webp",
+      "/elchai/about/user-5.webp",
+    ],
+  },
+  {
+    value: "300+",
+    title: "Designers",
+    note: "UI/UX Designers",
+    avatars: [
+      "/elchai/about/ds-1.webp",
+      "/elchai/about/ds-2.webp",
+      "/elchai/about/ds-3.webp",
+      "/elchai/about/ds-4.webp",
+      "/elchai/about/ds-5.webp",
+    ],
+  },
+  {
+    value: "250+",
+    title: "Marketers",
+    note: "Marketing Ninjas",
+    avatars: [
+      "/elchai/about/mn-1.webp",
+      "/elchai/about/mn-2.webp",
+      "/elchai/about/mn-3.webp",
+      "/elchai/about/mn-4.webp",
+      "/elchai/about/mn-5.webp",
+    ],
+  },
+  {
+    value: "200+",
+    title: "Builders",
+    note: "Business Analysts",
+    avatars: [
+      "/elchai/about/bd-1.webp",
+      "/elchai/about/bd-2.webp",
+      "/elchai/about/bd-3.webp",
+      "/elchai/about/bd-4.webp",
+      "/elchai/about/bd-5.webp",
+    ],
+  },
 ] as const;
 
 const JOURNEY = [
@@ -124,20 +182,23 @@ const REASONS = [
     title: "Go Live, Sooner",
     body:
       "We don't stretch total hours of development unnecessarily. Instead, our AI-powered development process brings your idea to life as soon as possible.",
+    icon: "/elchai/about/about-reasons-icn_1.svg",
   },
   {
     n: "02",
     kicker: "We Help You",
     title: "Connect With Investors",
     body:
-      "Not just your time, but we value your money too. Leverage our automated process to know exactly what you're paying for & get guaranteed pricing, without any surprises.",
+      "Over the last decade, we have built contacts with investors that are interested in businesses like yours. Raising funds turns easier with us.",
+    icon: "/elchai/about/about-reasons-icn_2.svg",
   },
   {
     n: "03",
     kicker: "We Help You",
     title: "Stay In Budget, Always",
     body:
-      "Over the last decade, we have built contacts with investors that are interested in businesses like yours. Raising funds turns easier with us.",
+      "Not just your time, but we value your money too. Leverage our automated process to know exactly what you're paying for & get guaranteed pricing, without any surprises.",
+    icon: "/elchai/about/about-reasons-icn_3.svg",
   },
   {
     n: "04",
@@ -145,6 +206,7 @@ const REASONS = [
     title: "Today, Tomorrow & Forever",
     body:
       "We make updates and fix bugs before you realize there's a problem. We promise to offer everlasting support to ensure the highest quality solutions with zero stress.",
+    icon: "/elchai/about/about-reasons-icn_4.svg",
   },
 ] as const;
 
@@ -154,6 +216,8 @@ const CASE_STUDIES = [
     sector: "for Health & Fitness",
     body:
       "Personalized nutrition and workout recommendations, backed by advanced AI algorithms, machine learning, and predictive analytics.",
+    logo: "/elchai/about/smartfit-logo.svg",
+    image: "/elchai/about/smartfit-app.webp",
     stats: [
       { value: "80%",  label: "User Retention Rate" },
       { value: "20K+", label: "Meal Plans Generated" },
@@ -164,6 +228,8 @@ const CASE_STUDIES = [
     sector: "for Fintech",
     body:
       "Developed a secure multi-chain crypto wallet with institutional-grade security protocols and smart contract integration.",
+    logo: "/elchai/about/fintex-logo.svg",
+    image: "/elchai/about/fintex-app.webp",
     stats: [
       { value: "20%",    label: "Cryptocurrencies Supported" },
       { value: "$100K+", label: "Daily Transaction Volume" },
@@ -174,6 +240,8 @@ const CASE_STUDIES = [
     sector: "for Real Estate",
     body:
       "Created an immersive metaverse experience using AR/VR technology and blockchain integration for Dubai's premier real estate market.",
+    logo: "/elchai/about/theuneverse-logo.svg",
+    image: "/elchai/about/theuneverse-app.webp",
     stats: [
       { value: "1000+", label: "Virtual Properties Listed" },
       { value: "45%",   label: "Increase in Property Views" },
@@ -184,12 +252,16 @@ const CASE_STUDIES = [
     sector: "for Media & Research",
     body:
       "Transforming complex media data into actionable intelligence, enabling real-time market analysis and predictive audience modeling.",
+    logo: "/elchai/about/nielsen-logo.svg",
+    image: "/elchai/about/nielsen-app.webp",
     stats: [
       { value: "85%", label: "Faster Analysis Time" },
       { value: "60%", label: "Faster Decision Making" },
     ],
   },
 ] as const;
+
+const PARTNER_LOGOS = Array.from({ length: 16 }, (_, i) => `/elchai/elchai_partner_logo_${i + 1}.webp`);
 
 // ItemList of Person entities — emits expertise signals for the
 // leadership team. Built from the TEAM constant above so it stays in
@@ -206,6 +278,7 @@ const personListJsonLd = {
       name: p.name,
       jobTitle: p.role,
       url: p.linkedin,
+      image: `https://www.elchaigroup.com${p.photo}`,
       worksFor: {
         "@type": "Organization",
         name: "Elchai Group",
@@ -225,10 +298,25 @@ const breadcrumbJsonLd = {
   ],
 };
 
+// AboutPage schema for /about-us
+const aboutPageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  name: "About Elchai Group",
+  url: "https://www.elchaigroup.com/about-us",
+  description:
+    "We're Your Digital Technological Partners. Since 2022, we've been helping businesses accelerate their journey to success.",
+  isPartOf: {
+    "@type": "WebSite",
+    name: "Elchai Group",
+    url: "https://www.elchaigroup.com",
+  },
+};
+
 export default function AboutUsPage() {
   return (
     <>
-      <JsonLd data={[personListJsonLd, breadcrumbJsonLd]} />
+      <JsonLd data={[personListJsonLd, breadcrumbJsonLd, aboutPageJsonLd]} />
       <BackgroundScene variant="aboutus" />
       <CursorSpotlight />
       <Nav />
@@ -236,54 +324,109 @@ export default function AboutUsPage() {
       <main className="relative" style={{ zIndex: 1 }}>
         {/* ─────────── Hero ─────────── */}
         <section
-          className="relative pt-32 pb-8 lg:pt-36 lg:pb-12"
+          className="relative pt-32 pb-8 lg:pt-36 lg:pb-12 overflow-hidden"
           aria-label="About Elchai Group"
         >
           <div className="section-box mx-auto max-w-[1440px] px-6 sm:px-12 lg:px-20 py-16 lg:py-20">
+            <div className="grid grid-cols-1 lg:grid-cols-[1.05fr_1fr] gap-10 lg:gap-14 items-center">
+              <div>
+                <Reveal>
+                  <nav
+                    aria-label="Breadcrumb"
+                    className="font-[var(--font-mono)] text-[11px] uppercase tracking-[0.22em] text-white/45 flex flex-wrap items-center gap-2"
+                  >
+                    <Link href="/" className="hover:text-brand-sky transition-colors">
+                      Home
+                    </Link>
+                    <span aria-hidden="true" className="text-white/30">/</span>
+                    <span className="text-brand-sky">About Us</span>
+                  </nav>
+                </Reveal>
+                <Reveal delay={0.10}>
+                  <span
+                    className="mt-8 inline-flex items-center gap-2.5 font-[var(--font-mono)]
+                               text-[11px] uppercase tracking-[0.22em] text-white/45"
+                  >
+                    <span className="w-1.5 h-1.5 rounded-full bg-brand-sky shadow-[0_0_8px_#18DEFF]" />
+                    About us
+                  </span>
+                </Reveal>
+                <Reveal delay={0.16}>
+                  <h1
+                    className="mt-6 font-[var(--font-display)] font-bold leading-[1.04]
+                               tracking-[-0.028em] text-[clamp(38px,5.6vw,82px)] max-w-[1080px]"
+                  >
+                    We&rsquo;re Your Digital Technological Partners.
+                  </h1>
+                </Reveal>
+                <Reveal delay={0.22}>
+                  <p className="mt-6 text-[15.5px] leading-[1.65] text-white/70 max-w-[680px]">
+                    Since 2022, we&rsquo;ve been helping businesses like yours
+                    accelerate their journey to success, backed by the right
+                    transformative solutions.
+                  </p>
+                </Reveal>
+                <Reveal delay={0.30}>
+                  <div className="mt-10 flex flex-wrap items-center gap-3">
+                    <Link href="#our-journey" className="cta cta--primary">
+                      Explore More
+                      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                        <path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" strokeWidth="1.6" />
+                      </svg>
+                    </Link>
+                  </div>
+                </Reveal>
+              </div>
+
+              {/* Hero banner image */}
+              <Reveal delay={0.28}>
+                <div className="relative aspect-[5/4] lg:aspect-[6/5] rounded-3xl overflow-hidden border border-white/[0.08]">
+                  <Image
+                    src="/elchai/about/elchai_about-banner-img_1.webp"
+                    alt="Elchai Group office workspace"
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    priority
+                    unoptimized
+                    className="object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[rgba(8,8,12,0.45)] via-transparent to-transparent" />
+                </div>
+              </Reveal>
+            </div>
+          </div>
+        </section>
+
+        {/* ─────────── Trusted by World's Leading Brands ─────────── */}
+        <section className="relative py-10" aria-label="Trusted by World's Leading Brands">
+          <div className="section-box mx-auto max-w-[1440px] px-6 sm:px-12 lg:px-20 py-10">
             <Reveal>
-              <nav
-                aria-label="Breadcrumb"
-                className="font-[var(--font-mono)] text-[11px] uppercase tracking-[0.22em] text-white/45 flex flex-wrap items-center gap-2"
-              >
-                <Link href="/" className="hover:text-brand-sky transition-colors">
-                  Home
-                </Link>
-                <span aria-hidden="true" className="text-white/30">/</span>
-                <span className="text-brand-sky">About Us</span>
-              </nav>
+              <div className="flex justify-center">
+                <span className="inline-flex items-center gap-2.5 font-[var(--font-mono)] text-[11px] uppercase tracking-[0.22em] text-white/45">
+                  <span className="w-1.5 h-1.5 rounded-full bg-brand-sky shadow-[0_0_8px_#18DEFF]" />
+                  Trusted by World&rsquo;s Leading Brands
+                </span>
+              </div>
             </Reveal>
             <Reveal delay={0.10}>
-              <span
-                className="mt-8 inline-flex items-center gap-2.5 font-[var(--font-mono)]
-                           text-[11px] uppercase tracking-[0.22em] text-white/45"
-              >
-                <span className="w-1.5 h-1.5 rounded-full bg-brand-sky shadow-[0_0_8px_#18DEFF]" />
-                About us
-              </span>
-            </Reveal>
-            <Reveal delay={0.16}>
-              <h1
-                className="mt-6 font-[var(--font-display)] font-bold leading-[1.04]
-                           tracking-[-0.028em] text-[clamp(38px,5.6vw,82px)] max-w-[1080px]"
-              >
-                We&rsquo;re Your Digital Technological Partners.
-              </h1>
-            </Reveal>
-            <Reveal delay={0.22}>
-              <p className="mt-6 text-[15.5px] leading-[1.65] text-white/70 max-w-[680px]">
-                Since 2022, we&rsquo;ve been helping businesses like yours
-                accelerate their journey to success, backed by the right
-                transformative solutions.
-              </p>
-            </Reveal>
-            <Reveal delay={0.30}>
-              <div className="mt-10 flex flex-wrap items-center gap-3">
-                <Link href="#our-journey" className="cta cta--primary">
-                  Explore More
-                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                    <path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" strokeWidth="1.6" />
-                  </svg>
-                </Link>
+              <div className="mt-8">
+                <InfiniteSlider gap={16} speed={48} speedOnHover={18} className="py-2">
+                  {TRUSTED_BRANDS.map((logo, i) => (
+                    <span
+                      key={`${logo}-${i}`}
+                      className="inline-flex shrink-0 items-center justify-center w-[180px] h-[88px] sm:w-[200px] sm:h-[100px] rounded-xl px-5 border border-white/12 bg-white/[0.04] backdrop-blur-sm"
+                    >
+                      <Image
+                        src={logo}
+                        alt="Trusted brand"
+                        width={140}
+                        height={70}
+                        unoptimized
+                        className="object-contain max-w-full max-h-[60%] w-auto"
+                      />
+                    </span>
+                  ))}
+                </InfiniteSlider>
               </div>
             </Reveal>
           </div>
@@ -291,7 +434,19 @@ export default function AboutUsPage() {
 
         {/* ─────────── We've Empowered (stats) ─────────── */}
         <section className="relative py-10 lg:py-14" aria-label="We've Empowered">
-          <div className="section-box mx-auto max-w-[1440px] px-6 sm:px-12 lg:px-20 py-16 lg:py-20">
+          <div className="section-box mx-auto max-w-[1440px] px-6 sm:px-12 lg:px-20 py-16 lg:py-20 relative overflow-hidden">
+            {/* Decorative background image */}
+            <div aria-hidden="true" className="pointer-events-none absolute inset-0 opacity-[0.18]">
+              <Image
+                src="/elchai/about/about-counter-bg1.webp"
+                alt=""
+                fill
+                sizes="100vw"
+                unoptimized
+                className="object-cover"
+              />
+            </div>
+
             <Reveal>
               <span
                 className="inline-flex items-center gap-2.5 font-[var(--font-mono)]
@@ -301,27 +456,54 @@ export default function AboutUsPage() {
                 We&rsquo;ve Empowered
               </span>
             </Reveal>
-            <Reveal delay={0.10}>
-              <div className="mt-12 grid grid-cols-2 lg:grid-cols-5 gap-px bg-white/[0.06] rounded-2xl overflow-hidden">
-                {STATS.map((s) => (
-                  <div
-                    key={s.label}
-                    className="bg-[rgba(10,10,14,0.55)] px-6 py-8 lg:py-10"
-                  >
-                    <div className="font-[var(--font-display)] font-bold text-brand-sky text-[clamp(28px,3.2vw,46px)] leading-none tracking-[-0.02em]">
+
+            <div className="relative mt-12 grid grid-cols-1 lg:grid-cols-5 gap-4 lg:gap-5">
+              {STATS_TOP.map((s) => (
+                <Reveal key={s.label}>
+                  <div className="rounded-2xl border border-white/[0.08] bg-[rgba(10,10,14,0.65)] backdrop-blur px-7 py-9 lg:py-10 h-full flex flex-col justify-between gap-4">
+                    <div className="font-[var(--font-display)] font-bold text-brand-sky text-[clamp(32px,3.6vw,52px)] leading-none tracking-[-0.02em]">
                       {s.value}
                     </div>
-                    <div className="mt-3 text-[12.5px] leading-[1.5] text-white/65">
+                    <div className="text-[13.5px] leading-[1.5] text-white/75 font-[var(--font-display)]">
                       {s.label}
                     </div>
                   </div>
-                ))}
-              </div>
-            </Reveal>
+                </Reveal>
+              ))}
+              {STATS_BOTTOM.map((s, i) => (
+                <Reveal key={s.label} delay={0.10 + i * 0.05}>
+                  <div
+                    className="relative rounded-2xl border border-white/[0.08] backdrop-blur px-7 py-9 lg:py-10 h-full flex flex-col justify-between gap-4 overflow-hidden"
+                    style={{
+                      background:
+                        "linear-gradient(160deg, rgba(82,184,255,0.10), rgba(10,10,14,0.65) 60%)",
+                    }}
+                  >
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="font-[var(--font-display)] font-bold text-brand-sky text-[clamp(28px,3vw,46px)] leading-none tracking-[-0.02em]">
+                        {s.value}
+                      </div>
+                      <Image
+                        src={s.icon}
+                        alt=""
+                        aria-hidden="true"
+                        width={36}
+                        height={36}
+                        unoptimized
+                        className="opacity-80"
+                      />
+                    </div>
+                    <div className="text-[13px] leading-[1.5] text-white/75 font-[var(--font-display)]">
+                      {s.label}
+                    </div>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
           </div>
         </section>
 
-        {/* ─────────── Our Team (17 cards) ─────────── */}
+        {/* ─────────── Our Team (17 cards with portraits) ─────────── */}
         <section className="relative py-10 lg:py-14" aria-label="Our Team">
           <div className="section-box mx-auto max-w-[1440px] px-6 sm:px-12 lg:px-20 py-16 lg:py-20">
             <Reveal>
@@ -336,7 +518,7 @@ export default function AboutUsPage() {
             <Reveal delay={0.10}>
               <h2
                 className="mt-6 font-[var(--font-display)] font-bold leading-[1.04]
-                           tracking-[-0.025em] text-[clamp(26px,3.4vw,52px)] max-w-[920px]"
+                           tracking-[-0.025em] text-[clamp(26px,3.4vw,52px)] max-w-[920px] section-accent"
               >
                 We&rsquo;re A Growing Team Of Innovative Minds, Passionate
                 About Your Success.
@@ -346,31 +528,43 @@ export default function AboutUsPage() {
             <div className="mt-14 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-5">
               {TEAM.map((p, i) => (
                 <Reveal key={p.name} delay={0.14 + (i % 4) * 0.05}>
-                  <div className="rounded-2xl border border-white/[0.08] bg-[rgba(10,10,14,0.55)] p-6 lg:p-7 h-full flex flex-col gap-3 hover:border-white/[0.16] transition-colors">
-                    <div className="aspect-[4/5] rounded-xl bg-gradient-to-br from-[rgba(36,229,255,0.07)] to-[rgba(139,92,246,0.07)] border border-white/[0.05] flex items-center justify-center">
-                      <span className="font-[var(--font-display)] font-bold text-white/40 text-[clamp(28px,2.8vw,40px)] tracking-[-0.01em]">
-                        {p.name.split(" ").map((n) => n[0]).slice(0, 2).join("")}
-                      </span>
+                  <div className="group relative rounded-2xl border border-white/[0.08] bg-[rgba(10,10,14,0.55)] p-3 h-full flex flex-col gap-3 hover:border-white/[0.18] transition-colors overflow-hidden">
+                    <div className="relative aspect-[4/5] rounded-xl overflow-hidden border border-white/[0.05]">
+                      <Image
+                        src={p.photo}
+                        alt={`${p.name} — ${p.role}`}
+                        fill
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 22vw"
+                        unoptimized
+                        className="object-cover group-hover:scale-[1.04] transition-transform duration-500"
+                      />
+                      <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-[rgba(10,10,14,0.85)] to-transparent" />
                     </div>
-                    <div>
+                    <div className="px-3 pb-3 pt-1">
                       <h3 className="font-[var(--font-display)] font-bold tracking-[-0.012em] text-[15.5px] leading-[1.25] text-white">
                         {p.name}
                       </h3>
                       <p className="mt-1 text-[12.5px] leading-[1.5] text-brand-sky">
                         {p.role}
                       </p>
+                      <a
+                        href={p.linkedin}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-3 inline-flex items-center gap-2 text-[11.5px] uppercase tracking-[0.18em] text-white/55 hover:text-brand-sky transition-colors"
+                        aria-label={`${p.name} on LinkedIn`}
+                      >
+                        <Image
+                          src="/elchai/about/linkedin.webp"
+                          alt=""
+                          aria-hidden="true"
+                          width={14}
+                          height={14}
+                          unoptimized
+                        />
+                        LinkedIn
+                      </a>
                     </div>
-                    <a
-                      href={p.linkedin}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="mt-auto inline-flex items-center gap-2 text-[11.5px] uppercase tracking-[0.18em] text-white/55 hover:text-brand-sky transition-colors"
-                    >
-                      LinkedIn
-                      <svg width="11" height="11" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                        <path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" strokeWidth="1.6" />
-                      </svg>
-                    </a>
                   </div>
                 </Reveal>
               ))}
@@ -378,7 +572,7 @@ export default function AboutUsPage() {
           </div>
         </section>
 
-        {/* ─────────── Team Composition ─────────── */}
+        {/* ─────────── Team Composition (Developers / Designers / Marketers / Builders) ─────────── */}
         <section className="relative py-10 lg:py-14" aria-label="Team composition">
           <div className="section-box mx-auto max-w-[1440px] px-6 sm:px-12 lg:px-20 py-16 lg:py-20">
             <Reveal>
@@ -398,19 +592,38 @@ export default function AboutUsPage() {
                 500+ Specialists Across Four Disciplines.
               </h2>
             </Reveal>
-            <div className="mt-12 grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5">
+            <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5">
               {TEAM_COMPOSITION.map((t, i) => (
                 <Reveal key={t.title} delay={0.16 + i * 0.06}>
-                  <div className="rounded-2xl border border-white/[0.08] bg-[rgba(10,10,14,0.55)] p-7 lg:p-8 h-full flex flex-col gap-3">
+                  <div className="rounded-2xl border border-white/[0.08] bg-[rgba(10,10,14,0.55)] p-7 lg:p-8 h-full flex flex-col gap-4">
                     <div className="font-[var(--font-display)] font-bold text-brand-sky text-[clamp(26px,3vw,42px)] leading-none tracking-[-0.02em]">
                       {t.value}
                     </div>
-                    <h3 className="mt-2 font-[var(--font-display)] font-bold tracking-[-0.012em] text-[17px] text-white">
+                    <h3 className="mt-1 font-[var(--font-display)] font-bold tracking-[-0.012em] text-[18px] text-white">
                       {t.title}
                     </h3>
                     <p className="text-[12.5px] leading-[1.55] text-white/60">
                       {t.note}
                     </p>
+                    <div className="mt-auto flex items-center -space-x-2">
+                      {t.avatars.map((avatar, ai) => (
+                        <span
+                          key={`${t.title}-${ai}`}
+                          className="relative w-9 h-9 rounded-full overflow-hidden border-2 border-[#0E0E14]"
+                          style={{ zIndex: t.avatars.length - ai }}
+                        >
+                          <Image
+                            src={avatar}
+                            alt=""
+                            aria-hidden="true"
+                            fill
+                            sizes="36px"
+                            unoptimized
+                            className="object-cover"
+                          />
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 </Reveal>
               ))}
@@ -462,7 +675,7 @@ export default function AboutUsPage() {
             <Reveal delay={0.10}>
               <h2
                 className="mt-6 font-[var(--font-display)] font-bold leading-[1.04]
-                           tracking-[-0.025em] text-[clamp(26px,3.4vw,52px)] max-w-[1080px]"
+                           tracking-[-0.025em] text-[clamp(26px,3.4vw,52px)] max-w-[1080px] section-accent"
               >
                 Explore 4+ Years Of Ideation. Innovation. Transformation.
               </h2>
@@ -507,7 +720,7 @@ export default function AboutUsPage() {
           </div>
         </section>
 
-        {/* ─────────── Success Partners (4 reasons) ─────────── */}
+        {/* ─────────── Success Partners (4 reasons with icons) ─────────── */}
         <section className="relative py-10 lg:py-14" aria-label="Our Promise">
           <div className="section-box mx-auto max-w-[1440px] px-6 sm:px-12 lg:px-20 py-16 lg:py-20">
             <Reveal>
@@ -522,7 +735,7 @@ export default function AboutUsPage() {
             <Reveal delay={0.10}>
               <h2
                 className="mt-6 font-[var(--font-display)] font-bold leading-[1.04]
-                           tracking-[-0.025em] text-[clamp(26px,3.4vw,52px)] max-w-[920px]"
+                           tracking-[-0.025em] text-[clamp(26px,3.4vw,52px)] max-w-[920px] section-accent"
               >
                 Success Partners For Some Really Good Reasons.
               </h2>
@@ -538,9 +751,31 @@ export default function AboutUsPage() {
                 <Reveal key={r.n} delay={0.16 + i * 0.06}>
                   <div className="rounded-3xl glass glass-edge p-7 lg:p-9 h-full flex flex-col gap-4">
                     <div className="flex items-center justify-between">
-                      <span className="font-[var(--font-mono)] text-[11px] tracking-[0.22em] text-brand-sky">
-                        {r.n}
-                      </span>
+                      <div className="flex items-center gap-4">
+                        <span
+                          aria-hidden="true"
+                          className="inline-flex w-14 h-14 rounded-2xl items-center justify-center p-2.5"
+                          style={{
+                            background:
+                              "radial-gradient(circle at 40% 30%, rgba(82,184,255,0.22), rgba(176,124,255,0.16) 70%, transparent)",
+                            boxShadow:
+                              "0 0 0 1px rgba(255,255,255,0.08), inset 0 0 20px rgba(82,184,255,0.10)",
+                          }}
+                        >
+                          <Image
+                            src={r.icon}
+                            alt=""
+                            aria-hidden="true"
+                            width={40}
+                            height={40}
+                            unoptimized
+                            className="object-contain"
+                          />
+                        </span>
+                        <span className="font-[var(--font-mono)] text-[11px] tracking-[0.22em] text-brand-sky">
+                          {r.n}
+                        </span>
+                      </div>
                       <span className="font-[var(--font-mono)] text-[10px] tracking-[0.22em] text-white/35">
                         {r.n} / 04
                       </span>
@@ -571,7 +806,7 @@ export default function AboutUsPage() {
           </div>
         </section>
 
-        {/* ─────────── Case Studies showcase ─────────── */}
+        {/* ─────────── Case Studies showcase (with logos + app images) ─────────── */}
         <section className="relative py-10 lg:py-14" aria-label="Case studies">
           <div className="section-box mx-auto max-w-[1440px] px-6 sm:px-12 lg:px-20 py-16 lg:py-20">
             <Reveal>
@@ -586,7 +821,7 @@ export default function AboutUsPage() {
             <Reveal delay={0.10}>
               <h2
                 className="mt-6 font-[var(--font-display)] font-bold leading-[1.04]
-                           tracking-[-0.025em] text-[clamp(26px,3.4vw,52px)] max-w-[920px]"
+                           tracking-[-0.025em] text-[clamp(26px,3.4vw,52px)] max-w-[920px] section-accent"
               >
                 Catch Innovation in Action With Us.
               </h2>
@@ -601,13 +836,25 @@ export default function AboutUsPage() {
             <div className="mt-14 grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
               {CASE_STUDIES.map((cs, i) => (
                 <Reveal key={cs.label} delay={0.20 + i * 0.06}>
-                  <div className="rounded-3xl glass glass-edge p-7 lg:p-9 h-full flex flex-col gap-5">
-                    <div className="flex items-center gap-3">
-                      <span className="font-[var(--font-mono)] text-[10px] tracking-[0.22em] text-brand-sky uppercase">
-                        {String(i + 1).padStart(2, "0")}
-                      </span>
-                      <span className="font-[var(--font-mono)] text-[11px] tracking-[0.20em] text-white/50 uppercase">
-                        {cs.sector}
+                  <div className="rounded-3xl glass glass-edge p-7 lg:p-9 h-full flex flex-col gap-5 overflow-hidden">
+                    <div className="flex items-center justify-between gap-4">
+                      <div className="flex items-center gap-3">
+                        <span className="font-[var(--font-mono)] text-[10px] tracking-[0.22em] text-brand-sky uppercase">
+                          {String(i + 1).padStart(2, "0")}
+                        </span>
+                        <span className="font-[var(--font-mono)] text-[11px] tracking-[0.20em] text-white/50 uppercase">
+                          {cs.sector}
+                        </span>
+                      </div>
+                      <span className="relative h-9 w-24 shrink-0">
+                        <Image
+                          src={cs.logo}
+                          alt={`${cs.label} logo`}
+                          fill
+                          sizes="96px"
+                          unoptimized
+                          className="object-contain object-right"
+                        />
                       </span>
                     </div>
                     <h3 className="font-[var(--font-display)] font-bold tracking-[-0.012em] text-[clamp(22px,2.2vw,32px)] text-white">
@@ -616,6 +863,16 @@ export default function AboutUsPage() {
                     <p className="text-[14px] leading-[1.65] text-white/70">
                       {cs.body}
                     </p>
+                    <div className="relative w-full aspect-[16/9] rounded-2xl overflow-hidden border border-white/[0.06]">
+                      <Image
+                        src={cs.image}
+                        alt={`${cs.label} preview`}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                        unoptimized
+                        className="object-cover"
+                      />
+                    </div>
                     <div className="mt-2 grid grid-cols-2 gap-px bg-white/[0.06] rounded-xl overflow-hidden">
                       {cs.stats.map((s) => (
                         <div
@@ -644,6 +901,52 @@ export default function AboutUsPage() {
                 </Reveal>
               ))}
             </div>
+          </div>
+        </section>
+
+        {/* ─────────── Clients & Partners marquee ─────────── */}
+        <section className="relative py-10 lg:py-14" aria-label="Clients & Partners">
+          <div className="section-box mx-auto max-w-[1440px] px-6 sm:px-12 lg:px-20 py-16 lg:py-20">
+            <Reveal>
+              <div className="flex justify-center">
+                <span className="inline-flex items-center gap-2.5 font-[var(--font-mono)] text-[11px] uppercase tracking-[0.22em] text-white/45">
+                  <span className="w-1.5 h-1.5 rounded-full bg-brand-sky shadow-[0_0_8px_#18DEFF]" />
+                  Clients &amp; Partners
+                </span>
+              </div>
+            </Reveal>
+            <Reveal delay={0.10}>
+              <h2 className="mt-6 text-center font-[var(--font-display)] font-bold leading-[1.04] tracking-[-0.025em] text-[clamp(26px,3.4vw,48px)] max-w-[920px] mx-auto">
+                Proud Success Partners To Businesses Of All Sizes.
+              </h2>
+            </Reveal>
+            <Reveal delay={0.18}>
+              <p className="mt-5 text-center text-[15px] leading-[1.65] text-white/65 max-w-[680px] mx-auto">
+                We&rsquo;ve been the technology backbone for startups and
+                enterprises alike, driving innovation at every scale.
+              </p>
+            </Reveal>
+            <Reveal delay={0.22}>
+              <div className="mt-10">
+                <InfiniteSlider gap={16} speed={48} speedOnHover={18} className="py-2">
+                  {PARTNER_LOGOS.map((logo) => (
+                    <span
+                      key={logo}
+                      className="inline-flex shrink-0 items-center justify-center w-[180px] h-[88px] sm:w-[200px] sm:h-[100px] rounded-xl px-5 border border-white/10 bg-white"
+                    >
+                      <Image
+                        src={logo}
+                        alt="Partner logo"
+                        width={140}
+                        height={70}
+                        unoptimized
+                        className="object-contain max-w-full max-h-[60%] w-auto"
+                      />
+                    </span>
+                  ))}
+                </InfiniteSlider>
+              </div>
+            </Reveal>
           </div>
         </section>
 

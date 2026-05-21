@@ -18,16 +18,6 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
-        source: "/chat-gpt",
-        destination: "/generative-ai-development",
-        permanent: true,
-      },
-      {
-        source: "/chat-gpt/",
-        destination: "/generative-ai-development",
-        permanent: true,
-      },
-      {
         source: "/ai-agent-2025",
         destination: "/ai-agent-development",
         permanent: true,

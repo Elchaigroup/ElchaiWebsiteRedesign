@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Nav } from "@/components/sections/Nav";
 import { Footer } from "@/components/sections/Footer";
+import { Contact } from "@/components/sections/Contact";
 import { ModalsHost } from "@/components/sections/ModalsHost";
 import { BackgroundScene } from "@/components/sections/BackgroundScene";
 import { CursorSpotlight } from "@/components/primitives/CursorSpotlight";
@@ -481,6 +482,7 @@ export default function InternsPage() {
             </div>
           </div>
         </section>
+        <Contact />
       </main>
 
       <Footer />

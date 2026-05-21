@@ -109,6 +109,20 @@ export function WhyChooseSlider({ data }: { data: WhyChoose }) {
           </Reveal>
         </div>
 
+        <style jsx>{`
+          .why-card { transition: transform 0.4s cubic-bezier(.2,.7,.2,1), border-color 0.3s, background 0.3s; position: relative; isolation: isolate; }
+          .why-card::before {
+            content: ""; position: absolute; inset: -1px; border-radius: 16px; padding: 1px;
+            background: linear-gradient(135deg, rgba(24,222,255,0.0), rgba(176,124,255,0.0));
+            -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            -webkit-mask-composite: xor; mask-composite: exclude;
+            opacity: 0; transition: opacity 0.4s, background 0.4s; pointer-events: none;
+          }
+          .why-card:hover { transform: translateY(-6px); background: rgba(14,14,20,0.78); border-color: rgba(255,255,255,0.2); }
+          .why-card:hover::before { opacity: 1; background: linear-gradient(135deg, rgba(24,222,255,0.55), rgba(176,124,255,0.55)); }
+          .why-card:hover .why-icon { transform: scale(1.08) rotate(-4deg); box-shadow: 0 0 0 1px rgba(255,255,255,0.16), 0 12px 32px -10px rgba(82,184,255,0.5); }
+          .why-icon { transition: transform 0.5s cubic-bezier(.2,.7,.2,1), box-shadow 0.4s; }
+        `}</style>
         <ul
           ref={railRef}
           className="mt-12 flex gap-4 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-4 -mx-2 px-2 list-none m-0"
@@ -117,14 +131,16 @@ export function WhyChooseSlider({ data }: { data: WhyChoose }) {
           {data.items.map((it, i) => (
             <li
               key={`${it.title}-${i}`}
-              className="snap-start shrink-0 w-[280px] sm:w-[320px] rounded-2xl border border-white/10 bg-[rgba(10,10,14,0.65)] p-6 lg:p-7 flex flex-col gap-4"
+              className="why-card snap-start shrink-0 w-[280px] sm:w-[320px] rounded-2xl border border-white/10 bg-[rgba(10,10,14,0.65)] p-6 lg:p-7 flex flex-col gap-4"
             >
-              <div className="w-10 h-10 rounded-lg flex items-center justify-center"
-                   style={{ background: "linear-gradient(135deg, rgba(82,184,255,0.25), rgba(176,124,255,0.25))", boxShadow: "0 0 0 1px rgba(255,255,255,0.08)" }}>
+              <div className="why-icon w-12 h-12 rounded-xl flex items-center justify-center relative"
+                   style={{ background: "linear-gradient(135deg, rgba(82,184,255,0.28), rgba(176,124,255,0.28))", boxShadow: "0 0 0 1px rgba(255,255,255,0.08)" }}>
                 {it.icon ? (
-                  <Image src={it.icon} alt="" width={24} height={24} unoptimized className="object-contain" />
+                  <Image src={it.icon} alt="" aria-hidden="true" width={26} height={26} unoptimized className="object-contain" />
                 ) : (
-                  <span className="w-2.5 h-2.5 rounded-full bg-white" />
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M12 2l2.9 6.1 6.7.6-5.1 4.6 1.5 6.6L12 16.8 5.9 19.9l1.5-6.6L2.4 8.7l6.7-.6L12 2z" stroke="#fff" strokeWidth="1.5" strokeLinejoin="round" />
+                  </svg>
                 )}
               </div>
               <h3 className="font-[var(--font-display)] font-bold tracking-[-0.012em] text-[17px] text-white">

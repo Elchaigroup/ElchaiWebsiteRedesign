@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { cn } from "@/lib/cn";
 import { HQTimePill } from "@/components/primitives/HQTimePill";
+import { MobileNav } from "@/components/sections/MobileNav";
 // LanguageSwitcher import removed — see comment near the render site.
 import { nav as navContent } from "@/lib/content";
 import { useT } from "@/lib/i18n";
@@ -282,7 +283,7 @@ export function Nav() {
             /it/* are real, SSR'd subpath locales. */}
         <Link
           href="#consultation"
-          className="group/cta inline-flex items-center gap-2.5 h-10 px-6 rounded-full
+          className="hidden md:inline-flex group/cta items-center gap-2.5 h-10 px-6 rounded-full
                      font-[var(--font-brand)] font-semibold text-[13px] text-[#04060B]
                      transition-all duration-200 ease-[cubic-bezier(0.22,1,0.36,1)]
                      hover:-translate-y-0.5"
@@ -307,6 +308,10 @@ export function Nav() {
             <path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </Link>
+
+        {/* Hamburger — shown <lg, including any zoom that drops below the
+            inline nav's breakpoint. Drawer mirrors the full desktop menu. */}
+        <MobileNav />
       </div>
     </nav>
   );

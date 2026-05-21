@@ -160,10 +160,12 @@ body::before {
 @utility section-box {
   position: relative;
   border-radius: 24px;
-  background: rgba(14, 18, 28, 0.72);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(14px) saturate(140%);
-  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  /* Much more transparent so the BackgroundScene 3D canvas reads through every section.
+     Strong backdrop-blur keeps body copy crisp against the moving scene. */
+  background: rgba(10, 14, 24, 0.38);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  backdrop-filter: blur(18px) saturate(135%);
+  -webkit-backdrop-filter: blur(18px) saturate(135%);
 }
 
 @utility glass-edge {

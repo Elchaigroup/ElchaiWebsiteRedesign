@@ -1,0 +1,25 @@
+<svg width="102" height="102" viewBox="0 0 102 102" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="51" cy="51" r="50.5" fill="#191919" stroke="#606060"/>
+    <g clip-path="url(#ebf64ebbya)">
+        <path d="M31.71 67.457h16.522c2.531 3.203 6.45 5.262 10.84 5.262 7.615 0 13.811-6.197 13.811-13.812 0-7.616-6.196-13.813-13.812-13.813-4.536 0-8.569 2.2-11.088 5.587a15.194 15.194 0 0 0-3.118-.325c-8.342 0-15.128 6.786-15.128 15.128 0 1.09.884 1.973 1.973 1.973zM59.071 49.04c5.44 0 9.866 4.426 9.866 9.866 0 5.44-4.426 9.865-9.866 9.865-5.44 0-9.865-4.425-9.865-9.866 0-5.44 4.425-9.865 9.865-9.865z" fill="url(#7ulpow60zb)"/>
+        <path d="m55.48 60.581-.51 2.973a.987.987 0 0 0 1.432 1.04l2.67-1.403 2.669 1.403a.987.987 0 0 0 .459.113h.002a.986.986 0 0 0 .958-1.226l-.498-2.9 2.16-2.105a.987.987 0 0 0-.547-1.682l-2.985-.434-1.334-2.704a.987.987 0 0 0-1.77 0l-1.334 2.704-2.984.434a.987.987 0 0 0-.547 1.682l2.16 2.105z" fill="url(#v9dyir0q6c)"/>
+        <path d="M44.865 29.901c-4.552 0-8.255 3.703-8.255 8.255 0 4.551 3.703 8.254 8.255 8.254 4.551 0 8.254-3.703 8.254-8.254 0-4.552-3.703-8.255-8.254-8.255z" fill="url(#bm3i39olbd)"/>
+    </g>
+    <defs>
+        <linearGradient id="7ulpow60zb" x1="29.737" y1="58.907" x2="72.883" y2="58.907" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#52B8FF"/>
+            <stop offset="1" stop-color="#B07CFF"/>
+        </linearGradient>
+        <linearGradient id="v9dyir0q6c" x1="53.023" y1="58.907" x2="65.12" y2="58.907" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#52B8FF"/>
+            <stop offset="1" stop-color="#B07CFF"/>
+        </linearGradient>
+        <linearGradient id="bm3i39olbd" x1="36.611" y1="38.156" x2="53.119" y2="38.156" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#52B8FF"/>
+            <stop offset="1" stop-color="#B07CFF"/>
+        </linearGradient>
+        <clipPath id="ebf64ebbya">
+            <path fill="#fff" transform="translate(29.737 29.737) scale(1.00316)" d="M0 0h43.01v43.01H0z"/>
+        </clipPath>
+    </defs>
+</svg>
