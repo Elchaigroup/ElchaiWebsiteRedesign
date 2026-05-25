@@ -233,6 +233,7 @@ export function ModalsHost() {
               const fd = new FormData(e.currentTarget);
               const name = String(fd.get("name") ?? "").trim();
               const email = String(fd.get("email") ?? "").trim();
+              const phone = String(fd.get("phone") ?? "").trim();
               const message = String(fd.get("message") ?? "").trim();
               if (!name || !email) return;
               setConsultationStatus("sending");
@@ -240,6 +241,7 @@ export function ModalsHost() {
                 source: "consultation",
                 name,
                 email,
+                phone: phone || undefined,
                 message,
                 page: window.location.pathname,
               });
@@ -267,6 +269,16 @@ export function ModalsHost() {
               autoComplete="email"
               placeholder="Email"
               className="h-11 rounded-lg bg-white/[0.04] border border-white/[0.10] px-3
+                         text-[14px] text-white placeholder:text-white/35
+                         focus:outline-none focus:border-brand-sky focus:ring-2 focus:ring-brand-sky/40"
+            />
+            <input
+              name="phone"
+              type="tel"
+              autoComplete="tel"
+              inputMode="tel"
+              placeholder="Phone (optional, with country code)"
+              className="sm:col-span-2 h-11 rounded-lg bg-white/[0.04] border border-white/[0.10] px-3
                          text-[14px] text-white placeholder:text-white/35
                          focus:outline-none focus:border-brand-sky focus:ring-2 focus:ring-brand-sky/40"
             />
