@@ -114,7 +114,7 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
       "Peer learning ecosystem",
       "Community-driven growth",
     ],
-    stores: [{ kind: "website", href: "#" }],
+    stores: [{ kind: "website", href: "#consultation" }],
     liveDemo: "https://youtu.be/KX_rSsgN3EQ",
     assets: {
       logo: a("Skillswap-logo.webp"),
@@ -135,7 +135,7 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
       "Smart content categorization",
       "Advanced document search",
     ],
-    stores: [{ kind: "website", href: "#" }],
+    stores: [{ kind: "website", href: "#consultation" }],
     liveDemo: "https://youtu.be/uDLA3fp44RM",
     assets: {
       logo: a("luminadoc-logo.webp"),
@@ -156,7 +156,7 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
       "Scalable AI infrastructure",
       "Actionable operational insights",
     ],
-    stores: [{ kind: "website", href: "#" }],
+    stores: [{ kind: "website", href: "#consultation" }],
     liveDemo: "https://youtu.be/qDwS2RzeRwg",
     assets: {
       logo: a("center-AI-Vision-logo.webp"),
@@ -177,7 +177,7 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
       "Metaverse financial services",
       "Digital asset management",
     ],
-    stores: [{ kind: "website", href: "#" }],
+    stores: [{ kind: "website", href: "#consultation" }],
     liveDemo: "https://youtu.be/ajTne1nW2pE",
     assets: {
       logo: a("Digital_Banking_logo.webp"),
@@ -263,7 +263,7 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
       "Cross-chain trading",
       "Creator tools suite",
     ],
-    stores: [{ kind: "website", href: "#" }],
+    stores: [{ kind: "website", href: "#consultation" }],
     assets: {
       logo: a("cryptonmedia-logo.webp"),
       app: a("cryptonmedia-app.webp"),

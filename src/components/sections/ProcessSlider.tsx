@@ -9,7 +9,6 @@ type Process = NonNullable<ServiceDetailContent["process"]>;
 function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
     <span className="inline-flex items-center gap-2.5 font-[var(--font-mono)] text-[11px] uppercase tracking-[0.22em] text-white/45">
-      <span className="w-1.5 h-1.5 rounded-full bg-brand-sky shadow-[0_0_8px_#18DEFF]" />
       {children}
     </span>
   );
@@ -237,7 +236,7 @@ export function ProcessSlider({ data }: { data: Process }) {
                 <h3 className="font-[var(--font-display)] font-bold tracking-[-0.012em] text-[clamp(17px,1.4vw,20px)] text-white">
                   {step.title}
                 </h3>
-                <p className="text-[13.5px] leading-[1.55] text-white/65">{step.desc}</p>
+                <p className="text-[14px] leading-[1.65] text-white/85">{step.desc}</p>
               </li>
             ))}
           </ol>

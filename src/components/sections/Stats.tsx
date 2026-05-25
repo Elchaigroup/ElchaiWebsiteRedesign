@@ -10,7 +10,7 @@
 import { Reveal } from "@/components/primitives/Reveal";
 import { SectionMarker } from "@/components/primitives/SectionMarker";
 import { AnimatedCounter } from "@/components/ui/animated-counter";
-import { stats } from "@/lib/content";
+import { useContent } from "@/lib/use-content";
 
 function parseValue(value: string): { numeric: number; suffix: string } {
   // "2,600+" → { numeric: 2600, suffix: "+" }
@@ -25,6 +25,7 @@ function formatGrouped(n: number): string {
 }
 
 export function Stats() {
+  const { stats } = useContent();
   return (
     <section
       id="stats"
@@ -38,7 +39,6 @@ export function Stats() {
             className="inline-flex items-center gap-2.5 font-[var(--font-mono)]
                        text-[11px] uppercase tracking-[0.22em] text-white/45"
           >
-            <span className="w-1.5 h-1.5 rounded-full bg-brand-sky shadow-[0_0_8px_#18DEFF]" />
             Track record
           </span>
         </Reveal>
@@ -60,9 +60,9 @@ export function Stats() {
                 <div
                   key={i}
                   className="px-6 py-10 lg:px-8 lg:py-12
-                             border-r border-b md:border-b-0 border-white/[0.08]
-                             last:border-r-0 [&:nth-child(2)]:border-r-0
-                             md:[&:nth-child(2)]:border-r"
+                             border-e border-b md:border-b-0 border-white/[0.08]
+                             last:border-e-0 [&:nth-child(2)]:border-e-0
+                             md:[&:nth-child(2)]:border-e"
                 >
                   <div className="flex items-baseline gap-1 leading-none">
                     <AnimatedCounter
@@ -81,7 +81,12 @@ export function Stats() {
                       </span>
                     )}
                   </div>
-                  <div className="mt-5 text-[13px] leading-[1.45] text-white/55 max-w-[200px]">
+                  <div
+                    className="mt-5 font-[var(--font-display)] font-medium
+                               text-[14px] lg:text-[15px] leading-[1.5]
+                               text-white/90 max-w-[220px]
+                               [text-shadow:0_1px_2px_rgba(0,0,0,0.55)]"
+                  >
                     {item.label}
                   </div>
                   {/* SR-only fully-formed stat for assistive tech */}

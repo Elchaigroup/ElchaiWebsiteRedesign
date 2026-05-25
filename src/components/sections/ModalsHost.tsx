@@ -6,17 +6,45 @@
  * opens the corresponding modal. Closing replaces the hash without
  * scroll-jump.
  *
- * Forms are stubbed:
- *   • WhatsApp — TODO wire to WhatsApp Business API
- *   • Consultation — TODO wire to lead capture endpoint
+ * Both forms POST to /api/lead (which fans out to the internal webhook
+ * and, when WP_BASE_URL is set, to WordPress as a Lead CPT).
+ * WhatsApp submissions additionally open wa.me as an immediate fallback
+ * so user intent is never lost on a failed POST.
  */
 
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { Modal } from "@/components/ui/modal";
-import { modals } from "@/lib/content";
+import { useContent } from "@/lib/use-content";
 
 type ModalId = "whatsapp" | "consultation" | null;
+
+const WHATSAPP_NUMBER = "971501080066";
+
+async function postLead(payload: Record<string, unknown>): Promise<boolean> {
+  try {
+    const res = await fetch("/api/lead", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    return res.ok;
+  } catch {
+    return false;
+  }
+}
+
+function trackLead(source: "whatsapp" | "consultation") {
+  if (typeof window === "undefined") return;
+  const w = window as unknown as {
+    dataLayer?: Array<Record<string, unknown>>;
+    gtag?: (...args: unknown[]) => void;
+    plausible?: (event: string, opts?: Record<string, unknown>) => void;
+  };
+  w.dataLayer?.push({ event: "lead_submit", source });
+  w.gtag?.("event", "lead_submit", { source });
+  w.plausible?.("Lead", { props: { source } });
+}
 
 function renderBold(copy: string) {
   const parts = copy.split(/(\*\*[^*]+\*\*)/g);
@@ -33,35 +61,57 @@ function renderBold(copy: string) {
 }
 
 export function ModalsHost() {
+  const { modals } = useContent();
   const [open, setOpen] = useState<ModalId>(null);
+  const [consultationStatus, setConsultationStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const [whatsappStatus, setWhatsappStatus] = useState<"idle" | "sending" | "error">("idle");
 
   useEffect(() => {
     function read() {
       const h = window.location.hash.slice(1).toLowerCase();
-      if (h === "whatsapp" || h === "consultation") setOpen(h);
-      else setOpen(null);
+      if (h === "whatsapp" || h === "consultation") {
+        setOpen(h);
+        setConsultationStatus("idle");
+        setWhatsappStatus("idle");
+      } else {
+        setOpen(null);
+      }
     }
     read();
     window.addEventListener("hashchange", read);
 
-    // Next.js App Router's <Link> uses history.pushState for hash links,
-    // which doesn't fire `hashchange`. Catch the click and re-check.
+    // Next.js App Router's <Link> with hash hrefs from sub-pages can
+    // navigate to "/" instead of just updating the hash. So we intercept
+    // clicks on a[href="#whatsapp"|"#consultation"] in CAPTURE phase
+    // (before Link's bubble-phase handler) and open the modal directly.
     function onClick(e: MouseEvent) {
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
       const target = e.target as HTMLElement | null;
       if (!target) return;
-      const link = target.closest("a[href^='#']");
-      if (link) setTimeout(read, 0);
+      const link = target.closest("a[href^='#']") as HTMLAnchorElement | null;
+      if (!link) return;
+      const hash = (link.getAttribute("href") || "").slice(1).toLowerCase();
+      if (hash === "whatsapp" || hash === "consultation") {
+        e.preventDefault();
+        const next = `${window.location.pathname}${window.location.search}#${hash}`;
+        if (window.location.hash !== `#${hash}`) {
+          history.pushState(null, "", next);
+        }
+        setOpen(hash);
+      }
     }
-    document.addEventListener("click", onClick);
+    document.addEventListener("click", onClick, true);
 
     return () => {
       window.removeEventListener("hashchange", read);
-      document.removeEventListener("click", onClick);
+      document.removeEventListener("click", onClick, true);
     };
   }, []);
 
   const close = useCallback(() => {
     setOpen(null);
+    setConsultationStatus("idle");
+    setWhatsappStatus("idle");
     if (window.location.hash) {
       history.replaceState(
         null,
@@ -81,9 +131,29 @@ export function ModalsHost() {
       >
         <form
           className="flex flex-col gap-5"
-          onSubmit={(e) => {
+          onSubmit={async (e) => {
             e.preventDefault();
-            // TODO: wire to WhatsApp Business API
+            const fd = new FormData(e.currentTarget);
+            const dial = String(fd.get("dial") ?? "");
+            const phone = String(fd.get("phone") ?? "").trim();
+            if (!phone) return;
+            setWhatsappStatus("sending");
+            const ok = await postLead({
+              source: "whatsapp",
+              dial,
+              phone,
+              page: window.location.pathname,
+            });
+            if (!ok) setWhatsappStatus("error");
+            trackLead("whatsapp");
+            const msg = encodeURIComponent(
+              `Hi Elchai — I'd like to connect. My number: ${dial}${phone}`
+            );
+            window.open(
+              `https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`,
+              "_blank",
+              "noopener,noreferrer"
+            );
             close();
           }}
         >
@@ -93,6 +163,7 @@ export function ModalsHost() {
                 Country
               </span>
               <select
+                name="dial"
                 defaultValue={modals.whatsapp.defaultDial}
                 className="h-11 rounded-lg bg-white/[0.04] border border-white/[0.10]
                            px-3 text-[14px] text-white focus:outline-none
@@ -110,8 +181,10 @@ export function ModalsHost() {
                 WhatsApp number
               </span>
               <input
+                name="phone"
                 type="tel"
                 inputMode="tel"
+                autoComplete="tel"
                 placeholder="Your number"
                 className="h-11 rounded-lg bg-white/[0.04] border border-white/[0.10]
                            px-3 text-[14px] text-white placeholder:text-white/35
@@ -121,8 +194,13 @@ export function ModalsHost() {
             </label>
           </div>
           <button type="submit" className="cta cta--primary self-stretch justify-center">
-            {modals.whatsapp.submit}
+            {whatsappStatus === "sending" ? "Sending..." : modals.whatsapp.submit}
           </button>
+          {whatsappStatus === "error" && (
+            <p className="text-[12px] leading-[1.5] text-amber-200">
+              We could not save this lead, but WhatsApp will still open so you can contact us directly.
+            </p>
+          )}
         </form>
       </Modal>
 
@@ -150,40 +228,76 @@ export function ModalsHost() {
 
           <form
             className="grid grid-cols-1 sm:grid-cols-2 gap-3"
-            onSubmit={(e) => {
+            onSubmit={async (e) => {
               e.preventDefault();
-              // TODO: wire to lead capture endpoint
-              close();
+              const fd = new FormData(e.currentTarget);
+              const name = String(fd.get("name") ?? "").trim();
+              const email = String(fd.get("email") ?? "").trim();
+              const message = String(fd.get("message") ?? "").trim();
+              if (!name || !email) return;
+              setConsultationStatus("sending");
+              const ok = await postLead({
+                source: "consultation",
+                name,
+                email,
+                message,
+                page: window.location.pathname,
+              });
+              if (!ok) {
+                setConsultationStatus("error");
+                return;
+              }
+              trackLead("consultation");
+              setConsultationStatus("sent");
             }}
           >
             <input
+              name="name"
               required
+              autoComplete="name"
               placeholder="Name"
               className="h-11 rounded-lg bg-white/[0.04] border border-white/[0.10] px-3
                          text-[14px] text-white placeholder:text-white/35
                          focus:outline-none focus:border-brand-sky focus:ring-2 focus:ring-brand-sky/40"
             />
             <input
+              name="email"
               required
               type="email"
+              autoComplete="email"
               placeholder="Email"
               className="h-11 rounded-lg bg-white/[0.04] border border-white/[0.10] px-3
                          text-[14px] text-white placeholder:text-white/35
                          focus:outline-none focus:border-brand-sky focus:ring-2 focus:ring-brand-sky/40"
             />
             <textarea
+              name="message"
               placeholder="Tell us about your project"
               rows={4}
               className="sm:col-span-2 rounded-lg bg-white/[0.04] border border-white/[0.10] px-3 py-2.5
                          text-[14px] text-white placeholder:text-white/35
                          focus:outline-none focus:border-brand-sky focus:ring-2 focus:ring-brand-sky/40"
             />
-            <button type="submit" className="cta cta--primary sm:col-span-2 justify-center">
-              Send
+            <button
+              type="submit"
+              disabled={consultationStatus === "sending" || consultationStatus === "sent"}
+              className="cta cta--primary sm:col-span-2 justify-center disabled:opacity-60 disabled:pointer-events-none"
+            >
+              {consultationStatus === "sending" ? "Sending..." : consultationStatus === "sent" ? "Sent" : "Send"}
               <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
                 <path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" strokeWidth="1.6" />
               </svg>
             </button>
+            {consultationStatus === "sent" && (
+              <p className="sm:col-span-2 text-[12px] leading-[1.5] text-brand-sky">
+                Thanks. Your details were sent to Elchai.
+              </p>
+            )}
+            {consultationStatus === "error" && (
+              <p className="sm:col-span-2 text-[12px] leading-[1.5] text-amber-200">
+                We could not send this right now. Please use the email or WhatsApp options below.
+              </p>
+            )}
           </form>
 
           <p className="text-[11px] text-white/40">

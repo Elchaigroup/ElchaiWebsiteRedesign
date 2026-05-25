@@ -11,7 +11,6 @@ type Item = Stack["groups"][number]["items"][number];
 function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
     <span className="inline-flex items-center gap-2.5 font-[var(--font-mono)] text-[11px] uppercase tracking-[0.22em] text-white/45">
-      <span className="w-1.5 h-1.5 rounded-full bg-brand-sky shadow-[0_0_8px_#18DEFF]" />
       {children}
     </span>
   );
@@ -266,7 +265,7 @@ function TechStackTabs({ data }: { data: Stack }) {
                   className="group relative h-[56px] rounded-full border border-white/10 bg-[rgba(16,16,22,0.85)]
                              hover:border-white/30 hover:-translate-y-0.5 hover:bg-[rgba(20,20,28,0.95)]
                              transition-all duration-300
-                             flex items-center gap-3 pl-1.5 pr-5 overflow-hidden"
+                             flex items-center gap-3 ps-1.5 pe-5 overflow-hidden"
                 >
                   {logo ? (
                     <span className="shrink-0 w-11 h-11 rounded-full bg-white flex items-center justify-center p-1.5">

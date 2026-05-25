@@ -81,7 +81,6 @@ export function HeroKeyImage() {
           alt=""
           fill
           priority
-          unoptimized
           className="object-cover object-center select-none opacity-95"
         />
       </motion.div>

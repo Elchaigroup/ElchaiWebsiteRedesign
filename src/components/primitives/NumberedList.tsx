@@ -15,7 +15,7 @@ export function NumberedList({
   return (
     <ol
       className={cn(
-        "border-l border-white/10 pl-5 grid gap-2.5 list-none p-0 m-0",
+        "border-s border-white/10 ps-5 grid gap-2.5 list-none p-0 m-0",
         className
       )}
     >

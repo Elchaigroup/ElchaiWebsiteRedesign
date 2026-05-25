@@ -9,7 +9,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Reveal } from "@/components/primitives/Reveal";
-import { timeZone } from "@/lib/content";
+import { useContent } from "@/lib/use-content";
 
 function useLocalTime() {
   const [time, setTime] = useState<string | null>(null);
@@ -32,6 +32,7 @@ function useLocalTime() {
 }
 
 export function TimeZoneBanner() {
+  const { timeZone } = useContent();
   const time = useLocalTime();
   const [before, after] = timeZone.headline.split("{time}");
 
@@ -55,11 +56,6 @@ export function TimeZoneBanner() {
                          text-brand-sky shadow-[0_0_40px_-12px_rgba(24,222,255,0.55)]"
               suppressHydrationWarning
             >
-              <span
-                aria-hidden="true"
-                className="w-1.5 h-1.5 rounded-full bg-brand-sky mr-2.5 animate-pulse-dot
-                           shadow-[0_0_10px_#18DEFF]"
-              />
               {time ?? "--:--"}
             </span>
             {after}

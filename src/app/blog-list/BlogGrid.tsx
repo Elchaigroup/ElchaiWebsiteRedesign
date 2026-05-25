@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useMemo, useState } from "react";
 import { Reveal } from "@/components/primitives/Reveal";
 import { SpotlightCard } from "@/components/ui/spotlight-card";
+import { useLocale } from "@/lib/i18n";
 
 import type { BlogPost } from "@/lib/blog-posts";
 export type { BlogPost } from "@/lib/blog-posts";
@@ -12,7 +13,22 @@ export type { BlogPost } from "@/lib/blog-posts";
 const CATEGORIES = ["All", "Artificial Intelligence", "Blog", "News", "Web3 News"] as const;
 const PAGE_SIZE = 9;
 
+const CATEGORY_LABELS: Record<"EN" | "AR" | "IT", Record<(typeof CATEGORIES)[number], string>> = {
+  EN: { All: "All", "Artificial Intelligence": "Artificial Intelligence", Blog: "Blog", News: "News", "Web3 News": "Web3 News" },
+  AR: { All: "الكل", "Artificial Intelligence": "الذكاء الاصطناعي", Blog: "مدونة", News: "أخبار", "Web3 News": "أخبار Web3" },
+  IT: { All: "Tutti", "Artificial Intelligence": "Intelligenza Artificiale", Blog: "Blog", News: "Notizie", "Web3 News": "Notizie Web3" },
+};
+
+const UI_COPY: Record<"EN" | "AR" | "IT", { searchAria: string; searchPlaceholder: string; searchBtn: string; categoriesAria: string; emptyMsg: string; resetFilters: string; paginationAria: string; previous: string; next: string }> = {
+  EN: { searchAria: "Search blogs", searchPlaceholder: "Search blogs…", searchBtn: "Search", categoriesAria: "Categories", emptyMsg: "No blog posts found.", resetFilters: "Reset filters", paginationAria: "Pagination", previous: "« Previous", next: "Next »" },
+  AR: { searchAria: "ابحث في المدونة", searchPlaceholder: "ابحث في المدونة…", searchBtn: "بحث", categoriesAria: "التصنيفات", emptyMsg: "لم يتم العثور على مقالات.", resetFilters: "إعادة تعيين الفلاتر", paginationAria: "التصفح", previous: "« السابق", next: "التالي »" },
+  IT: { searchAria: "Cerca articoli", searchPlaceholder: "Cerca articoli…", searchBtn: "Cerca", categoriesAria: "Categorie", emptyMsg: "Nessun articolo trovato.", resetFilters: "Reimposta filtri", paginationAria: "Paginazione", previous: "« Precedente", next: "Successivo »" },
+};
+
 export function BlogGrid({ posts }: { posts: BlogPost[] }) {
+  const { locale } = useLocale();
+  const ui = UI_COPY[locale] ?? UI_COPY.EN;
+  const catLabels = CATEGORY_LABELS[locale] ?? CATEGORY_LABELS.EN;
   const [activeCategory, setActiveCategory] = useState<(typeof CATEGORIES)[number]>("All");
   const [draft, setDraft] = useState("");
   const [query, setQuery] = useState("");
@@ -54,21 +70,21 @@ export function BlogGrid({ posts }: { posts: BlogPost[] }) {
           role="search"
           className="mx-auto mt-2 flex w-full max-w-[640px] items-center gap-2 rounded-full border border-white/12 bg-[rgba(10,10,14,0.65)] backdrop-blur px-2 py-2"
         >
-          <span aria-hidden="true" className="ml-3 text-white/40">
+          <span aria-hidden="true" className="ms-3 text-white/40">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
               <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="1.6" />
               <path d="m20 20-3.5-3.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
             </svg>
           </span>
           <label htmlFor="blog-search" className="sr-only">
-            Search blogs
+            {ui.searchAria}
           </label>
           <input
             id="blog-search"
             type="search"
             value={draft}
             onChange={(e) => setDraft(e.target.value)}
-            placeholder="Search blogs…"
+            placeholder={ui.searchPlaceholder}
             className="flex-1 bg-transparent text-[14px] text-white placeholder:text-white/40 focus:outline-none px-2"
           />
           <button
@@ -76,7 +92,7 @@ export function BlogGrid({ posts }: { posts: BlogPost[] }) {
             className="cta cta--primary !rounded-full !px-5 !py-2 !text-[13px]"
             style={{ background: "linear-gradient(135deg, #52b8ff, #b07cff)" }}
           >
-            Search
+            {ui.searchBtn}
           </button>
         </form>
       </Reveal>
@@ -85,7 +101,7 @@ export function BlogGrid({ posts }: { posts: BlogPost[] }) {
       <Reveal delay={0.10}>
         <div
           role="tablist"
-          aria-label="Categories"
+          aria-label={ui.categoriesAria}
           className="mt-10 flex flex-wrap items-center justify-center gap-1.5"
         >
           {CATEGORIES.map((c) => {
@@ -104,7 +120,7 @@ export function BlogGrid({ posts }: { posts: BlogPost[] }) {
                 ].join(" ")}
                 style={isActive ? { background: "linear-gradient(135deg, #52b8ff, #b07cff)" } : undefined}
               >
-                {c}
+                {catLabels[c]}
               </button>
             );
           })}
@@ -116,7 +132,7 @@ export function BlogGrid({ posts }: { posts: BlogPost[] }) {
         <Reveal delay={0.10}>
           <div className="mt-14 text-center">
             <p className="font-[var(--font-display)] text-[15px] text-white/60">
-              No blog posts found.
+              {ui.emptyMsg}
             </p>
             {(query || activeCategory !== "All") && (
               <button
@@ -124,7 +140,7 @@ export function BlogGrid({ posts }: { posts: BlogPost[] }) {
                 onClick={() => { setDraft(""); setQuery(""); setActiveCategory("All"); setPage(1); }}
                 className="mt-4 inline-flex items-center gap-2 text-[12.5px] text-brand-sky hover:underline"
               >
-                Reset filters
+                {ui.resetFilters}
                 <svg width="12" height="12" viewBox="0 0 16 16" fill="none" aria-hidden="true">
                   <path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" strokeWidth="1.6" />
                 </svg>
@@ -144,12 +160,11 @@ export function BlogGrid({ posts }: { posts: BlogPost[] }) {
                       alt={p.title}
                       fill
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      unoptimized
                       className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
                     />
                     <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-[rgba(10,10,14,0.85)] to-transparent" />
                     <span className="absolute left-4 top-4 inline-flex items-center gap-2 rounded-md bg-[rgba(10,10,14,0.85)] backdrop-blur px-3 py-1.5 text-[10.5px] uppercase tracking-[0.18em] text-brand-sky font-[var(--font-mono)]">
-                      {p.category}
+                      {(catLabels as Record<string, string>)[p.category] ?? p.category}
                     </span>
                   </div>
 
@@ -159,7 +174,7 @@ export function BlogGrid({ posts }: { posts: BlogPost[] }) {
                     </h3>
                     <div className="mt-auto flex items-center gap-3">
                       <span className="relative w-8 h-8 rounded-full overflow-hidden border border-white/10 shrink-0">
-                        <Image src="/elchai/blog/author-avatar.jpg" alt="" aria-hidden="true" fill sizes="32px" unoptimized className="object-cover" />
+                        <Image src="/elchai/blog/author-avatar.jpg" alt="" aria-hidden="true" fill sizes="32px" className="object-cover" />
                       </span>
                       <span className="font-[var(--font-display)] text-[12.5px] text-white/85">Elchai</span>
                       <span aria-hidden="true" className="text-white/25">·</span>
@@ -179,7 +194,7 @@ export function BlogGrid({ posts }: { posts: BlogPost[] }) {
       {totalPages > 1 && (
         <Reveal delay={0.20}>
           <nav
-            aria-label="Pagination"
+            aria-label={ui.paginationAria}
             className="mt-14 flex items-center justify-between gap-4"
           >
             <button
@@ -188,7 +203,7 @@ export function BlogGrid({ posts }: { posts: BlogPost[] }) {
               disabled={safePage === 1}
               className="rounded-md border border-white/12 bg-[rgba(10,10,14,0.55)] px-4 py-2 text-[12.5px] font-[var(--font-display)] text-white/75 hover:text-white hover:border-white/30 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
             >
-              « Previous
+              {ui.previous}
             </button>
             <div className="flex items-center gap-1.5">
               {Array.from({ length: totalPages }, (_, i) => i + 1).map((n) => {
@@ -218,7 +233,7 @@ export function BlogGrid({ posts }: { posts: BlogPost[] }) {
               disabled={safePage === totalPages}
               className="rounded-md border border-white/12 bg-[rgba(10,10,14,0.55)] px-4 py-2 text-[12.5px] font-[var(--font-display)] text-white/75 hover:text-white hover:border-white/30 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
             >
-              Next »
+              {ui.next}
             </button>
           </nav>
         </Reveal>

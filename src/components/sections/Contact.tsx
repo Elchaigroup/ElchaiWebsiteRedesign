@@ -10,7 +10,7 @@
 import Link from "next/link";
 import { Reveal } from "@/components/primitives/Reveal";
 import { Parallax } from "@/components/primitives/Parallax";
-import { contact } from "@/lib/content";
+import { useContent } from "@/lib/use-content";
 
 const FLAG_EMOJI: Record<string, string> = {
   "United-Arab-Emirates": "🇦🇪",
@@ -23,6 +23,7 @@ const FLAG_EMOJI: Record<string, string> = {
 };
 
 export function Contact() {
+  const { contact } = useContent();
   return (
     <section
       id="contact"
@@ -35,7 +36,6 @@ export function Contact() {
             className="inline-flex items-center gap-2.5 font-[var(--font-mono)]
                        text-[11px] uppercase tracking-[0.22em] text-white/45"
           >
-            <span className="w-1.5 h-1.5 rounded-full bg-brand-sky shadow-[0_0_8px_#18DEFF]" />
             {contact.eyebrow}
           </span>
         </Reveal>

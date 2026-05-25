@@ -61,7 +61,7 @@ export function Accordion({ items, className }: { items: AccordionItem[]; classN
               aria-expanded={isOpen}
               aria-controls={`acc-panel-${item.id}`}
               className={cn(
-                "w-full grid grid-cols-[auto_1fr_auto] items-center gap-6 py-7 pl-5 text-left",
+                "w-full grid grid-cols-[auto_1fr_auto] items-center gap-6 py-7 ps-5 text-start",
                 "transition-colors duration-[250ms] ease-[cubic-bezier(0.22,1,0.36,1)]",
                 "cursor-pointer hover:text-white"
               )}
@@ -70,6 +70,7 @@ export function Accordion({ items, className }: { items: AccordionItem[]; classN
                 {num}
               </span>
               <span
+                data-faq-question
                 className={cn(
                   "font-[var(--font-display)] font-bold text-[clamp(18px,1.6vw,22px)] leading-tight",
                   "tracking-[-0.01em]",
@@ -108,7 +109,10 @@ export function Accordion({ items, className }: { items: AccordionItem[]; classN
               style={{ overflow: "hidden" }}
               aria-hidden={!isOpen}
             >
-              <div className="pb-7 pl-[80px] pr-12 text-[15px] leading-[1.65] text-white/65">
+              <div
+                data-faq-answer
+                className="pb-7 pl-[80px] pe-12 text-[15px] leading-[1.65] text-white/65"
+              >
                 {item.answer}
               </div>
             </motion.div>

@@ -1,167 +1,43 @@
-import { ImageResponse } from "next/og";
+// Deterministic Open Graph image without next/og runtime dependencies.
+// Returning SVG avoids edge WASM packaging failures while still giving
+// crawlers and social unfurlers a branded 1200x630 preview asset.
 
-export const runtime = "edge";
-// `contentType` is set on the ImageResponse itself (image/png) — exporting
-// it as a Route field is rejected by Next 15's type checker.
-
-// Dark-background variant of the brand mark: white "ELCHAI" wordmark with
-// the gradient orbital ring + dot. Inlined here so the edge route doesn't
-// need a filesystem read. Same artwork as public/elchai/elchai_logo.svg.
 const LOGO_SVG = `<svg width="96" height="61" viewBox="0 0 96 61" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#r4dpq1fvsa)"><path d="M59.368 21.065c-2.235-6.906-6.95-12.841-13.136-16.638C40.044.63 32.686-.749 25.516.385 18.346 1.52 11.888 5.272 7.175 10.793 2.462 16.315-.005 23.19 0 30.448c.006 7.26 2.605 14.191 7.326 19.706 4.722 5.514 11.068 9.184 18.24 10.307 7.172 1.123 14.494-.264 20.676-4.07 6.18-3.807 10.902-9.736 13.126-16.646h-2.223C54.821 46.061 50.838 51.08 45.12 54.6c-5.718 3.52-12.566 4.778-19.2 3.739-6.634-1.04-12.66-4.5-17.027-9.6a28.074 28.074 0 0 1-6.77-18.268C2.116 23.756 4.47 17.259 8.83 12.152c4.359-5.107 10.407-8.646 17.04-9.695 6.632-1.05 13.476.226 19.2 3.739 5.81 3.587 9.7 8.488 12.075 14.87h2.223z" fill="url(#ri09wtj1kb)"/><path d="M19.908 4.78a3.688 3.688 0 1 1-7.377 0 3.688 3.688 0 0 1 7.377 0z" fill="url(#qeqf24bjtc)"/><path d="M46.232 22.566c-3.691.502-6.051 3.007-6.518 6.872-.316 2.569.507 5.224 2.224 6.882 1.997 1.915 5.726 2.606 8.74 1.556.841-.292 2.121-1.076 2.577-1.567l.252-.202-1.718-1.718-.505.455c-1.133.97-2.92 1.36-4.497 1.162-1.378-.175-2.175-.578-2.98-1.313-1.157-1.086-1.706-2.576-1.706-4.34 0-1.61.503-2.884 1.566-4.004 1.086-1.156 2.37-1.653 4.333-1.56.993.047 1.308.147 1.986.462.432.21.993.537 1.25.736l.467.373.806-.805.818-.806-.596-.549c-.701-.63-1.981-1.288-2.963-1.533-.899-.222-2.555-.241-3.536-.1zM11.015 25.158H22.36v-2.452H11.015v2.452zM26.779 38.078h10.56v-2.325h-8.087V22.719H26.78v15.36zM57.297 38.078h2.442v-6.382h8.06v6.382h2.453V29.41H59.739v-6.705h-2.442v15.372z" fill="#fff"/><path d="M67.799 28.194h2.453v-5.488h-2.453v5.488zM77.255 30.145c-1.834 4.087-3.49 7.816-3.537 7.933h2.627l2.627-6.063a837.023 837.023 0 0 1 2.931-6.62s.155.291 2.83 6.316l2.829 6.367h2.577c-.023-.07-1.665-3.731-3.51-7.841l-3.362-7.496H80.59l-3.334 7.404zM93.524 38.078H96V22.706l-1.263.012-1.213-.012v15.372zM11.015 38.078H22.36v-2.425h-8.878V31.58h8.878v-2.336H11.015v8.834z" fill="#fff"/><path d="m81.954 31.105 3.063 6.973H78.89l3.063-6.973z" fill="url(#dq4v40jcsd)"/></g><defs><linearGradient id="ri09wtj1kb" x1="71.653" y1="-.019" x2="21.815" y2="92.682" gradientUnits="userSpaceOnUse"><stop stop-color="#16E0FF"/><stop offset=".305" stop-color="#64ADFF"/><stop offset=".715" stop-color="#B27AFF"/><stop offset="1" stop-color="#3EC6FF"/></linearGradient><linearGradient id="qeqf24bjtc" x1="89.425" y1="14.585" x2="29.818" y2="69.513" gradientUnits="userSpaceOnUse"><stop stop-color="#59B4FF"/><stop offset="1" stop-color="#67ABFF"/></linearGradient><linearGradient id="dq4v40jcsd" x1="81.954" y1="31.105" x2="81.954" y2="38.078" gradientUnits="userSpaceOnUse"><stop stop-color="#AA7FFF"/><stop offset="1" stop-color="#45C1FF"/></linearGradient><clipPath id="r4dpq1fvsa"><path fill="#fff" d="M0 0h96v60.935H0z"/></clipPath></defs></svg>`;
 
 const LOGO_DATA_URL = `data:image/svg+xml;utf8,${encodeURIComponent(LOGO_SVG)}`;
 
-// Fetch a Google Font subset at request time — Satori (next/og) needs an
-// actual font ArrayBuffer; it has no built-in default. Modern next/og
-// accepts woff2 in addition to ttf/otf, so we take whatever Google returns.
-// Subset is constrained to the characters that appear on the card so the
-// response stays under ~30KB per weight.
-async function loadGoogleFont(family: string, weight: number, text: string) {
-  const url = `https://fonts.googleapis.com/css2?family=${family.replace(
-    / /g,
-    "+",
-  )}:wght@${weight}&text=${encodeURIComponent(text)}`;
-  const css = await (
-    await fetch(url, {
-      headers: {
-        "User-Agent":
-          "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Safari/605.1.15",
-      },
-    })
-  ).text();
-  // Grab the first url(...) inside an @font-face block. Format-agnostic on purpose.
-  const match = css.match(/src:\s*url\(([^)]+)\)/);
-  if (!match) throw new Error(`Could not locate font src for ${family} ${weight}`);
-  const fontRes = await fetch(match[1]);
-  if (!fontRes.ok) throw new Error(`Font fetch failed: ${fontRes.status}`);
-  return fontRes.arrayBuffer();
-}
+export function GET() {
+  const svg = `<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="aura" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1010 500) rotate(140) scale(720 480)">
+      <stop stop-color="#18DEFF" stop-opacity="0.24"/>
+      <stop offset="0.38" stop-color="#52B8FF" stop-opacity="0.08"/>
+      <stop offset="1" stop-color="#0A0A0E" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="headline" x1="80" y1="250" x2="960" y2="460" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF"/>
+      <stop offset="0.55" stop-color="#DDF9FF"/>
+      <stop offset="1" stop-color="#B07CFF"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="#0A0A0E"/>
+  <rect width="1200" height="630" fill="url(#aura)"/>
+  <rect x="24" y="24" width="1152" height="582" rx="24" stroke="white" stroke-opacity="0.08"/>
+  <image href="${LOGO_DATA_URL}" x="80" y="70" width="264" height="168" preserveAspectRatio="xMinYMin meet"/>
+  <text x="80" y="240" fill="#18DEFF" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="600" letter-spacing="5">AI · BLOCKCHAIN · WEB3</text>
+  <text x="80" y="340" fill="url(#headline)" font-family="Montserrat, Arial, sans-serif" font-size="64" font-weight="700">
+    <tspan x="80" dy="0">Driving Digital Transformation</tspan>
+    <tspan x="80" dy="74">with AI &amp; Blockchain Products</tspan>
+  </text>
+  <rect x="80" y="540" width="48" height="2" fill="#18DEFF"/>
+  <text x="146" y="547" fill="white" fill-opacity="0.58" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="600" letter-spacing="2">ELCHAIGROUP.COM · DUBAI, UAE</text>
+</svg>`;
 
-export async function GET() {
-  const HEADLINE = "Driving Digital Transformation with AI & Blockchain Products";
-  const EYEBROW = "AI · BLOCKCHAIN · WEB3";
-  const FOOTER = "elchaigroup.com  ·  Dubai, UAE";
-
-  // Union of all characters the card needs — keeps the font payload tiny.
-  const TEXT_SUBSET = `${HEADLINE}${EYEBROW}${FOOTER}`;
-
-  // Two weights: 700 for the headline, 500 for eyebrow/footer.
-  const [headlineFont, supportFont] = await Promise.all([
-    loadGoogleFont("Montserrat", 700, TEXT_SUBSET),
-    loadGoogleFont("Inter", 500, TEXT_SUBSET),
-  ]);
-
-  const imageResponse = new ImageResponse(
-    (
-      <div
-        style={{
-          width: "100%",
-          height: "100%",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-          padding: "72px 80px",
-          background:
-            "radial-gradient(ellipse 900px 600px at 88% 78%, rgba(24,222,255,0.22) 0%, rgba(24,222,255,0.06) 35%, rgba(10,10,14,0) 65%), linear-gradient(180deg, #0A0A0E 0%, #0F0F18 100%)",
-          color: "#FFFFFF",
-          fontFamily: "Inter",
-          position: "relative",
-        }}
-      >
-        {/* Soft hairline border */}
-        <div
-          style={{
-            position: "absolute",
-            inset: 24,
-            border: "1px solid rgba(255,255,255,0.06)",
-            borderRadius: 24,
-            display: "flex",
-          }}
-        />
-
-        {/* Top: logo + eyebrow */}
-        <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={LOGO_DATA_URL}
-            alt="Elchai Group"
-            width={264}
-            height={168}
-            style={{ display: "block" }}
-          />
-          <div
-            style={{
-              fontFamily: "Inter",
-              fontWeight: 500,
-              fontSize: 18,
-              letterSpacing: 5,
-              color: "#18DEFF",
-              textTransform: "uppercase",
-              display: "flex",
-            }}
-          >
-            {EYEBROW}
-          </div>
-        </div>
-
-        {/* Middle: headline */}
-        <div
-          style={{
-            fontFamily: "Montserrat",
-            fontWeight: 700,
-            fontSize: 64,
-            lineHeight: 1.08,
-            letterSpacing: -1.6,
-            color: "#FFFFFF",
-            maxWidth: 940,
-            display: "flex",
-          }}
-        >
-          {HEADLINE}
-        </div>
-
-        {/* Bottom: footer line with cyan rule */}
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 18,
-            fontFamily: "Inter",
-            fontWeight: 500,
-            fontSize: 18,
-            letterSpacing: 2,
-            color: "rgba(255,255,255,0.55)",
-            textTransform: "uppercase",
-          }}
-        >
-          <div
-            style={{
-              width: 48,
-              height: 2,
-              background: "#18DEFF",
-              display: "flex",
-            }}
-          />
-          {FOOTER}
-        </div>
-      </div>
-    ),
-    {
-      width: 1200,
-      height: 630,
-      fonts: [
-        { name: "Montserrat", data: headlineFont, weight: 700, style: "normal" },
-        { name: "Inter", data: supportFont, weight: 500, style: "normal" },
-      ],
+  return new Response(svg, {
+    headers: {
+      "content-type": "image/svg+xml; charset=utf-8",
+      "cache-control": "public, max-age=31536000, s-maxage=31536000, immutable",
     },
-  );
-
-  // Card is fully deterministic — same response for every request — so
-  // social platforms (and Vercel's edge) can hold onto it. One year +
-  // `immutable` matches how OG cards are typically treated downstream.
-  imageResponse.headers.set(
-    "Cache-Control",
-    "public, max-age=31536000, s-maxage=31536000, immutable",
-  );
-  return imageResponse;
+  });
 }

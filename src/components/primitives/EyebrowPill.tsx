@@ -14,7 +14,7 @@ export function EyebrowPill({
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-2.5 pl-2 pr-4 py-1.5 rounded-full",
+        "inline-flex items-center gap-2.5 ps-2 pe-4 py-1.5 rounded-full",
         "glass glass-edge",
         "font-[var(--font-brand)] text-[11px] uppercase tracking-[0.18em] text-white/70",
         className

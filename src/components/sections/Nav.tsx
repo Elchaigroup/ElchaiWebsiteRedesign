@@ -5,9 +5,9 @@ import Image from "next/image";
 import { cn } from "@/lib/cn";
 import { HQTimePill } from "@/components/primitives/HQTimePill";
 import { MobileNav } from "@/components/sections/MobileNav";
-// LanguageSwitcher import removed — see comment near the render site.
-import { nav as navContent } from "@/lib/content";
+import { LanguageSwitcher } from "@/components/primitives/LanguageSwitcher";
 import { useT } from "@/lib/i18n";
+import { useContent } from "@/lib/use-content";
 
 /**
  * Top nav — design-system §8.1.
@@ -50,8 +50,7 @@ function toMegaColumns(group: NavMegaGroup): MegaColumn[] {
 // the rendered Nav copy. Inner column items (mega menu) stay in EN
 // for now since each language would otherwise need a full taxonomy.
 function useNavItems(): NavItem[] {
-  const t = (key: string) => useT(key);
-  /* eslint-disable react-hooks/rules-of-hooks */
+  const { nav: navContent } = useContent();
   return [
     { kind: "mega", label: useT("nav.blockchain"), columns: toMegaColumns(navContent.blockchain) },
     { kind: "mega", label: useT("nav.crypto"),     columns: toMegaColumns(navContent.cryptocurrency) },
@@ -76,7 +75,6 @@ function useNavItems(): NavItem[] {
       ],
     },
   ];
-  /* eslint-enable react-hooks/rules-of-hooks */
 }
 
 function Caret() {
@@ -100,14 +98,30 @@ function Caret() {
   );
 }
 
-// Refined trigger — subtle inner cyan ring + soft bg lift on hover.
-// Reads as a premium accent rather than a flat grey hover state.
+// Refined trigger — tighter spacing, smaller item, plus an animated cyan
+// underline that slides in on hover/focus. The underline is a child
+// `::after`-style span so we can size it independently of the button.
 const TRIGGER_CLASSES =
-  "h-11 px-4 rounded-full text-[13px] text-white/80 hover:text-white " +
+  "group/trigger relative h-10 px-3 rounded-full text-[12.5px] text-white/75 hover:text-white whitespace-nowrap " +
   "font-[var(--font-brand)] font-medium inline-flex items-center gap-1.5 " +
-  "transition-all duration-200 " +
-  "hover:bg-white/[0.05] " +
-  "hover:shadow-[inset_0_0_0_1px_rgba(36,229,255,0.22)]";
+  "transition-colors duration-200 " +
+  "focus-visible:outline-none focus-visible:text-white";
+
+function TriggerUnderline() {
+  // Sits absolutely under the trigger text; grows from 0 → 24px on hover
+  // and inherits the brand cyan with a soft glow.
+  return (
+    <span
+      aria-hidden="true"
+      className="pointer-events-none absolute left-1/2 -translate-x-1/2 bottom-1.5
+                 h-[1.5px] w-0 rounded-full bg-brand-sky
+                 shadow-[0_0_8px_rgba(36,229,255,0.65)]
+                 transition-[width] duration-[260ms] ease-[cubic-bezier(0.22,1,0.36,1)]
+                 group-hover/trigger:w-6 group-focus-within/trigger:w-6
+                 group-hover/nav:w-6 group-focus-within/nav:w-6"
+    />
+  );
+}
 
 const DROPDOWN_WRAPPER =
   "absolute top-full pt-3 invisible opacity-0 translate-y-1 " +
@@ -130,7 +144,7 @@ function SimpleDropdown({ children }: { children: SimpleChild[] }) {
       >
         {children.map((child) => (
           <Link
-            key={child.href}
+            key={child.label}
             href={child.href}
             className="block px-4 py-2.5 rounded-lg text-[13px] text-white/80
                        hover:text-white hover:bg-white/[0.06] transition-colors
@@ -172,7 +186,7 @@ function MegaPanel({ columns }: { columns: MegaColumn[] }) {
               </h3>
               <ul className="mt-3 space-y-0.5 list-none p-0 m-0">
                 {col.items.map((it) => (
-                  <li key={it.href}>
+                  <li key={it.label}>
                     <Link
                       href={it.href}
                       className="block px-2.5 py-2 -mx-2.5 rounded-lg text-[13px] leading-[1.35]
@@ -199,44 +213,44 @@ export function Nav() {
     <nav
       className={cn(
         "fixed top-4 left-1/2 -translate-x-1/2 z-50",
-        "w-[calc(100%-2rem)] max-w-[1320px]",
+        "w-[calc(100%-2rem)] max-w-[1280px]",
         "rounded-full",
-        "pl-6 pr-2 py-2 flex items-center justify-between gap-6"
+        "ps-5 pe-2 py-1.5 flex items-center justify-between gap-4"
       )}
       style={{
         background:
-          "linear-gradient(180deg, rgba(12,14,20,0.78) 0%, rgba(8,10,16,0.70) 100%)",
-        border: "1px solid rgba(255,255,255,0.10)",
+          "linear-gradient(180deg, rgba(12,14,20,0.82) 0%, rgba(8,10,16,0.74) 100%)",
+        border: "1px solid rgba(255,255,255,0.09)",
         backdropFilter: "blur(28px) saturate(180%)",
         WebkitBackdropFilter: "blur(28px) saturate(180%)",
         // Top highlight + cyan whisper on the bottom rim + deeper drop shadow.
         boxShadow:
           "inset 0 1px 0 rgba(255,255,255,0.08), " +
-          "inset 0 -1px 0 rgba(36,229,255,0.12), " +
-          "0 30px 80px -40px rgba(0,0,0,0.95), " +
+          "inset 0 -1px 0 rgba(36,229,255,0.10), " +
+          "0 24px 60px -28px rgba(0,0,0,0.95), " +
           "0 0 0 1px rgba(36,229,255,0.04)",
       }}
       aria-label="Primary"
     >
-      <Link href="/" aria-label="Elchai Group home" className="flex items-center">
+      <Link href="/" aria-label="Elchai Group home" className="flex items-center shrink-0">
         <Image
           src="/elchai/elchai_logo.svg"
           alt="Elchai"
-          width={120}
-          height={38}
+          width={50}
+          height={32}
           priority
           unoptimized
-          className="h-9 w-auto"
         />
       </Link>
 
-      <ul className="hidden lg:flex items-center gap-1 list-none m-0 p-0">
+      <ul className="hidden xl:flex items-center gap-0.5 list-none m-0 p-0">
         {navItems.map((item) => {
           if (item.kind === "link") {
             return (
-              <li key={item.label}>
+              <li key={item.label} className="group/nav">
                 <Link href={item.href} className={TRIGGER_CLASSES}>
-                  {item.label}
+                  <span>{item.label}</span>
+                  <TriggerUnderline />
                 </Link>
               </li>
             );
@@ -245,13 +259,15 @@ export function Nav() {
           if (item.kind === "simple") {
             const Trigger = item.href ? (
               <Link href={item.href} className={TRIGGER_CLASSES}>
-                {item.label}
+                <span>{item.label}</span>
                 <Caret />
+                <TriggerUnderline />
               </Link>
             ) : (
               <button type="button" className={TRIGGER_CLASSES}>
-                {item.label}
+                <span>{item.label}</span>
                 <Caret />
+                <TriggerUnderline />
               </button>
             );
             return (
@@ -266,8 +282,9 @@ export function Nav() {
           return (
             <li key={item.label} className="relative group/nav">
               <button type="button" className={TRIGGER_CLASSES}>
-                {item.label}
+                <span>{item.label}</span>
                 <Caret />
+                <TriggerUnderline />
               </button>
               <MegaPanel columns={item.columns} />
             </li>
@@ -277,10 +294,7 @@ export function Nav() {
 
       <div className="flex items-center gap-2">
         <HQTimePill />
-        {/* LanguageSwitcher removed per SEO audit (May 2026): AR/IT had
-            no SSR routes/hreflang, so the toggle suggested translated
-            pages we don't actually ship. Re-introduce once /ar/* and
-            /it/* are real, SSR'd subpath locales. */}
+        <LanguageSwitcher />
         <Link
           href="#consultation"
           className="hidden md:inline-flex group/cta items-center gap-2.5 h-10 px-6 rounded-full

@@ -116,7 +116,7 @@ export function BentoGrid({
                   )}
                 </header>
                 {tile.blurb && (
-                  <p className="mt-2 text-[14px] leading-relaxed text-white/55">
+                  <p className="mt-2 text-[14px] leading-relaxed text-white/80">
                     {tile.blurb}
                   </p>
                 )}

@@ -57,7 +57,14 @@ export const metadata: Metadata = {
     // Per-page canonical is set by each route's metadata via the
     // pageMetadata() helper. Keeping the global blank stops every page
     // canonicalising to the homepage (the bug found in the audit).
-    languages: { "en-US": "/", "x-default": "/" },
+    languages: {
+      "en-US": "/",
+      "en-AE": "/",
+      "en-GB": "/",
+      "ar-AE": "/",
+      "it-IT": "/",
+      "x-default": "/",
+    },
   },
   openGraph: {
     type: "website",
@@ -135,7 +142,7 @@ const ORG_JSONLD = {
   description: SITE_DESC,
   email: "info@elchaigroup.com",
   telephone: "+971-4-883-7176",
-  foundingDate: "2016",
+  foundingDate: "2022",
   foundingLocation: { "@type": "Place", name: "Dubai, United Arab Emirates" },
   address: {
     "@type": "PostalAddress",
@@ -196,14 +203,10 @@ const ORG_JSONLD = {
     "Top App Development Companies 2025",
     "Business of Apps Award",
   ],
-  aggregateRating: {
-    "@type": "AggregateRating",
-    ratingValue: "4.9",
-    bestRating: "5",
-    worstRating: "1",
-    ratingCount: 47,
-    reviewCount: 47,
-  },
+  // NOTE: AggregateRating intentionally omitted. Google's structured-data
+  // policy requires ratings to reflect user reviews actually displayed on
+  // the page; self-attested aggregate ratings risk a manual action. Reviews
+  // below cite real third-party awards (Clutch) and are safe to keep.
   review: [
     {
       "@type": "Review",
@@ -231,9 +234,20 @@ const SITE_JSONLD = {
   "@type": "WebSite",
   "@id": SITE_ID,
   name: SITE_NAME,
+  alternateName: ["Elchai", "ElchAI"],
   url: SITE_URL,
-  inLanguage: ["en"],
+  inLanguage: ["en", "en-AE", "ar-AE", "it-IT"],
   publisher: { "@id": ORG_ID },
+  copyrightHolder: { "@id": ORG_ID },
+  copyrightYear: 2022,
+  potentialAction: {
+    "@type": "SearchAction",
+    target: {
+      "@type": "EntryPoint",
+      urlTemplate: `${SITE_URL}/blog-list?q={search_term_string}`,
+    },
+    "query-input": "required name=search_term_string",
+  },
 };
 
 const LOCAL_BUSINESS_JSONLD = {
@@ -281,6 +295,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="preconnect" href="https://api.fontshare.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {/* AI crawler discovery — surfaces the curated llms.txt and the
+            extended llms-full.txt feed to GPTBot / ClaudeBot / Perplexity
+            / Gemini even if they only fetch the HTML head. */}
+        <link rel="alternate" type="text/plain" title="LLM-friendly overview" href="/llms.txt" />
+        <link rel="alternate" type="text/plain" title="LLM-friendly full catalog" href="/llms-full.txt" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(ORG_JSONLD) }}
@@ -290,7 +309,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           dangerouslySetInnerHTML={{ __html: JSON.stringify(SITE_JSONLD) }}
         />
       </head>
-      <body className="bg-ink text-white overflow-x-hidden antialiased">
+      {/* suppressHydrationWarning silences the mismatch noise added by
+          browser extensions (Grammarly, LastPass, etc.) that inject
+          attributes onto <body> after hydration. Scoped to <body>;
+          our React tree still hydrates strictly. */}
+      <body
+        className="relative bg-ink text-white overflow-x-hidden antialiased"
+        suppressHydrationWarning
+      >
         <JsonLd data={LOCAL_BUSINESS_JSONLD} />
         <FontLoader />
         <LangProvider>

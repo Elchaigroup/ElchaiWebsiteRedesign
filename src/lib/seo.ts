@@ -72,7 +72,20 @@ export function pageMetadata(opts: {
     title: opts.title,
     description,
     ...(keywords && keywords.length > 0 ? { keywords } : {}),
-    alternates: { canonical: opts.path },
+    alternates: {
+      canonical: opts.path,
+      // Single-URL site with client-side i18n (cookie/localStorage). We
+      // still declare hreflang so search engines know the page serves
+      // multiple audiences and pick the right one for each query.
+      languages: {
+        "en-US": opts.path,
+        "en-AE": opts.path,
+        "en-GB": opts.path,
+        "ar-AE": opts.path,
+        "it-IT": opts.path,
+        "x-default": opts.path,
+      },
+    },
     openGraph: {
       type: "website",
       url,

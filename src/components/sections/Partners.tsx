@@ -10,9 +10,10 @@
 import Image from "next/image";
 import { InfiniteSlider } from "@/components/ui/infinite-slider";
 import { Reveal } from "@/components/primitives/Reveal";
-import { partners } from "@/lib/content";
+import { useContent } from "@/lib/use-content";
 
 export function Partners() {
+  const { partners } = useContent();
   return (
     <section
       id="partners"
@@ -25,7 +26,6 @@ export function Partners() {
             className="inline-flex items-center gap-2.5 font-[var(--font-mono)]
                        text-[11px] uppercase tracking-[0.22em] text-white/75"
           >
-            <span className="w-1.5 h-1.5 rounded-full bg-brand-sky shadow-[0_0_8px_#18DEFF]" />
             {partners.eyebrow}
           </span>
         </Reveal>

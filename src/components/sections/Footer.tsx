@@ -8,7 +8,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Facebook, Twitter, Linkedin, Instagram } from "lucide-react";
-import { footer } from "@/lib/content";
+import { useContent } from "@/lib/use-content";
 
 const SOCIAL_ICON: Record<string, React.ComponentType<{ size?: number }>> = {
   facebook: Facebook,
@@ -18,6 +18,7 @@ const SOCIAL_ICON: Record<string, React.ComponentType<{ size?: number }>> = {
 };
 
 export function Footer() {
+  const { footer } = useContent();
   return (
     <footer
       id="footer"
@@ -52,10 +53,9 @@ export function Footer() {
             <Image
               src="/elchai/elchai_logo.svg"
               alt="Elchai"
-              width={140}
+              width={69}
               height={44}
               unoptimized
-              className="h-11 w-auto"
             />
           </Link>
 

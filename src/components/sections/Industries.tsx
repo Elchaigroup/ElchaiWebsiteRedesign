@@ -10,9 +10,10 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Reveal } from "@/components/primitives/Reveal";
-import { industries } from "@/lib/content";
+import { useContent } from "@/lib/use-content";
 
 export function Industries() {
+  const { industries } = useContent();
   return (
     <section
       id="industries"
@@ -27,7 +28,6 @@ export function Industries() {
                 className="inline-flex items-center gap-2.5 font-[var(--font-mono)]
                            text-[11px] uppercase tracking-[0.22em] text-white/45"
               >
-                <span className="w-1.5 h-1.5 rounded-full bg-brand-sky shadow-[0_0_8px_#18DEFF]" />
                 {industries.eyebrow}
               </span>
             </Reveal>
@@ -90,9 +90,23 @@ export function Industries() {
                   <h3 className="mt-3 font-[var(--font-display)] font-medium text-[19px] tracking-[-0.01em] text-white">
                     {item.title}
                   </h3>
-                  <p className="mt-3 text-[12.5px] leading-[1.55] text-white/65">
+                  <p className="mt-3 text-[14px] leading-[1.6] text-white/85">
                     {item.copy}
                   </p>
+                  <Link
+                    href="#consultation"
+                    aria-label={`Request live demo for ${item.title}`}
+                    className="mt-5 inline-flex items-center gap-1.5 self-start
+                               rounded-full border border-white/15 bg-white/[0.04]
+                               px-3.5 py-1.5 text-[11.5px] font-medium text-white
+                               hover:border-[rgba(36,229,255,0.55)] hover:bg-white/[0.08]
+                               transition-colors"
+                  >
+                    Live Demo
+                    <svg width="11" height="11" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                      <path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" strokeWidth="1.6" />
+                    </svg>
+                  </Link>
                 </div>
               </article>
             </Reveal>

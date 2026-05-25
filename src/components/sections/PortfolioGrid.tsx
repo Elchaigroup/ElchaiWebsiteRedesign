@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Reveal } from "@/components/primitives/Reveal";
+import { useLocale } from "@/lib/i18n";
 import {
   PORTFOLIO_CATEGORIES,
   PORTFOLIO_ITEMS,
@@ -24,6 +25,24 @@ const STORE_LABEL: Record<PortfolioStore["kind"], string> = {
   play: "Google Play",
   apple: "App Store",
   website: "Website",
+};
+
+const CATEGORY_LABELS: Record<"EN" | "AR" | "IT", Record<(typeof PORTFOLIO_CATEGORIES)[number], string>> = {
+  EN: { All: "All", Healthcare: "Healthcare", Delivery: "Delivery", Transportation: "Transportation", Food: "Food", Ecommerce: "Ecommerce", "Super App": "Super App", Legal: "Legal" },
+  AR: { All: "الكل", Healthcare: "الرعاية الصحية", Delivery: "التوصيل", Transportation: "النقل", Food: "الطعام", Ecommerce: "التجارة الإلكترونية", "Super App": "تطبيقات فائقة", Legal: "قانوني" },
+  IT: { All: "Tutti", Healthcare: "Sanità", Delivery: "Consegna", Transportation: "Trasporti", Food: "Cibo", Ecommerce: "E-commerce", "Super App": "Super App", Legal: "Legale" },
+};
+
+const EMPTY_MSG: Record<"EN" | "AR" | "IT", string> = {
+  EN: "No projects match this category yet.",
+  AR: "لا توجد مشاريع تتطابق مع هذا التصنيف حتى الآن.",
+  IT: "Nessun progetto corrisponde ancora a questa categoria.",
+};
+
+const PORTFOLIO_ARIA: Record<"EN" | "AR" | "IT", string> = {
+  EN: "Portfolio categories",
+  AR: "تصنيفات الأعمال",
+  IT: "Categorie portfolio",
 };
 
 function StoreLinks({ stores }: { stores: PortfolioStore[] }) {
@@ -197,6 +216,8 @@ function PortfolioCard({ item }: { item: PortfolioItem }) {
 }
 
 export function PortfolioGrid() {
+  const { locale } = useLocale();
+  const catLabels = CATEGORY_LABELS[locale] ?? CATEGORY_LABELS.EN;
   const [filter, setFilter] = useState<Filter>("All");
 
   const visible = useMemo(() => {
@@ -208,11 +229,10 @@ export function PortfolioGrid() {
 
   return (
     <>
-      {/* Filter chips */}
       <Reveal>
         <div
           role="tablist"
-          aria-label="Portfolio categories"
+          aria-label={PORTFOLIO_ARIA[locale] ?? PORTFOLIO_ARIA.EN}
           className="flex flex-wrap items-center justify-center gap-2 px-2"
         >
           {PORTFOLIO_CATEGORIES.map((c) => {
@@ -231,14 +251,13 @@ export function PortfolioGrid() {
                     : "bg-white/[0.04] text-white/70 ring-1 ring-white/[0.08] hover:bg-white/[0.08] hover:text-white",
                 ].join(" ")}
               >
-                {c}
+                {catLabels[c]}
               </button>
             );
           })}
         </div>
       </Reveal>
 
-      {/* Cards stack */}
       <div className="mt-14 flex flex-col gap-8 lg:gap-10">
         {visible.map((item, i) => (
           <Reveal key={item.slug} delay={Math.min(i, 4) * 0.04}>
@@ -249,7 +268,7 @@ export function PortfolioGrid() {
 
       {visible.length === 0 && (
         <p className="mt-10 text-center text-[14px] text-white/55">
-          No projects match this category yet.
+          {EMPTY_MSG[locale] ?? EMPTY_MSG.EN}
         </p>
       )}
     </>

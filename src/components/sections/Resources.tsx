@@ -9,9 +9,10 @@
 import Link from "next/link";
 import { Reveal } from "@/components/primitives/Reveal";
 import { SpotlightCard } from "@/components/ui/spotlight-card";
-import { resources } from "@/lib/content";
+import { useContent } from "@/lib/use-content";
 
 export function Resources() {
+  const { resources } = useContent();
   return (
     <section
       id="resources"
@@ -26,7 +27,6 @@ export function Resources() {
                 className="inline-flex items-center gap-2.5 font-[var(--font-mono)]
                            text-[11px] uppercase tracking-[0.22em] text-white/45"
               >
-                <span className="w-1.5 h-1.5 rounded-full bg-brand-sky shadow-[0_0_8px_#18DEFF]" />
                 {resources.eyebrow}
               </span>
             </Reveal>

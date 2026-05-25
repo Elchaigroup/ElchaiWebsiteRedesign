@@ -44,12 +44,12 @@ export const nav = {
         items: [
           { label: 'WEB 3', href: '/web3-development-company/' },
           { label: 'Metaverse', href: '/metaverse-development/' },
-          { label: 'Enterprise Solutions', href: '#' },
-          { label: 'DeFi', href: '#' },
+          { label: 'Enterprise Solutions', href: '#consultation' },
+          { label: 'DeFi', href: '/defi-development/' },
           { label: 'Smart Contracts', href: '/smart-contract/' },
           { label: 'NFT', href: '/nft-marketplace-development/' },
           { label: 'Tokenization', href: '/rwa/' },
-          { label: 'Infrastructure', href: '#' },
+          { label: 'Infrastructure', href: '#consultation' },
         ],
       },
       {
@@ -69,14 +69,6 @@ export const nav = {
   cryptocurrency: {
     label: 'Cryptocurrency',
     columns: [
-      {
-        title: 'Cryptocurrency',
-        items: [
-          { label: 'Crypto Wallet', href: '#' },
-          { label: 'Crypto Trading Platforms', href: '#' },
-          { label: 'ICO/STO/IDO Platform', href: '#' },
-        ],
-      },
       {
         title: 'Wallets',
         items: [
@@ -230,7 +222,7 @@ export const solutions = {
       title: 'Premium Tech Development Studio',
       description:
         'Deliver enterprise‑grade software solutions using proven development practices.',
-      cta: { label: 'Visit Website', href: '#' },
+      cta: { label: 'Visit Website', href: '#consultation' },
       categories: [
         'AI-Powered App Development',
         'Enterprise Solutions',
@@ -258,7 +250,7 @@ export const solutions = {
       title: 'Your AI Development Partner',
       description:
         'Building tailored AI solutions for brands that drive innovation and efficiency.',
-      cta: { label: 'Visit Website', href: '#' },
+      cta: { label: 'Visit Website', href: '#consultation' },
       categories: [
         'Automate Your Workflows',
         'Generate Valuable Insights',
@@ -277,7 +269,7 @@ export const solutions = {
       title: 'Engineering Web3 Excellence',
       description:
         'Create secure blockchain products for transparent and scalable data.',
-      cta: { label: 'Visit Website', href: '#' },
+      cta: { label: 'Visit Website', href: '#consultation' },
       categories: [
         'Enterprise-Grade Security',
         'Robust Smart Contracts',
@@ -302,7 +294,7 @@ export const timeZone = {
   headline: 'Your {time} Time Zone, Your Terms.',
   description:
     'Our global development teams align to your schedule for\n\nseamless, round-the-clock delivery.',
-  cta: { label: 'Start Your Transformation', href: '#' },
+  cta: { label: 'Start Your Transformation', href: '#consultation' },
 } as const;
 
 // ---------------------------------------------------------------------------
@@ -315,7 +307,7 @@ export const services = {
     'We Create New Solutions and Transform Existing Ones with New Gen Technologies To Make Your Business Future-proof',
   kicker: 'Tech Troubles Holding You Back?',
   subheading: 'Let Us Handle The Tech While You Focus on Building Your Core Business',
-  cta: { label: 'Book Free Consultation', href: '#' },
+  cta: { label: 'Book Free Consultation', href: '#consultation' },
   items: [
     {
       title: 'Artificial Intelligence',
@@ -345,7 +337,7 @@ export const services = {
   bottomCta: {
     kicker: 'Is Tech Troubles Holding You Back?',
     headline: 'Focus on Growth While We Drive Your Tech Innovation.',
-    cta: { label: 'Book 30 Min C-Level Consultation', href: '#' },
+    cta: { label: 'Book 30 Min C-Level Consultation', href: '#consultation' },
   },
 } as const;
 
@@ -374,7 +366,7 @@ export const caseStudies = {
         { value: '80%',  label: 'User Retention Rate' },
         { value: '20K+', label: 'Meal Plans Generated' },
       ],
-      cta: { label: 'Download Case Study', href: '#' },
+      cta: { label: 'Download Case Study', href: '#consultation' },
     },
     {
       slug: 'fintex',
@@ -384,7 +376,7 @@ export const caseStudies = {
         { value: '20%',     label: 'Cryptocurrencies Supported' },
         { value: '$100 K+', label: 'Daily Transaction Volume' },
       ],
-      cta: { label: 'Download Case Study', href: '#' },
+      cta: { label: 'Download Case Study', href: '#consultation' },
     },
     {
       slug: 'theuneverse',
@@ -394,7 +386,7 @@ export const caseStudies = {
         { value: '1000+', label: 'Virtual Properties Listed' },
         { value: '45%',   label: 'Increase in Property Views' },
       ],
-      cta: { label: 'Download Case Study', href: '#' },
+      cta: { label: 'Download Case Study', href: '#consultation' },
     },
     {
       slug: 'nielsen',
@@ -404,7 +396,7 @@ export const caseStudies = {
         { value: '85%', label: 'Faster Analysis Time' },
         { value: '60%', label: 'Faster Decision Making' },
       ],
-      cta: { label: 'Download Case Study', href: '#' },
+      cta: { label: 'Download Case Study', href: '#consultation' },
     },
     {
       slug: 'grintafy',
@@ -414,7 +406,7 @@ export const caseStudies = {
         { value: '1M+', label: 'User Downloads' },
         { value: '90%', label: 'User Engagement' },
       ],
-      cta: { label: 'Download Case Study', href: '#' },
+      cta: { label: 'Download Case Study', href: '#consultation' },
     },
   ],
 } as const;
@@ -427,7 +419,7 @@ export const caseStudies = {
 export const industries = {
   eyebrow: 'Industries',
   heading: 'Engineering Industry-specific Excellence With AI & Innovation',
-  cta: { label: 'Live Demo', href: '#' },
+  cta: { label: 'Live Demo', href: '#consultation' },
   items: [
     { title: 'Automotive',        copy: 'Enable predictive logistics, connected mobility networks, and real-time operational intelligence across global supply chains.' },
     { title: 'Healthcare',        copy: 'Secure interoperable health data flows, improve patient outcomes, and strengthen compliance and institutional trust.' },
@@ -534,7 +526,7 @@ export const partners = {
 
 export const closingCta = {
   heading: 'It’s Time To Accelerate Your Digital Transformation Journey',
-  cta: { label: 'Let’s Build Together', href: '#' },
+  cta: { label: 'Let’s Build Together', href: '#consultation' },
 } as const;
 
 // ---------------------------------------------------------------------------
@@ -551,21 +543,21 @@ export const resources = {
       title:
         'NFT Business Applications: Digital Asset Innovation Beyond Art and Collectibles',
       readTime: '3 Min Read',
-      href: '/blog/nft-business-applications-digital-asset-innovation-beyond-art-and-collectibles',
+      href: '/blog/nft-business-applications',
     },
     {
       tag: 'blog',
       title:
         'AI Machine Learning Solutions: Transforming Data into Competitive...',
       readTime: '3 Min Read',
-      href: '/blog/ai-machine-learning-solutions-transforming-data-into-competitive-business-intelligence',
+      href: '/blog/ai-machine-learning-solutions',
     },
     {
       tag: 'blog',
       title:
         'Web3 Digital Transformation: Decentralized Solutions for Modern...',
       readTime: '5 Min Read',
-      href: '/blog/web3-digital-transformation-decentralized-solutions-for-modern-enterprise-architecture',
+      href: '/blog/web3-digital-transformation',
     },
   ],
 } as const;
@@ -629,7 +621,7 @@ export const contact = {
     phone: '+971 4 883 7176',
     pitch:
       'Partner with our experts and turn your visionary ideas into scalable, market-leading solutions',
-    cta: { label: 'Lets Connect', href: '#' },
+    cta: { label: 'Lets Connect', href: '#consultation' },
   },
   legend: [
     { label: 'Direct Operations and Strategic Control', href: '#Strategic' },
@@ -738,7 +730,7 @@ export const footer = {
 export const modals = {
   whatsapp: {
     heading: 'Whatsapp Updates',
-    defaultDial: '+47',
+    defaultDial: '+971',
     submit: 'Submit',
   },
   consultation: {
@@ -839,8 +831,8 @@ export const interns = {
     body: 'A diverse group of ambitious individuals bringing fresh ideas, creativity, and energy to our teams.',
     profiles: [
       { name: 'Abhishek Aju',   role: 'Growth & Marketing',      photo: 'https://www.elchaigroup.com/wp-content/uploads/2026/05/Abisheik-1.jpeg' },
-      { name: 'Sanjula Hewage', role: 'QA Tester',               photo: 'https://www.elchaigroup.com/wp-content/uploads/2026/05/Shujal.jpeg' },
-      { name: 'Hajra',          role: 'AI Automation & Research', photo: 'https://www.elchaigroup.com/wp-content/uploads/2026/05/Hajra-1.jpeg' },
+      { name: 'Sanjula Hewage', role: 'QA Tester',               photo: 'https://www.elchaigroup.com/wp-content/uploads/2026/05/Sanjula.jpeg' },
+      { name: 'Hajara',         role: 'AI Automation & Research', photo: 'https://www.elchaigroup.com/wp-content/uploads/2026/05/Hajra-1.jpeg' },
       { name: 'Tamara',         role: 'AI Automation & Research', photo: 'https://www.elchaigroup.com/wp-content/uploads/2026/05/Tamara.jpeg' },
       { name: 'Rubin',          role: 'AI Automation & Research', photo: 'https://www.elchaigroup.com/wp-content/uploads/2026/05/Rubin-1.jpeg' },
       { name: 'Sara',           role: 'AI Automation & Research', photo: 'https://www.elchaigroup.com/wp-content/uploads/2026/05/Sara.jpeg' },

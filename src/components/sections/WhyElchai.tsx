@@ -7,9 +7,42 @@
  */
 
 import { Reveal } from "@/components/primitives/Reveal";
-import { why } from "@/lib/content";
+import { useContent } from "@/lib/use-content";
+
+const PILLAR_ICONS = [
+  // 01 — AI-Powered Transformation: neural network / spark
+  <svg key="ai" width="34" height="34" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+    <circle cx="6" cy="8" r="2.2" stroke="currentColor" strokeWidth="1.6" />
+    <circle cx="6" cy="24" r="2.2" stroke="currentColor" strokeWidth="1.6" />
+    <circle cx="26" cy="16" r="2.2" stroke="currentColor" strokeWidth="1.6" />
+    <circle cx="16" cy="16" r="3.4" stroke="currentColor" strokeWidth="1.6" />
+    <path d="M8 9.5l4.8 4.8M8 22.5l4.8-4.8M19.5 16h4.3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+  </svg>,
+  // 02 — Human-Centric Approach: people
+  <svg key="human" width="34" height="34" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+    <circle cx="12" cy="10" r="3.4" stroke="currentColor" strokeWidth="1.6" />
+    <path d="M4.5 24c0-3.6 3.4-6.5 7.5-6.5s7.5 2.9 7.5 6.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+    <circle cx="22.5" cy="12" r="2.7" stroke="currentColor" strokeWidth="1.6" />
+    <path d="M20.5 18.5c4 0 7 2.4 7 5.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+  </svg>,
+  // 03 — Future-Proof Scalability: ascending bars / arrow up-right
+  <svg key="scale" width="34" height="34" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+    <path d="M5 26h22" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+    <rect x="7" y="18" width="3.6" height="6" rx="0.6" stroke="currentColor" strokeWidth="1.6" />
+    <rect x="14.2" y="13" width="3.6" height="11" rx="0.6" stroke="currentColor" strokeWidth="1.6" />
+    <rect x="21.4" y="7" width="3.6" height="17" rx="0.6" stroke="currentColor" strokeWidth="1.6" />
+    <path d="M6 9l6-5 4 3 8-6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" opacity="0.55" />
+  </svg>,
+  // 04 — Transparent Communication: chat bubbles
+  <svg key="comm" width="34" height="34" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+    <path d="M5 7h15a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-7l-5 4v-4H5a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
+    <path d="M25 12h2a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-3l-3 2v-2h-2" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" opacity="0.55" />
+    <path d="M8 11h9M8 14h6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+  </svg>,
+];
 
 export function WhyElchai() {
+  const { why } = useContent();
   return (
     <section
       id="why"
@@ -52,7 +85,6 @@ export function WhyElchai() {
                 className="inline-flex items-center gap-2.5 font-[var(--font-mono)]
                            text-[11px] uppercase tracking-[0.22em] text-white/45"
               >
-                <span className="w-1.5 h-1.5 rounded-full bg-brand-sky shadow-[0_0_8px_#18DEFF]" />
                 {why.eyebrow}
               </span>
             </Reveal>
@@ -87,13 +119,26 @@ export function WhyElchai() {
                                [animation:pillar-line-draw_900ms_cubic-bezier(0.16,1,0.30,1)_both]"
                     style={{ animationDelay: `${0.5 + i * 0.10}s` }}
                   />
-                  <span className="font-[var(--font-mono)] text-[10px] tracking-[0.22em] text-brand-sky">
-                    {String(i + 1).padStart(2, "0")} / 04
-                  </span>
+                  <div className="flex items-center justify-between">
+                    <span className="font-[var(--font-mono)] text-[10px] tracking-[0.22em] text-brand-sky">
+                      {String(i + 1).padStart(2, "0")} / 04
+                    </span>
+                    <span
+                      className="inline-flex h-16 w-16 items-center justify-center rounded-2xl
+                                 border-2 border-white/[0.14] bg-white/[0.05]
+                                 text-brand-sky shadow-[inset_0_0_38px_-10px_rgba(36,229,255,0.65),0_8px_24px_-12px_rgba(36,229,255,0.45)]
+                                 group-hover:border-[rgba(36,229,255,0.55)]
+                                 group-hover:bg-[rgba(36,229,255,0.08)]
+                                 transition-colors"
+                      aria-hidden="true"
+                    >
+                      {PILLAR_ICONS[i]}
+                    </span>
+                  </div>
                   <h3 className="mt-5 font-[var(--font-display)] font-medium text-[19px] tracking-[-0.01em] text-white">
                     {p.title}
                   </h3>
-                  <p className="mt-3 text-[13px] leading-[1.6] text-white/65">
+                  <p className="mt-3 text-[14px] leading-[1.65] text-white/85">
                     {p.copy}
                   </p>
                 </article>

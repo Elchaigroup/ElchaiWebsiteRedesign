@@ -9,7 +9,7 @@
     "ogImage": "/og",
     "twitterHandle": "@elchaigroup",
     "locale": "en_US",
-    "foundingDate": "2016",
+    "foundingDate": "2022",
     "founders": ["SHA"],
     "description": "Elchai Group is a Dubai-based AI and blockchain consultancy. We design, build and scale custom AI agents, generative AI, Web3 platforms, smart contracts and tokenization for enterprises worldwide.",
     "sameAs": [
@@ -26,7 +26,7 @@
     "/": {
       "slug": "/",
       "title": "Elchai Group — AI & Blockchain Consultancy in Dubai",
-      "description": "Custom AI agents, generative AI, smart contracts and RWA tokenization built by Elchai Group in Dubai. 150+ projects since 2016 across enterprise and government.",
+      "description": "Custom AI agents, generative AI, smart contracts and RWA tokenization built by Elchai Group in Dubai. 150+ projects since 2022 across enterprise and government.",
       "h1": "Driving Digital Transformation with AI & Blockchain Products",
       "keywords": ["AI consultancy Dubai", "blockchain development Dubai", "AI agents", "generative AI", "RWA tokenization"],
       "breadcrumb": ["Home"]
@@ -35,7 +35,7 @@
     "/about-us": {
       "slug": "/about-us",
       "title": "About Elchai Group",
-      "description": "Dubai-based AI and blockchain consultancy founded in 2016. Meet the team building Tarality, BB-Estate, Blyncc and 150+ partner projects.",
+      "description": "Dubai-based AI and blockchain consultancy founded in 2022. Meet the team building Tarality, BB-Estate, Blyncc and 150+ partner projects.",
       "h1": "About Elchai Group",
       "keywords": ["Elchai Group about", "AI blockchain company Dubai", "Elchai team", "Elchai founders"],
       "breadcrumb": ["Home", "About"]

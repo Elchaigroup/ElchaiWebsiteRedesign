@@ -12,15 +12,15 @@
  */
 
 import Link from "next/link";
-import { hero as heroContent } from "@/lib/content";
 import { MaskReveal } from "@/components/primitives/MaskReveal";
 import { Reveal } from "@/components/primitives/Reveal";
 import { useT } from "@/lib/i18n";
+import { useContent } from "@/lib/use-content";
 
 export function Hero() {
+  const { hero: heroContent } = useContent();
   const tEyebrow = useT("hero.eyebrow");
   const tBookFree = useT("hero.book_free");
-  const tScroll = useT("hero.scroll");
   return (
     <section
       className="hero-stack scrim-section relative isolate"
@@ -85,29 +85,6 @@ export function Hero() {
           </Reveal>
         </div>
 
-        {/* Scroll cue — pinned to the bottom of the viewport, decoupled
-            from the text stack so it never crowds the CTAs. The 3D
-            tumbling ring + cascading chevrons telegraph "scroll" with
-            actual motion depth, not a flat line. */}
-        <Reveal delay={0.65}>
-          <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 inline-flex flex-col items-center gap-3">
-            <span className="font-[var(--font-mono)] text-[10px] uppercase tracking-[0.30em] text-white/55">
-              {tScroll}
-            </span>
-            <span aria-hidden="true" className="scroll-3d-ring" />
-            <div aria-hidden="true" className="flex flex-col items-center -space-y-1.5">
-              <svg viewBox="0 0 14 8" width="14" height="8" fill="none" className="scroll-3d-chev">
-                <path d="M1 1.5l6 5 6-5" stroke="#24E5FF" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-              <svg viewBox="0 0 14 8" width="14" height="8" fill="none" className="scroll-3d-chev opacity-70">
-                <path d="M1 1.5l6 5 6-5" stroke="#24E5FF" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-              <svg viewBox="0 0 14 8" width="14" height="8" fill="none" className="scroll-3d-chev opacity-40">
-                <path d="M1 1.5l6 5 6-5" stroke="#24E5FF" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </div>
-          </div>
-        </Reveal>
       </div>
     </section>
   );

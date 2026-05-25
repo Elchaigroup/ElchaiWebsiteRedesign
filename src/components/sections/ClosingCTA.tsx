@@ -9,9 +9,10 @@
 import Link from "next/link";
 import { Reveal } from "@/components/primitives/Reveal";
 import { Parallax } from "@/components/primitives/Parallax";
-import { closingCta } from "@/lib/content";
+import { useContent } from "@/lib/use-content";
 
 export function ClosingCTA() {
+  const { closingCta } = useContent();
   return (
     <section
       id="closing-cta"

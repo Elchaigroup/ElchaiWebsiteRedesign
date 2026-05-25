@@ -9,9 +9,10 @@
 
 import Image from "next/image";
 import { InfiniteSlider } from "@/components/ui/infinite-slider";
-import { partners } from "@/lib/content";
+import { useContent } from "@/lib/use-content";
 
 export function TrustStrip() {
+  const { partners } = useContent();
   return (
     <section
       id="trust"

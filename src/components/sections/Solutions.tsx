@@ -19,7 +19,7 @@ import {
 import { Reveal } from "@/components/primitives/Reveal";
 import { SectionMarker } from "@/components/primitives/SectionMarker";
 import { AnimatedTabs } from "@/components/ui/animated-tabs";
-import { solutions } from "@/lib/content";
+import { useContent } from "@/lib/use-content";
 
 // Map each Solutions item label to a Lucide icon. Lookup tolerates the
 // embedded "\n" in some labels (used for visual line breaks in the card).
@@ -55,6 +55,7 @@ function iconFor(label: string): LucideIcon {
 }
 
 export function Solutions() {
+  const { solutions } = useContent();
   const [activeId, setActiveId] = useState<string>(solutions.tabs[0].id);
   const panel = solutions.panels.find((p) => p.id === activeId) ?? solutions.panels[0];
 
@@ -71,7 +72,6 @@ export function Solutions() {
             className="inline-flex items-center gap-2.5 font-[var(--font-mono)]
                        text-[11px] uppercase tracking-[0.22em] text-white/45"
           >
-            <span className="w-1.5 h-1.5 rounded-full bg-brand-sky shadow-[0_0_8px_#18DEFF]" />
             {solutions.eyebrow}
           </span>
         </Reveal>
@@ -88,7 +88,6 @@ export function Solutions() {
         <Reveal delay={0.20}>
           <div className="mt-14">
             <p className="text-center font-[var(--font-mono)] text-[11px] uppercase tracking-[0.22em] text-white/55 mb-4">
-              <span aria-hidden="true" className="inline-block w-1.5 h-1.5 rounded-full bg-brand-sky shadow-[0_0_8px_#18DEFF] mr-2 align-middle" />
               Choose a pillar — tap to explore
             </p>
             <AnimatedTabs

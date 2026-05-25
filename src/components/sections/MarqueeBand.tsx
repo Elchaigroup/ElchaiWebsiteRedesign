@@ -7,9 +7,10 @@
  */
 
 import { InfiniteSlider } from "@/components/ui/infinite-slider";
-import { marqueeText } from "@/lib/content";
+import { useContent } from "@/lib/use-content";
 
 export function MarqueeBand() {
+  const { marqueeText } = useContent();
   return (
     <section
       id="marquee"
@@ -21,16 +22,11 @@ export function MarqueeBand() {
           {marqueeText.map((phrase) => (
             <span
               key={phrase}
-              className="inline-flex items-center font-[var(--font-display)] font-light
-                         text-[clamp(18px,2vw,32px)] leading-none tracking-[-0.01em]
+              className="inline-flex items-center font-[var(--font-display)] font-bold
+                         text-[clamp(28px,3.2vw,52px)] leading-none tracking-[-0.02em]
                          text-white whitespace-nowrap"
             >
-              {phrase}
-              <span
-                aria-hidden="true"
-                className="ml-8 mr-0 inline-block w-1.5 h-1.5 rounded-full bg-brand-sky
-                           shadow-[0_0_10px_#18DEFF]"
-              />
+              <span className="me-8">{phrase}</span>
             </span>
           ))}
         </InfiniteSlider>

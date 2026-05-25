@@ -11,7 +11,6 @@ type CaseStudies = NonNullable<ServiceDetailContent["caseStudies"]>;
 function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
     <span className="inline-flex items-center gap-2.5 font-[var(--font-mono)] text-[11px] uppercase tracking-[0.22em] text-white/45">
-      <span className="w-1.5 h-1.5 rounded-full bg-brand-sky shadow-[0_0_8px_#18DEFF]" />
       {children}
     </span>
   );
@@ -95,7 +94,7 @@ export function CaseStudiesTabbed({ data }: { data: CaseStudies }) {
                     aria-selected={isActive}
                     onClick={() => setActiveIdx(i)}
                     className={[
-                      "shrink-0 lg:shrink text-left px-5 py-4 rounded-xl border transition-all duration-300",
+                      "shrink-0 lg:shrink text-start px-5 py-4 rounded-xl border transition-all duration-300",
                       "font-[var(--font-display)] text-[14px] leading-snug",
                       isActive
                         ? "border-brand-sky/60 bg-brand-sky/10 text-white shadow-[0_0_24px_-6px_rgba(24,222,255,0.35)]"

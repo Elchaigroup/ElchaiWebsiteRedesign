@@ -13,7 +13,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Reveal } from "@/components/primitives/Reveal";
-import { caseStudies } from "@/lib/content";
+import { useContent } from "@/lib/use-content";
 
 const MOCKS: Record<string, string> = {
   smartfit:    "/elchai/smartfit-app.webp",
@@ -45,6 +45,7 @@ function renderBold(copy: string) {
 }
 
 export function CaseStudies() {
+  const { caseStudies } = useContent();
   const [activeSlug, setActiveSlug] = useState<string>(caseStudies.items[0].slug);
   const active =
     caseStudies.items.find((it) => it.slug === activeSlug) ?? caseStudies.items[0];
@@ -61,7 +62,6 @@ export function CaseStudies() {
             className="inline-flex items-center gap-2.5 font-[var(--font-mono)]
                        text-[11px] uppercase tracking-[0.22em] text-white/45"
           >
-            <span className="w-1.5 h-1.5 rounded-full bg-brand-sky shadow-[0_0_8px_#18DEFF]" />
             {caseStudies.eyebrow}
           </span>
         </Reveal>
@@ -84,7 +84,6 @@ export function CaseStudies() {
 
         <Reveal delay={0.24}>
           <p className="mt-12 font-[var(--font-mono)] text-[11px] uppercase tracking-[0.22em] text-white/65">
-            <span aria-hidden="true" className="inline-block w-1.5 h-1.5 rounded-full bg-brand-sky shadow-[0_0_8px_#18DEFF] mr-2 align-middle" />
             Click a case below to switch the showcase
           </p>
         </Reveal>
@@ -102,8 +101,8 @@ export function CaseStudies() {
                   key={item.n}
                   type="button"
                   onClick={() => slug && setActiveSlug(slug)}
-                  className={`group relative text-left px-5 py-6 lg:px-7 lg:py-8
-                              cursor-pointer border-r last:border-r-0 border-white/[0.14]
+                  className={`group relative text-start px-5 py-6 lg:px-7 lg:py-8
+                              cursor-pointer border-e last:border-e-0 border-white/[0.14]
                               transition-all duration-200 ${
                                 isActive
                                   ? "bg-white/[0.07]"
@@ -189,7 +188,12 @@ export function CaseStudies() {
                     <div className="font-[var(--font-display)] font-bold leading-none tracking-[-0.02em] text-[clamp(24px,2.6vw,36px)] text-white">
                       <span>{s.value}</span>
                     </div>
-                    <div className="mt-3 text-[12px] leading-[1.45] text-white/55 max-w-[160px]">
+                    <div
+                      className="mt-3 font-[var(--font-display)] font-medium
+                                 text-[13.5px] lg:text-[14px] leading-[1.5]
+                                 text-white/90 max-w-[180px]
+                                 [text-shadow:0_1px_2px_rgba(0,0,0,0.55)]"
+                    >
                       {s.label}
                     </div>
                   </div>

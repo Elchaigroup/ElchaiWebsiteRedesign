@@ -31,11 +31,12 @@ import { TrustedPartnersGrid } from "@/components/sections/TrustedPartnersGrid";
 import { IndustryLeaderBanner } from "@/components/sections/IndustryLeaderBanner";
 import { WhyChooseSlider } from "@/components/sections/WhyChooseSlider";
 import type { ServiceDetailContent } from "@/lib/service-detail-types";
+import { useLocale } from "@/lib/i18n";
+import { getServiceDetailContent } from "@/lib/services";
 
 function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
     <span className="inline-flex items-center gap-2.5 font-[var(--font-mono)] text-[11px] uppercase tracking-[0.22em] text-white/45">
-      <span className="w-1.5 h-1.5 rounded-full bg-brand-sky shadow-[0_0_8px_#18DEFF]" />
       {children}
     </span>
   );
@@ -56,7 +57,10 @@ export function ServiceDetail({
   content: ServiceDetailContent;
   slug: string;
 }) {
-  const { hero, stats, capabilities, midBanner, solutions, industries, challenges, impact, whyChoose, techStack, process, caseStudies, productDemo, faq, closing, extraBanners, featureSections } = content;
+  const { locale } = useLocale();
+  const localized =
+    locale === "EN" ? content : getServiceDetailContent(slug, locale) ?? content;
+  const { hero, stats, capabilities, midBanner, solutions, industries, challenges, impact, whyChoose, techStack, process, caseStudies, productDemo, faq, closing, extraBanners, featureSections } = localized;
 
   // Render any featureSections at a named anchor — covers smart-contract
   // page bands like "Leading Partner", "Ethereum Services", "Hyperledger
@@ -140,16 +144,37 @@ export function ServiceDetail({
   const schemasJsonLd: object[] = [
     {
       "@context": "https://schema.org",
+      "@type": "WebPage",
+      "@id": `${pageUrl}#webpage`,
+      url: pageUrl,
+      name: hero.heading,
+      description: hero.subheading ?? hero.body ?? `${hero.heading} — Elchai Group.`,
+      inLanguage: "en",
+      isPartOf: { "@id": `${SITE_URL}/#website` },
+      about: { "@id": `${pageUrl}#service` },
+      primaryImageOfPage: { "@type": "ImageObject", url: `${SITE_URL}/og?slug=${slug}` },
+      speakable: {
+        "@type": "SpeakableSpecification",
+        cssSelector: ["[data-speakable-headline]", "[data-speakable-summary]"],
+      },
+      breadcrumb: { "@id": `${pageUrl}#breadcrumb` },
+    },
+    {
+      "@context": "https://schema.org",
       "@type": "Service",
       "@id": `${pageUrl}#service`,
       name: hero.heading,
       ...(hero.eyebrow ? { alternateName: hero.eyebrow } : {}),
       description: hero.subheading ?? hero.body ?? `${hero.heading} services from Elchai Group.`,
       serviceType: content.category,
+      category: content.category,
       url: pageUrl,
+      inLanguage: "en",
+      mainEntityOfPage: { "@id": `${pageUrl}#webpage` },
       provider: { "@id": ORG_ID },
       areaServed: [
         { "@type": "Country", name: "United Arab Emirates" },
+        { "@type": "Country", name: "Saudi Arabia" },
         { "@type": "Place", name: "Gulf Cooperation Council" },
         { "@type": "Place", name: "Worldwide" },
       ],
@@ -162,20 +187,79 @@ export function ServiceDetail({
     {
       "@context": "https://schema.org",
       "@type": "BreadcrumbList",
+      "@id": `${pageUrl}#breadcrumb`,
       itemListElement: [
         { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
         { "@type": "ListItem", position: 2, name: hero.heading, item: pageUrl },
       ],
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "@id": `${pageUrl}#product`,
+      name: hero.heading,
+      description: hero.subheading ?? hero.body ?? `${hero.heading} — Elchai Group.`,
+      url: pageUrl,
+      category: content.category,
+      brand: { "@id": ORG_ID },
+      image: `${SITE_URL}/og?slug=${slug}`,
+      isRelatedTo: { "@id": `${pageUrl}#service` },
+      offers: {
+        "@type": "Offer",
+        url: pageUrl,
+        priceCurrency: "USD",
+        price: "0",
+        priceSpecification: {
+          "@type": "PriceSpecification",
+          priceCurrency: "USD",
+          valueAddedTaxIncluded: false,
+          description: "Custom-quoted engagement — pricing tailored to scope, timeline and integrations.",
+        },
+        availability: "https://schema.org/InStock",
+        businessFunction: "https://schema.org/ProvideService",
+        seller: { "@id": ORG_ID },
+        areaServed: [
+          { "@type": "Country", name: "United Arab Emirates" },
+          { "@type": "Country", name: "Saudi Arabia" },
+          { "@type": "Place", name: "Worldwide" },
+        ],
+        eligibleCustomerType: "https://schema.org/Enterprise",
+      },
     },
   ];
   if (faq) {
     schemasJsonLd.push({
       "@context": "https://schema.org",
       "@type": "FAQPage",
+      "@id": `${pageUrl}#faq`,
+      inLanguage: "en",
+      isPartOf: { "@id": `${pageUrl}#service` },
+      speakable: {
+        "@type": "SpeakableSpecification",
+        cssSelector: ["[data-faq-question]", "[data-faq-answer]"],
+      },
       mainEntity: faq.items.map((it) => ({
         "@type": "Question",
         name: it.q,
         acceptedAnswer: { "@type": "Answer", text: it.a },
+      })),
+    });
+  }
+  if (process && process.steps.length > 0) {
+    schemasJsonLd.push({
+      "@context": "https://schema.org",
+      "@type": "HowTo",
+      "@id": `${pageUrl}#howto`,
+      name: process.heading ?? `How Elchai delivers ${hero.heading}`,
+      ...(process.body ? { description: process.body } : {}),
+      inLanguage: "en",
+      isPartOf: { "@id": `${pageUrl}#service` },
+      step: process.steps.map((s, i) => ({
+        "@type": "HowToStep",
+        position: i + 1,
+        name: s.title,
+        text: s.desc,
+        url: `${pageUrl}#process-${i + 1}`,
       })),
     });
   }
@@ -272,6 +356,7 @@ export function ServiceDetail({
 
           <Reveal delay={0.18}>
             <h1
+              data-speakable-headline=""
               className="mt-8 font-[var(--font-display)] font-bold leading-[1.02]
                          tracking-[-0.028em] text-[clamp(38px,6.0vw,92px)] max-w-[1080px]
                          drop-shadow-[0_2px_30px_rgba(12,16,40,0.55)]"
@@ -289,7 +374,10 @@ export function ServiceDetail({
 
           {hero.subheading && (
             <Reveal delay={0.26}>
-              <p className="mt-6 font-[var(--font-display)] font-light text-[clamp(18px,1.7vw,24px)] leading-[1.40] text-white/80 max-w-[760px]">
+              <p
+                data-speakable-summary=""
+                className="mt-6 font-[var(--font-display)] font-light text-[clamp(18px,1.7vw,24px)] leading-[1.40] text-white/80 max-w-[760px]"
+              >
                 {hero.subheading}
               </p>
             </Reveal>
@@ -368,7 +456,7 @@ export function ServiceDetail({
           {stats && stats.length > 0 && (
             <Reveal delay={0.48}>
               <div className={`mt-20 grid grid-cols-2 ${stats.length === 5 ? "sm:grid-cols-5" : "sm:grid-cols-4"} gap-3 lg:gap-4 max-w-[1100px]`}>
-                {stats.map((s, i) => (
+                {stats.map((s) => (
                   <div
                     key={s.label}
                     className="group relative rounded-2xl p-[1px] overflow-hidden hover:-translate-y-1 transition-transform duration-500"
@@ -418,7 +506,11 @@ export function ServiceDetail({
                         {s.value}
                       </div>
                       <div className="relative h-px w-8 bg-gradient-to-r from-brand-sky to-brand-violet rounded-full" />
-                      <div className="relative text-[12px] leading-[1.45] text-white/72">
+                      <div
+                        className="relative font-[var(--font-display)] font-medium
+                                   text-[14px] leading-[1.5] text-white/90
+                                   [text-shadow:0_1px_2px_rgba(0,0,0,0.55)]"
+                      >
                         {s.label}
                       </div>
                     </div>
@@ -603,8 +695,8 @@ export function ServiceDetail({
                           </h3>
                           <p
                             className={[
-                              "relative leading-[1.65] text-white/68",
-                              isPhoto ? "text-[13.5px]" : "text-[13px]",
+                              "relative leading-[1.65] text-white/85",
+                              isPhoto ? "text-[14.5px]" : "text-[14px]",
                             ].join(" ")}
                           >
                             {it.desc}
@@ -696,7 +788,7 @@ export function ServiceDetail({
                         <h3 className="relative font-[var(--font-display)] font-bold tracking-[-0.012em] text-[clamp(16px,1.3vw,19px)] text-white">
                           {it.title}
                         </h3>
-                        <p className="relative text-[13px] leading-[1.6] text-white/70">{it.desc}</p>
+                        <p className="relative text-[14.5px] leading-[1.65] text-white/85">{it.desc}</p>
                       </div>
                     </div>
                   </Reveal>
@@ -807,7 +899,7 @@ export function ServiceDetail({
                         <h3 className="font-[var(--font-display)] font-bold tracking-[-0.012em] text-[clamp(16px,1.3vw,19px)] text-white">
                           {it.title}
                         </h3>
-                        {it.desc && <p className="text-[13px] leading-[1.6] text-white/72">{it.desc}</p>}
+                        {it.desc && <p className="text-[14.5px] leading-[1.65] text-white/85">{it.desc}</p>}
                       </div>
                     </div>
                   </div>
@@ -866,7 +958,7 @@ export function ServiceDetail({
                       <h3 className="font-[var(--font-display)] font-bold tracking-[-0.012em] text-[clamp(17px,1.4vw,20px)] text-white">
                         {it.title}
                       </h3>
-                      <p className="text-[13.5px] leading-[1.6] text-white/70">{it.desc}</p>
+                      <p className="text-[14.5px] leading-[1.65] text-white/85">{it.desc}</p>
                     </div>
                   </div>
                 </Reveal>
@@ -928,7 +1020,7 @@ export function ServiceDetail({
                           <h3 className="font-[var(--font-display)] font-bold tracking-[-0.012em] text-[16px] text-white">
                             {it.title}
                           </h3>
-                          <p className="mt-2 text-[13.5px] leading-[1.6] text-white/70">{it.desc}</p>
+                          <p className="mt-2 text-[14.5px] leading-[1.65] text-white/85">{it.desc}</p>
                         </div>
                       </li>
                     </Reveal>
@@ -990,7 +1082,7 @@ export function ServiceDetail({
                         <h3 className="font-[var(--font-display)] font-bold tracking-[-0.012em] text-[clamp(17px,1.5vw,21px)] text-white leading-[1.18]">
                           {it.title}
                         </h3>
-                        <p className="text-[13.5px] leading-[1.6] text-white/70">{it.desc}</p>
+                        <p className="text-[14.5px] leading-[1.65] text-white/85">{it.desc}</p>
 
                         {/* Hairline gradient at the top edge */}
                         <span
@@ -1076,7 +1168,7 @@ export function ServiceDetail({
                         <h3 className="relative font-[var(--font-display)] font-bold tracking-[-0.012em] text-[clamp(16px,1.3vw,19px)] text-white">
                           {it.title}
                         </h3>
-                        <p className="relative text-[13.5px] leading-[1.6] text-white/70">{it.desc}</p>
+                        <p className="relative text-[14.5px] leading-[1.65] text-white/85">{it.desc}</p>
                       </div>
                     </Reveal>
                   ))}

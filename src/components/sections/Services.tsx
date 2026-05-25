@@ -10,9 +10,10 @@ import Link from "next/link";
 import { Reveal } from "@/components/primitives/Reveal";
 import { SectionMarker } from "@/components/primitives/SectionMarker";
 import { SpotlightCard } from "@/components/ui/spotlight-card";
-import { services } from "@/lib/content";
+import { useContent } from "@/lib/use-content";
 
 export function Services() {
+  const { services } = useContent();
   return (
     <section
       id="services"
@@ -56,7 +57,6 @@ export function Services() {
             className="inline-flex items-center gap-2.5 font-[var(--font-mono)]
                        text-[11px] uppercase tracking-[0.22em] text-white/45"
           >
-            <span className="w-1.5 h-1.5 rounded-full bg-brand-sky shadow-[0_0_8px_#18DEFF]" />
             {services.eyebrow}
           </span>
         </Reveal>
@@ -100,10 +100,10 @@ export function Services() {
                   <h3 className="mt-5 font-[var(--font-display)] font-bold leading-[1.18] tracking-[-0.01em] text-[22px] text-white">
                     {item.title}
                   </h3>
-                  <p className="mt-3 text-[13.5px] leading-[1.6] text-white/60">
+                  <p className="mt-3 text-[14.5px] leading-[1.6] text-white/85">
                     {item.copy}
                   </p>
-                  <div className="mt-auto pt-6 inline-flex items-center gap-2 text-[12px] tracking-[0.05em] text-white/55 group-hover:text-brand-sky transition-colors">
+                  <div className="mt-auto pt-6 inline-flex items-center gap-2 text-[13px] tracking-[0.05em] text-white/75 group-hover:text-brand-sky transition-colors">
                     <span
                       aria-hidden="true"
                       className="inline-block h-px bg-white/30 group-hover:bg-brand-sky w-6 group-hover:w-10
@@ -127,7 +127,6 @@ export function Services() {
                 className="inline-flex items-center gap-2.5 font-[var(--font-mono)]
                            text-[11px] uppercase tracking-[0.22em] text-white/45"
               >
-                <span className="w-1.5 h-1.5 rounded-full bg-brand-sky shadow-[0_0_8px_#18DEFF]" />
                 {services.bottomCta.kicker}
               </span>
               <h3

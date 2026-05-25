@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { nav as navContent } from "@/lib/content";
+import { useContent } from "@/lib/use-content";
 import { useT } from "@/lib/i18n";
 
 /**
@@ -24,7 +25,7 @@ type Section = {
 };
 
 function useSections(): Section[] {
-  /* eslint-disable react-hooks/rules-of-hooks */
+  const { nav: navContent } = useContent();
   const labels = {
     blockchain: useT("nav.blockchain"),
     crypto: useT("nav.crypto"),
@@ -39,7 +40,6 @@ function useSections(): Section[] {
     demos: useT("nav.resources.demos"),
     cases: useT("nav.resources.cases"),
   };
-  /* eslint-enable react-hooks/rules-of-hooks */
 
   type RawGroup = {
     readonly label: string;
@@ -83,9 +83,13 @@ function useSections(): Section[] {
 export function MobileNav() {
   const [open, setOpen] = useState(false);
   const [expanded, setExpanded] = useState<string | null>(null);
+  const [mounted, setMounted] = useState(false);
   const sections = useSections();
   const ctaLabel = useT("nav.book");
   const pathname = usePathname();
+
+  // Portal target — only exists after client mount.
+  useEffect(() => { setMounted(true); }, []);
 
   // Close when route changes
   useEffect(() => {
@@ -122,7 +126,7 @@ export function MobileNav() {
         aria-expanded={open}
         aria-controls="mobile-nav-drawer"
         onClick={() => setOpen((v) => !v)}
-        className="lg:hidden inline-flex items-center justify-center w-10 h-10 rounded-full
+        className="xl:hidden inline-flex items-center justify-center w-10 h-10 rounded-full
                    bg-white/[0.04] ring-1 ring-white/[0.10] text-white/85
                    hover:bg-white/[0.08] hover:text-white transition-colors"
       >
@@ -144,12 +148,15 @@ export function MobileNav() {
         </svg>
       </button>
 
-      {/* Drawer */}
+      {/* Drawer — portaled to document.body so the parent <nav>'s
+          transform/translate doesn't create a containing block that
+          collapses our `fixed inset-0` to the nav pill's height. */}
+      {mounted && createPortal(
       <div
         id="mobile-nav-drawer"
         aria-hidden={!open}
         className={[
-          "lg:hidden fixed inset-0 z-[100] transition-opacity duration-[280ms]",
+          "xl:hidden fixed inset-0 z-[100] transition-opacity duration-[280ms]",
           open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none",
         ].join(" ")}
       >
@@ -159,13 +166,15 @@ export function MobileNav() {
           onClick={() => setOpen(false)}
         />
 
-        {/* Panel */}
+        {/* Panel — `data-lenis-prevent` lets the native overflow scroll
+            here work without Lenis intercepting wheel events. */}
         <div
+          data-lenis-prevent
           className={[
             "absolute top-0 right-0 h-full w-[min(420px,92vw)]",
             "bg-[rgba(10,12,18,0.96)] ring-1 ring-white/[0.08]",
             "shadow-[-40px_0_80px_-20px_rgba(0,0,0,0.7)]",
-            "flex flex-col",
+            "flex flex-col overscroll-contain",
             "transition-transform duration-[320ms] ease-[cubic-bezier(0.22,1,0.36,1)]",
             open ? "translate-x-0" : "translate-x-full",
           ].join(" ")}
@@ -198,8 +207,10 @@ export function MobileNav() {
             </button>
           </div>
 
-          {/* Sections (scrollable) */}
-          <nav className="flex-1 overflow-y-auto px-3 py-4">
+          {/* Sections (scrollable). `min-h-0` is the canonical fix for
+              overflow inside a flex column — without it `flex-1` allows
+              this child to grow past its parent, defeating the scroll. */}
+          <nav data-lenis-prevent className="flex-1 min-h-0 overflow-y-auto overscroll-contain px-3 py-4">
             <ul className="list-none p-0 m-0">
               {sections.map((section) => {
                 const isAccordion = !section.href;
@@ -270,7 +281,7 @@ export function MobileNav() {
                             </div>
                             <ul className="list-none p-0 m-0">
                               {g.items.map((it) => (
-                                <li key={it.href}>
+                                <li key={it.label}>
                                   <Link
                                     href={it.href}
                                     className="block px-3 py-2 rounded-lg text-[13px] text-white/75
@@ -286,7 +297,7 @@ export function MobileNav() {
                         {section.links && (
                           <ul className="list-none p-0 m-0 mt-1">
                             {section.links.map((it) => (
-                              <li key={it.href}>
+                              <li key={it.label}>
                                 <Link
                                   href={it.href}
                                   className="block px-3 py-2.5 rounded-lg text-[13.5px] text-white/80
@@ -333,7 +344,8 @@ export function MobileNav() {
             </Link>
           </div>
         </div>
-      </div>
+      </div>,
+      document.body)}
     </>
   );
 }

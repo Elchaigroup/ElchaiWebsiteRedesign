@@ -86,7 +86,7 @@ export function LanguageSwitcher() {
                   aria-selected={active}
                   onClick={() => select(l.code)}
                   className={cn(
-                    "w-full text-left px-4 py-2.5 flex items-center justify-between gap-3",
+                    "w-full text-start px-4 py-2.5 flex items-center justify-between gap-3",
                     "font-[var(--font-brand)] text-[13px] transition-colors cursor-pointer",
                     active
                       ? "text-brand-sky"
