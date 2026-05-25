@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { forwardLeadToWp } from "@/lib/wp/lead";
 import { sendLeadEmail } from "@/lib/email/sendLead";
+import { rateLimit, clientIp } from "@/lib/rateLimit";
+import { verifyTurnstile } from "@/lib/turnstile";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -18,6 +20,8 @@ const LeadSchema = z.object({
   website: z.string().max(0).optional(),
   // Time-to-submit guard (ms since form mount). Bots usually submit < 1500ms.
   ttsMs: z.number().int().nonnegative().optional(),
+  // Cloudflare Turnstile token (optional; enforced when TURNSTILE_SECRET_KEY is set).
+  turnstileToken: z.string().max(4096).optional(),
 });
 
 type Lead = z.infer<typeof LeadSchema>;
@@ -43,6 +47,20 @@ async function forward(lead: Lead) {
 }
 
 export async function POST(req: Request) {
+  const ip = clientIp(req);
+  const limit = rateLimit(`lead:${ip}`, 5, 10 * 60 * 1000);
+  if (!limit.ok) {
+    return NextResponse.json(
+      { ok: false, error: "rate_limited" },
+      {
+        status: 429,
+        headers: {
+          "Retry-After": String(Math.ceil((limit.resetAt - Date.now()) / 1000)),
+        },
+      }
+    );
+  }
+
   let body: unknown;
   try {
     body = await req.json();
@@ -52,8 +70,9 @@ export async function POST(req: Request) {
 
   const parsed = LeadSchema.safeParse(body);
   if (!parsed.success) {
+    // Don't echo Zod issues — that hands bot authors the field schema.
     return NextResponse.json(
-      { ok: false, error: "invalid_payload", issues: parsed.error.flatten() },
+      { ok: false, error: "invalid_payload" },
       { status: 400 }
     );
   }
@@ -65,6 +84,14 @@ export async function POST(req: Request) {
   }
   if (typeof lead.ttsMs === "number" && lead.ttsMs < 1200) {
     return NextResponse.json({ ok: true });
+  }
+
+  const turnstileOk = await verifyTurnstile(lead.turnstileToken, ip);
+  if (!turnstileOk) {
+    return NextResponse.json(
+      { ok: false, error: "challenge_failed" },
+      { status: 403 }
+    );
   }
 
   if (lead.source === "consultation" && (!lead.name || !lead.email)) {

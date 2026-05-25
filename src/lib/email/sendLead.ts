@@ -106,10 +106,12 @@ export async function sendLeadEmail(lead: LeadEmailPayload): Promise<void> {
 
   try {
     const resend = new Resend(apiKey);
+    // Intentionally no replyTo. The lead address is attacker-controlled and
+    // putting it in an RFC-5322 header is a phishing surface — staff should
+    // reply via CRM, not via the operator inbox.
     const { error } = await resend.emails.send({
       from,
       to: [to],
-      replyTo: lead.email,
       subject,
       html: renderHtml(lead),
       text: renderText(lead),

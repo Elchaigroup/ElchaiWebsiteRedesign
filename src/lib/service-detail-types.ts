@@ -256,6 +256,19 @@ export type ServiceDetailContent = {
     items: Array<{ q: string; a: string }>;
   };
 
+  /** Snippet-ready buyer-decision Q&A block rendered directly after the
+   *  hero. Optimised for AI answer engines (ChatGPT, Perplexity, Google
+   *  AI Overviews) and featured snippets: each item has a short answer
+   *  (40–60 words, extractable verbatim) and an optional detailed
+   *  expansion. When omitted, ServiceDetail auto-derives 4–6 items from
+   *  existing hero / capabilities / process / whyChoose / areaServed
+   *  content, so every service page gets AEO coverage by default. */
+  quickAnswers?: {
+    eyebrow?: string;
+    heading?: string;
+    items: Array<{ q: string; a: string; detail?: string }>;
+  };
+
   closing?: {
     heading: string;
     body?: string;

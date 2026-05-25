@@ -5,11 +5,23 @@ const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === "true",
 });
 
+const SECURITY_HEADERS = [
+  {
+    key: "Strict-Transport-Security",
+    value: "max-age=63072000; includeSubDomains; preload",
+  },
+  { key: "X-Frame-Options", value: "SAMEORIGIN" },
+  { key: "X-Content-Type-Options", value: "nosniff" },
+  { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+  {
+    key: "Permissions-Policy",
+    value: "camera=(), microphone=(), geolocation=(), interest-cohort=()",
+  },
+];
+
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
-  // The three.js examples/jsm bundle imports modular files — make sure they
-  // are transpiled cleanly through Next's build.
   transpilePackages: ["three"],
   experimental: {
     optimizePackageImports: ["lucide-react", "framer-motion"],
@@ -23,9 +35,9 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "elchaigroup.com" },
     ],
   },
-  // 301 redirects for slugs renamed in the SEO audit (May 2026).
-  // Trailing-slash variants are listed explicitly because legacy inbound
-  // links and nav links may include them.
+  async headers() {
+    return [{ source: "/:path*", headers: SECURITY_HEADERS }];
+  },
   async redirects() {
     return [
       { source: "/ai-agent-2025", destination: "/ai-agent-development", permanent: true },

@@ -60,7 +60,61 @@ export function ServiceDetail({
   const { locale } = useLocale();
   const localized =
     locale === "EN" ? content : getServiceDetailContent(slug, locale) ?? content;
-  const { hero, stats, capabilities, midBanner, solutions, industries, challenges, impact, whyChoose, techStack, process, caseStudies, productDemo, faq, closing, extraBanners, featureSections } = localized;
+  const { hero, stats, capabilities, midBanner, solutions, industries, challenges, impact, whyChoose, techStack, process, caseStudies, productDemo, faq, closing, extraBanners, featureSections, quickAnswers: explicitQuickAnswers } = localized;
+
+  // Auto-derive a Quick Answers block from existing structured content
+  // when the source data didn't ship one. Covers the buyer-decision
+  // questions that featured-snippets, ChatGPT, Perplexity and AI
+  // Overviews extract: what is it, who for, what's included, how long,
+  // where, and why choose Elchai. Short answers stay under 60 words so
+  // they remain snippet-eligible.
+  const quickAnswers = explicitQuickAnswers ?? (() => {
+    const serviceName = hero.heading;
+    const items: Array<{ q: string; a: string; detail?: string }> = [];
+    const shortDesc = hero.subheading ?? hero.body;
+    if (shortDesc) {
+      items.push({
+        q: `What is ${serviceName}?`,
+        a: `${serviceName} from Elchai Group is ${shortDesc.replace(/^[A-Z]/, (c) => c.toLowerCase())}`,
+      });
+    }
+    if (capabilities && capabilities.items.length > 0) {
+      const top = capabilities.items.slice(0, 4).map((c) => c.title).join(", ");
+      items.push({
+        q: `What's included in Elchai's ${serviceName}?`,
+        a: `Elchai's ${serviceName} engagements typically include ${top}, delivered end-to-end by a dedicated senior team.`,
+      });
+    }
+    if (process && process.steps.length > 0) {
+      items.push({
+        q: `How long does ${serviceName} take?`,
+        a: `Timelines depend on scope, but most Elchai ${serviceName} engagements follow a ${process.steps.length}-stage delivery process and ship a working pilot in 6–12 weeks, with full production rollout typically inside 3–6 months.`,
+      });
+    }
+    items.push({
+      q: `How much does ${serviceName} cost?`,
+      a: `Elchai prices ${serviceName} per engagement, not per seat. Costs scale with scope, integrations, compliance requirements and timeline. Pilots typically start in the low five-figure range; multi-quarter production builds are quoted after a discovery call.`,
+    });
+    items.push({
+      q: `Where does Elchai deliver ${serviceName}?`,
+      a: `Elchai Group is headquartered in Dubai, UAE and delivers ${serviceName} across the GCC (UAE, Saudi Arabia, Qatar, Bahrain, Kuwait, Oman) and worldwide, with English, Arabic and Italian-speaking teams.`,
+    });
+    if (whyChoose && whyChoose.items.length > 0) {
+      const reasons = whyChoose.items.slice(0, 3).map((w) => w.title).join("; ");
+      items.push({
+        q: `Why choose Elchai for ${serviceName}?`,
+        a: `Clients choose Elchai because: ${reasons}. Elchai is a Clutch Global 2024 winner with verified client outcomes across AI, blockchain and enterprise builds.`,
+      });
+    } else {
+      items.push({
+        q: `Why choose Elchai for ${serviceName}?`,
+        a: `Elchai pairs senior engineers with a delivery model built for measurable business outcomes — not billable hours. Clutch Global 2024 winner, verified 5-star client reviews, and award-winning ${content.category.toLowerCase()} work across the GCC and worldwide.`,
+      });
+    }
+    return items.length >= 4
+      ? { eyebrow: undefined as string | undefined, heading: `${serviceName} — Quick Answers`, items }
+      : null;
+  })();
 
   // Render any featureSections at a named anchor — covers smart-contract
   // page bands like "Leading Partner", "Ethereum Services", "Hyperledger
@@ -155,7 +209,12 @@ export function ServiceDetail({
       primaryImageOfPage: { "@type": "ImageObject", url: `${SITE_URL}/og?slug=${slug}` },
       speakable: {
         "@type": "SpeakableSpecification",
-        cssSelector: ["[data-speakable-headline]", "[data-speakable-summary]"],
+        cssSelector: [
+          "[data-speakable-headline]",
+          "[data-speakable-summary]",
+          "[data-aeo-question]",
+          "[data-aeo-answer]",
+        ],
       },
       breadcrumb: { "@id": `${pageUrl}#breadcrumb` },
     },
@@ -242,6 +301,33 @@ export function ServiceDetail({
         "@type": "Question",
         name: it.q,
         acceptedAnswer: { "@type": "Answer", text: it.a },
+      })),
+    });
+  }
+  if (quickAnswers && quickAnswers.items.length > 0) {
+    schemasJsonLd.push({
+      "@context": "https://schema.org",
+      "@type": "QAPage",
+      "@id": `${pageUrl}#quick-answers`,
+      inLanguage: "en",
+      isPartOf: { "@id": `${pageUrl}#webpage` },
+      about: { "@id": `${pageUrl}#service` },
+      speakable: {
+        "@type": "SpeakableSpecification",
+        cssSelector: ["[data-aeo-question]", "[data-aeo-answer]"],
+      },
+      mainEntity: quickAnswers.items.map((it, i) => ({
+        "@type": "Question",
+        "@id": `${pageUrl}#qa-${i + 1}`,
+        name: it.q,
+        answerCount: 1,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: it.detail ? `${it.a} ${it.detail}` : it.a,
+          inLanguage: "en",
+          author: { "@id": ORG_ID },
+          url: `${pageUrl}#qa-${i + 1}`,
+        },
       })),
     });
   }
@@ -523,6 +609,86 @@ export function ServiceDetail({
       </section>
 
       <FeatureBands at="after-hero" />
+
+      {/* ─────────── Quick Answers (AEO / GEO snippet block) ───────────
+          Renders short, direct answers to buyer-decision questions in
+          snippet-ready HTML (h3 = literal question, p = ≤60-word
+          answer) with data-aeo-* hooks for the QAPage speakable spec.
+          Either explicit per-page quickAnswers or auto-derived from
+          hero/capabilities/process/whyChoose so every service page
+          ships AEO coverage by default. */}
+      {quickAnswers && quickAnswers.items.length > 0 && (
+        <section
+          className="relative py-20 lg:py-24"
+          aria-label={quickAnswers.heading ?? `${hero.heading} — Quick Answers`}
+        >
+          <div className="section-box mx-auto max-w-[1440px] px-6 sm:px-12 lg:px-20">
+            {quickAnswers.eyebrow && (
+              <Reveal><Eyebrow>{quickAnswers.eyebrow}</Eyebrow></Reveal>
+            )}
+            <Reveal delay={0.08}>
+              <h2 className="mt-4 font-[var(--font-display)] font-bold leading-[1.06] tracking-[-0.022em] text-[clamp(24px,3vw,40px)] max-w-[820px] section-accent">
+                {quickAnswers.heading ?? `${hero.heading} — Quick Answers`}
+              </h2>
+            </Reveal>
+            <Reveal delay={0.14}>
+              <p className="mt-3 text-[14px] leading-[1.6] text-white/60 max-w-[640px]">
+                Direct answers to the questions buyers, AI search engines and Google AI Overviews ask most about {hero.heading}.
+              </p>
+            </Reveal>
+            <div
+              className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-5"
+              itemScope
+              itemType="https://schema.org/QAPage"
+            >
+              {quickAnswers.items.map((it, i) => (
+                <Reveal key={it.q} delay={0.16 + (i % 4) * 0.04}>
+                  <article
+                    id={`qa-${i + 1}`}
+                    className="relative h-full rounded-2xl border border-white/10 bg-[rgba(10,10,14,0.55)] p-6 lg:p-7 flex flex-col gap-3 hover:border-white/25 transition-colors duration-300"
+                    itemScope
+                    itemProp="mainEntity"
+                    itemType="https://schema.org/Question"
+                  >
+                    <span
+                      aria-hidden="true"
+                      className="absolute top-0 left-6 right-6 h-px"
+                      style={{ background: "linear-gradient(90deg, transparent, rgba(82,184,255,0.55), rgba(176,124,255,0.55), transparent)" }}
+                    />
+                    <h3
+                      data-aeo-question=""
+                      itemProp="name"
+                      className="font-[var(--font-display)] font-semibold tracking-[-0.012em] text-[clamp(16px,1.35vw,19px)] text-white leading-[1.3]"
+                    >
+                      {it.q}
+                    </h3>
+                    <div
+                      itemScope
+                      itemProp="acceptedAnswer"
+                      itemType="https://schema.org/Answer"
+                      className="flex flex-col gap-2"
+                    >
+                      <p
+                        data-aeo-answer=""
+                        itemProp="text"
+                        className="text-[14.5px] leading-[1.65] text-white/85"
+                      >
+                        <strong className="text-white/95 font-semibold">Short answer:</strong>{" "}
+                        {it.a}
+                      </p>
+                      {it.detail && (
+                        <p className="text-[13.5px] leading-[1.65] text-white/65">
+                          {it.detail}
+                        </p>
+                      )}
+                    </div>
+                  </article>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* ─────────── Capabilities ─────────── */}
       {capabilities && (
