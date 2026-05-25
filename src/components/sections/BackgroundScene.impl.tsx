@@ -4390,18 +4390,9 @@ export function BackgroundScene({
       return;
     }
 
-    // Low-power / mobile short-circuit. Three.js is ~700kB uncompressed and
-    // burns battery on weak GPUs; static gradient is the better UX.
-    const nav = navigator as Navigator & { deviceMemory?: number };
-    if (
-      window.innerWidth < 768 ||
-      (typeof nav.deviceMemory === "number" && nav.deviceMemory <= 4) ||
-      (typeof nav.hardwareConcurrency === "number" && nav.hardwareConcurrency <= 4)
-    ) {
-      applyStaticFallback();
-      return;
-    }
-
+    // Mobile/low-power short-circuit removed — owner prefers visual consistency
+    // across all devices. WebGL still falls back via mountScene's null return
+    // for devices without WebGL support.
     applyStaticFallback();
 
     let cleanup: (() => void) | null = null;
