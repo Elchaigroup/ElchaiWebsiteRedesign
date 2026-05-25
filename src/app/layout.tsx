@@ -4,7 +4,6 @@ import "./globals.css";
 import { LenisProvider } from "@/lib/lenis-provider";
 import { LangProvider } from "@/lib/i18n";
 import { FontLoader } from "@/components/primitives/FontLoader";
-import { JsonLd } from "@/lib/JsonLd";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -308,6 +307,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(SITE_JSONLD) }}
         />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(LOCAL_BUSINESS_JSONLD) }}
+        />
       </head>
       {/* suppressHydrationWarning silences the mismatch noise added by
           browser extensions (Grammarly, LastPass, etc.) that inject
@@ -317,7 +320,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         className="relative bg-ink text-white overflow-x-hidden antialiased"
         suppressHydrationWarning
       >
-        <JsonLd data={LOCAL_BUSINESS_JSONLD} />
         <FontLoader />
         <LangProvider>
           <LenisProvider>{children}</LenisProvider>
