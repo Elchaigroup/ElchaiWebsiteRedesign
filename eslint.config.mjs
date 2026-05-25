@@ -10,7 +10,6 @@ export default [
     ignores: [
       ".next/**",
       "node_modules/**",
-      "src/lib/_legacy/**",
       "mockups/**",
       "playwright-report/**",
       "test-results/**",
