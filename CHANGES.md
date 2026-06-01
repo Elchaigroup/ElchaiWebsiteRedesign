@@ -102,6 +102,26 @@ hero is locked.
 
 ---
 
+## New pages
+
+- **2026-06-01 — Blockchain Enterprise Solutions page built.** The nav item
+  `nav.blockchain.columns[0].items[2]` ("Enterprise Solutions") was a dead
+  stub pointing at `#consultation` (consultation modal). Built a real
+  service-detail page at `/blockchain-enterprise-solutions/` and re-pointed the
+  nav link to it. New `enterpriseSolutions` entry in
+  `src/lib/services/blockchain.ts`; body copy synthesized faithfully from the
+  scraped source `blockchain-enterprise-solutions-revolutionizing-business-transparency-and-security`
+  (enterprise transparency/security, Web3 integration, ESG/carbon credits).
+  AR/IT registries fall back to EN automatically (no mirror entry yet).
+- **2026-06-01 — Infrastructure nav stub resolved.** The sibling
+  `nav.blockchain.columns[0].items[7]` ("Infrastructure") was also a
+  `#consultation` stub. No source page exists for it, so it now points to
+  `/blockchain-development/` (closest real page — covers scaling, cross-chain
+  and node infrastructure) rather than the consultation modal.
+- **2026-06-01 — Footer copyright year 2026 → 2022** across all locales
+  (`content.ts`, `content.ar.ts`, `content.it.ts`, `locales/en.json`,
+  `locales/ar.json`) per owner request.
+
 ## Unchanged but worth noting
 
 - The industries list appears **twice** in the source markdown — that is the

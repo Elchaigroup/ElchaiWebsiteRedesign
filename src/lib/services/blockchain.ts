@@ -2179,3 +2179,146 @@ export const layer2: ServiceDetailContent = {
     cta: { label: "Schedule Your Consultation", href: "#consultation" },
   },
 };
+
+export const enterpriseSolutions: ServiceDetailContent = {
+  slug: "blockchain-enterprise-solutions",
+  category: "Blockchain · Enterprise Solutions",
+  hideTrustedPartners: true,
+  hero: {
+    eyebrow: "Enterprise Solutions",
+    heading: "Blockchain Enterprise Solutions",
+    subheading:
+      "Revolutionizing business transparency and security with distributed ledger systems built for the enterprise.",
+    body:
+      "Blockchain has evolved beyond cryptocurrency to become a cornerstone of modern digital transformation. We help organizations implement distributed ledger systems that enhance transparency, reduce costs, and eliminate intermediaries across complex business processes — with immutable record-keeping, automated compliance monitoring, and streamlined verification at every step.",
+    primaryCta: { label: "Request A Consultation", href: "#consultation" },
+    ghostCta: { label: "Explore Capabilities", href: "#capabilities" },
+  },
+  stats: [
+    { value: "150+", label: "Enterprise Projects Since 2022",   icon: "/elchai/blockchain-dev/blockchain-result-icn_1.svg" },
+    { value: "30+",  label: "Industry Use Cases",               icon: "/elchai/blockchain-dev/blockchain-result-icn_2.svg" },
+    { value: "100+", label: "Certified Blockchain Engineers",   icon: "/elchai/blockchain-dev/blockchain-result-icn_3.svg" },
+    { value: "99.9%",label: "Production Uptime Standard",       icon: "/elchai/blockchain-dev/blockchain-result-icn_4.svg" },
+    { value: "24/7", label: "Monitoring & Support",             icon: "/elchai/blockchain-dev/blockchain-result-icn_5.svg" },
+  ],
+  capabilities: {
+    eyebrow: "Capabilities",
+    heading: "Enterprise Blockchain Capabilities",
+    body:
+      "We design hybrid infrastructures that maintain operational continuity while introducing revolutionary capabilities for data sharing and process automation — integrating blockchain with the enterprise systems you already run.",
+    items: [
+      { title: "Immutable Record-Keeping",        desc: "Tamper-proof distributed ledgers that give every stakeholder a single, verifiable source of truth for transactions, documents, and audit history.",                            icon: "/elchai/blockchain-dev/blockchain-services-icn_1.svg" },
+      { title: "Automated Compliance Monitoring", desc: "On-chain compliance rails that enforce policy automatically, generate regulatory reports, and provide evidentiary integrity without manual reconciliation.",                       icon: "/elchai/blockchain-dev/blockchain-services-icn_2.svg" },
+      { title: "Supply Chain Traceability",       desc: "End-to-end product tracking and authenticity verification, with IoT sensor integration for real-time provenance across global distribution networks.",                            icon: "/elchai/blockchain-dev/blockchain-services-icn_3.svg" },
+      { title: "Cross-Border Settlement",         desc: "Blockchain payment rails for trade finance, cross-border payments, and regulatory reporting with unprecedented efficiency and security.",                                          icon: "/elchai/blockchain-dev/blockchain-services-icn_4.svg" },
+      { title: "Smart Contract Automation",       desc: "Self-executing service agreements, royalty distributions, and performance-based compensation that run without trusted third parties.",                                            icon: "/elchai/blockchain-dev/blockchain-services-icn_5.svg" },
+      { title: "Blockchain Identity Management",  desc: "Decentralized identity systems that eliminate password vulnerabilities while giving users complete control over personal data sharing.",                                            icon: "/elchai/blockchain-dev/blockchain-services-icn_6.svg" },
+      { title: "Web3 Integration Layers",         desc: "Customer-owned data ecosystems, token-based loyalty programs, and community-driven governance models bolted onto existing enterprise systems.",                                    icon: "/elchai/blockchain-dev/blockchain-services-icn_7.svg" },
+      { title: "ESG & Carbon Credit Platforms",   desc: "Blockchain-verified carbon offsets, renewable energy certificates, and emissions tracking that prevent double-counting and automate trusted environmental marketplaces.",          icon: "/elchai/blockchain-dev/blockchain-services-icn_8.svg" },
+    ],
+  },
+  midBanner: {
+    heading: "Bring Transparency, Security, And Automation To Your Core Business Processes",
+    cta: { label: "Get a Free Consultation", href: "#consultation" },
+  },
+  industries: {
+    eyebrow: "Industries",
+    heading: "Where Enterprise Blockchain Delivers",
+    body:
+      "Organizations across industries are implementing distributed ledger systems to enhance transparency, reduce costs, and eliminate intermediaries in complex business processes.",
+    items: [
+      { title: "Banking & Finance", desc: "Cross-border payments, trade finance, and regulatory reporting with unprecedented efficiency and security across institutional settlement networks.",                              image: "/elchai/blockchain-dev/blockchain_for_Banking.webp" },
+      { title: "Supply Chain",      desc: "End-to-end product tracking, authenticity verification, customs documentation, and cold-chain monitoring across multi-party global networks.",                                       image: "/elchai/blockchain-dev/blockchain_for_Supply_Chain.webp" },
+      { title: "Healthcare",        desc: "Patient data sovereignty, medical record interoperability, drug traceability, and clinical-trial transparency on distributed ledgers.",                                            image: "/elchai/blockchain-dev/blockchain_for_real_Healthcare.webp" },
+      { title: "Real Estate",       desc: "Property tokenization, title registries, and compliant secondary markets that unlock liquidity and provenance for real-world assets.",                                             image: "/elchai/blockchain-dev/blockchain_for_real_estate.webp" },
+      { title: "Sustainability",    desc: "Carbon offset programs, renewable energy certificates, and transparent emissions tracking with IoT-verified, double-count-proof carbon credit markets.",                            image: "/elchai/blockchain-dev/blockchain_for_Gaming.webp" },
+      { title: "Legal & Compliance",desc: "Tamper-proof audit systems, verifiable document workflows, and on-chain compliance rails tailored to complex regulatory environments.",                                            image: "/elchai/blockchain-dev/blockchain_for_Compliance.webp" },
+    ],
+  },
+  featureSections: [
+    {
+      position: "after-industries",
+      layout: "no-image",
+      eyebrow: "Not sure where to start?",
+      heading: "Book a 30-minute enterprise blockchain consultation",
+      body: "With our engineering team. We'll map where distributed ledger technology actually pays off in your operations, review integration and compliance requirements, and provide transparent cost modeling — no sales pitch, just clarity.",
+      cta: { label: "Schedule Your Consultation", href: "#consultation" },
+    },
+  ],
+  whyChoose: {
+    eyebrow: "Why Elchai",
+    heading: "Why Enterprises Choose Elchai",
+    body:
+      "We combine technical execution with strategic foresight, helping organizations integrate blockchain without disrupting the systems that already run their business.",
+    image: "/elchai/blockchain-dev/block_Enterprises_image.webp",
+    items: [
+      { title: "Hybrid Integration Expertise",      desc: "We build hybrid infrastructures that introduce blockchain capabilities while preserving operational continuity — enhancing, not replacing, current systems.", icon: "/elchai/blockchain-dev/Enterprises-icon01.webp" },
+      { title: "Multi-Chain Deployment",            desc: "Protocol-agnostic delivery across Ethereum, Hyperledger, Polygon, Solana, and leading Layer 2 networks, aligned to your business requirements.",            icon: "/elchai/blockchain-dev/Enterprises-icon02.webp" },
+      { title: "Compliance-First Engineering",      desc: "Automated compliance monitoring, audit-ready systems, and evidentiary integrity built for regulated industries from day one.",                             icon: "/elchai/blockchain-dev/Enterprises-icon03.webp" },
+      { title: "Institutional-Grade Security",      desc: "Security-first architecture with formal verification and continuous monitoring to protect mission-critical enterprise assets.",                              icon: "/elchai/blockchain-dev/Enterprises-icon04.webp" },
+      { title: "Seamless Business Integration",     desc: "REST APIs, middleware, and data-sync layers that connect blockchain to your ERP, CRM, and core systems with minimal disruption.",                          icon: "/elchai/blockchain-dev/Enterprises-icon05.webp" },
+      { title: "Proven Enterprise Track Record",    desc: "150+ blockchain projects since 2022 across finance, supply chain, healthcare, and government — delivering real business outcomes.",                          icon: "/elchai/blockchain-dev/Enterprises-icon06.webp" },
+    ],
+  },
+  process: {
+    eyebrow: "Methodology",
+    heading: "How We Deliver Enterprise Blockchain",
+    body:
+      "A transparent, efficient path from business case to production — designed to integrate with your existing enterprise infrastructure.",
+    displayStyle: "slider",
+    steps: [
+      { title: "Discovery",     desc: "We map existing workflows against blockchain capabilities, identifying friction points, regulatory requirements, and integration challenges while quantifying potential ROI and timelines." },
+      { title: "Architecture",  desc: "Our architects design the right system — permissioned networks for confidential consortium data, or public-chain compatibility for global verification and composability." },
+      { title: "Development",   desc: "Agile sprints with rigorous security auditing. Code undergoes multiple review cycles, automated testing, and formal verification for production-ready reliability." },
+      { title: "Integration",   desc: "Middleware layers translate between blockchain events and enterprise data models — handling state synchronization, transaction retries, and real-time monitoring against your core systems." },
+      { title: "Deployment",    desc: "Phased rollouts with comprehensive testing environments, 99.9% uptime standards, and 24/7 monitoring, plus knowledge transfer or fully managed operations." },
+    ],
+  },
+  techStack: {
+    eyebrow: "Tech Stack",
+    heading: "Enterprise Blockchain Technology",
+    body: "We architect on the best-fit protocols for each enterprise build — privacy and compliance where you need it, public-chain interoperability where it adds value.",
+    groups: [
+      { title: "Blockchain Frameworks", items: [
+        { name: "Hyperledger Fabric", logo: "/elchai/blockchain-dev/1Hyperledger_Fabric_logo.webp" },
+        { name: "Ethereum",           logo: "/elchai/blockchain-dev/Ethereum_logo.webp" },
+        { name: "Polygon",            logo: "/elchai/blockchain-dev/Polygon_logo.webp" },
+        { name: "Solana",             logo: "/elchai/blockchain-dev/Solana_logo.webp" },
+        { name: "Cosmos SDK",         logo: "/elchai/blockchain-dev/Cosmos_SDK_logo.webp" },
+        { name: "Avalanche",          logo: "/elchai/blockchain-dev/Avalanche_logo.webp" },
+        { name: "Polkadot",           logo: "/elchai/blockchain-dev/Polkadot_logo.webp" },
+      ] },
+    ],
+  },
+  faq: {
+    eyebrow: "FAQ",
+    heading: "Frequently Asked Questions",
+    items: [
+      {
+        q: "What are enterprise blockchain solutions?",
+        a: "Enterprise blockchain solutions are distributed ledger systems applied to business operations rather than cryptocurrency. They provide immutable record-keeping, automated compliance monitoring, and streamlined verification — enhancing transparency, reducing costs, and eliminating intermediaries across complex, multi-party business processes.",
+      },
+      {
+        q: "How does blockchain integrate with our existing enterprise systems?",
+        a: "We build hybrid infrastructures that maintain operational continuity while adding blockchain capabilities. Integration typically uses REST APIs, message queues, and middleware that translates between blockchain events and your enterprise data models, with state synchronization and real-time monitoring against your ERP, CRM, and core systems.",
+      },
+      {
+        q: "Should we use a permissioned or public blockchain?",
+        a: "Permissioned networks suit regulated consortiums handling confidential data, where privacy and governance matter most. Public chains suit applications requiring global state verification and composability. We assess transaction volume, finality, regulatory constraints, and existing infrastructure before recommending an architecture.",
+      },
+      {
+        q: "Can blockchain support sustainability and carbon credit programs?",
+        a: "Yes. Distributed ledger technology prevents double-counting, ensures project authenticity, and automates trading for carbon credit markets. Integrated with IoT sensors, blockchain networks provide real-time monitoring of environmental projects and automatically generate verified carbon credits based on measurable impact.",
+      },
+      {
+        q: "How long does an enterprise blockchain deployment take?",
+        a: "A complete platform with enterprise connectivity typically takes 4–6 months; multi-party consortium networks with governance frameworks run 6–12 months. We provide detailed, milestone-based project plans after an initial architecture review, with regular progress demonstrations throughout.",
+      },
+    ],
+  },
+  closing: {
+    heading: "Enhance Transparency, Reduce Costs, And Automate Trust Across Your Enterprise.",
+    body: "Elchai combines technical expertise with strategic vision to help enterprises navigate blockchain transformation successfully.",
+    cta: { label: "Let's Build Together", href: "#consultation" },
+  },
+};

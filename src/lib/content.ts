@@ -22,7 +22,7 @@ export const site = {
   phoneHref: 'tel:+97148837176',
   whatsapp: 'https://web.whatsapp.com/send?phone=+971501080066',
   telegram: 'https://t.me/+971501080066',
-  copyright: '© Elchai All rights reserved 2026',
+  copyright: '© Elchai All rights reserved 2022',
   languages: [
     { label: 'العربية', code: 'ar' },
     { label: 'English', code: 'en' },
@@ -44,12 +44,12 @@ export const nav = {
         items: [
           { label: 'WEB 3', href: '/web3-development-company/' },
           { label: 'Metaverse', href: '/metaverse-development/' },
-          { label: 'Enterprise Solutions', href: '#consultation' },
+          { label: 'Enterprise Solutions', href: '/blockchain-enterprise-solutions/' },
           { label: 'DeFi', href: '/defi-development/' },
           { label: 'Smart Contracts', href: '/smart-contract/' },
           { label: 'NFT', href: '/nft-marketplace-development/' },
           { label: 'Tokenization', href: '/rwa/' },
-          { label: 'Infrastructure', href: '#consultation' },
+          { label: 'Infrastructure', href: '/blockchain-development/' },
         ],
       },
       {
@@ -720,7 +720,7 @@ export const footer = {
       { label: 'instagram', href: 'https://www.instagram.com/elchaigroup/#' },
     ],
   },
-  copyright: '© Elchai All rights reserved 2026',
+  copyright: '© Elchai All rights reserved 2022',
 } as const;
 
 // ---------------------------------------------------------------------------

@@ -27,7 +27,7 @@ export const site = {
   phoneHref: 'tel:+97148837176',
   whatsapp: 'https://web.whatsapp.com/send?phone=+971501080066',
   telegram: 'https://t.me/+971501080066',
-  copyright: '© Elchai جميع الحقوق محفوظة 2026',
+  copyright: '© Elchai جميع الحقوق محفوظة 2022',
   languages: [
     { label: 'العربية', code: 'ar' },
     { label: 'إنجليزي', code: 'en' },
@@ -725,7 +725,7 @@ export const footer = {
       { label: 'انستغرام', href: 'https://www.instagram.com/elchaigroup/#' },
     ],
   },
-  copyright: '© Elchai جميع الحقوق محفوظة 2026',
+  copyright: '© Elchai جميع الحقوق محفوظة 2022',
 } as const;
 
 // ---------------------------------------------------------------------------
